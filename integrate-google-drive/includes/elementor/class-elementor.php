@@ -435,31 +435,31 @@ class Elementor {
             $title = __( 'File Browser', 'integrate-google-drive' );
         } elseif ( 'igd_gallery' == $type ) {
             $img = 'gallery';
-            $title = __( 'Insert Download Links', 'integrate-google-drive' );
+            $title = __( 'Gallery', 'integrate-google-drive' );
         } elseif ( 'igd_download' == $type ) {
             $img = 'download';
             $title = __( 'Insert Download Links', 'integrate-google-drive' );
         } elseif ( 'igd_embed' == $type ) {
             $img = 'embed';
-            $title = __( 'Insert Download Links', 'integrate-google-drive' );
+            $title = __( 'Embed Documents', 'integrate-google-drive' );
         } elseif ( 'igd_media' == $type ) {
             $img = 'media';
-            $title = __( 'Insert Download Links', 'integrate-google-drive' );
+            $title = __( 'Media Player', 'integrate-google-drive' );
         } elseif ( 'igd_search' == $type ) {
             $img = 'search';
-            $title = __( 'Insert Download Links', 'integrate-google-drive' );
+            $title = __( 'Search Box', 'integrate-google-drive' );
         } elseif ( 'igd_slider' == $type ) {
             $img = 'slider';
-            $title = __( 'Insert Download Links', 'integrate-google-drive' );
+            $title = __( 'Carousel Slider', 'integrate-google-drive' );
         } elseif ( 'igd_uploader' == $type ) {
             $img = 'uploader';
-            $title = __( 'Insert Download Links', 'integrate-google-drive' );
+            $title = __( 'File Uploader', 'integrate-google-drive' );
         } elseif ( 'igd_view' == $type ) {
             $img = 'view';
-            $title = __( 'Insert Download Links', 'integrate-google-drive' );
+            $title = __( 'Insert View Links', 'integrate-google-drive' );
         } elseif ( 'igd_shortcodes' == $type ) {
             $img = 'shortcodes';
-            $title = __( 'Insert Download Links', 'integrate-google-drive' );
+            $title = __( 'Insert Pre-built Shortcode', 'integrate-google-drive' );
         }
         ?>
         <div class="module-builder-placeholder">

@@ -2,8 +2,20 @@
 
 $logs = [
 
+	'v.1.4.2' => [
+		'date'        => '2024-09-29',
+		'new'         => [
+			'Added option for specific folders accessibility in the app.',
+			'Added folder selection options in the uploader.',
+			'Added a "None" preloader setting option to disable the preloader during file loading.',
+		],
+		'enhancement' => [
+			'Improved overall performance and stability.',
+		],
+	],
+
 	'v.1.4.1' => [
-		'date'   => '2024-09-14',
+		'date'        => '2024-09-14',
 		'enhancement' => [
 			'Upgraded plugin\'s integrated Google App.',
 		],
@@ -98,114 +110,6 @@ $logs = [
 		'remove' => [
 			'Removed Gallery module from the free version.',
 			'Removed Contact Form 7 integration from the free version.',
-		],
-	],
-
-	'v.1.3.93' => [
-		'date' => '2024-04-04',
-		'fix'  => [
-			'Fixed file browser not working in mobile',
-		],
-	],
-
-	'v.1.3.92' => [
-		'date'        => '2024-03-15',
-		'new'         => [
-			'Added description field for the uploader module files.',
-		],
-		'fix'         => [
-			'Fixed media player not playing properly.',
-			'Fixed large file download scan warning issue.',
-			'Fixed statistics data not exporting properly.',
-			'Fixed Google Drive media attachment not displaying in gallery.',
-		],
-		'enhancement' => [
-			'Improved media library integration.',
-			'Improved overall performance and security.',
-		],
-	],
-
-	'v.1.3.9' => [
-		'date'   => '2024-03-15',
-		'update' => [
-			'Improved overall performance and security.',
-		],
-	],
-
-	'v.1.3.8' => [
-		'date'        => '2024-03-01',
-		'new'         => [
-			'Added option to rename the files based on the form field values.',
-			'Added setting to only allow specific folders in the media library.',
-			'Added Google Drive ACF integration for the Dokan products.',
-			'Added Media Library integration with Dokan.',
-			'Added option to display the gallery and slider image overlay description always and on hover.',
-			'Added option to enable/disable the auto-save settings.',
-			'Added multiple files lazy load options (Pagination, Load More button, Scroll) for file browser and gallery shortcode module.',
-			'Added files lazy load settings for admin file browser.',
-		],
-		'fix'         => [
-			'Fixed gallery thumbnail not loading issue.',
-			'Fixed large file download not completing issue.',
-			'Fixed large video file not playing issue.',
-			'Fixed elementor module builder white screen issue.',
-			'Fixed Gravity form not submitting when has multiple Google Drive upload fields.',
-			'Fixed %queue_index% file rename placeholder not working issue.',
-			'Fixed file uploader not showing uploaded files on the WooCommerce product page.',
-			'Fixed shortcode modules throws PHP errors for deleted files.',
-			'Fixed data export/import not working issue.',
-			'Fixed shortcode modules small font-size issue.',
-			'Fixed reset settings not working.',
-		],
-		'enhancement' => [
-			'Improved media library integration with Google Drive.',
-			'Improved secure video playback and prevent unauthorized video downloads.',
-			'Improved notification email template.',
-			'Improved overall performance and security.',
-		]
-	],
-
-	'v.1.3.7' => [
-		'date' => '2024-01-14',
-		'fix'  => [
-			'Fixed media player not working issue.',
-		],
-	],
-
-	'v.1.3.6' => [
-		'date'        => '2023-12-27',
-		'new'         => [
-			'Added Media Library Integration.',
-			'Added description to the slider carousel lightbox preview.',
-			'Added option to enable/disable folder download.',
-		],
-		'fix'         => [
-			'Fixed Ninja Forms Google Drive uploader extension filter not working properly.',
-		],
-		'enhancement' => [
-			'Improved file import to the media library.',
-		]
-	],
-
-	'v.1.3.4' => [
-		'date' => '2023-12-03',
-		'new'  => [
-			'Added user role based private folder creation on user registration.',
-			'Added sort option for slider module.',
-			'Added random sort option for shortcode module files.',
-		],
-		'fix'  => [
-			'Fixed uploader browse files button not working properly on IOS devices.',
-			'Fixed search module not working properly.',
-		],
-
-	],
-
-	'v.1.3.3' => [
-		'date' => '2023-11-17',
-		'fix'  => [
-			'Fixed security issue',
-			'Translations issue',
 		],
 	],
 

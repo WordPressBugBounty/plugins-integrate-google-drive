@@ -115,6 +115,20 @@ class Client {
 		return $this->get_client()->createAuthUrl();
 	}
 
+	public function get_access_token() {
+		$access_token_text = $this->get_client()->getAccessToken();
+
+		if ( ! empty( $access_token_text ) ) {
+			$access_token_obj = json_decode( $access_token_text );
+
+			if ( ! empty( $access_token_obj->access_token ) ) {
+				return $access_token_obj->access_token;
+			}
+		}
+
+		return false;
+	}
+
 	public function create_access_token() {
 
 		try {
@@ -153,7 +167,7 @@ class Client {
 			$data['user_id'] = [ $user_id ];
 
 			$data = Account::instance( $user_id )->update_account( $data );
-			Account::instance( $user_id )->set_active_account( $data['id'] );
+			Account::instance( $user_id )->set_active_account_id( $data['id'] );
 
 			$authorization = new Authorization( $data );
 			$authorization->set_access_token( $access_token );

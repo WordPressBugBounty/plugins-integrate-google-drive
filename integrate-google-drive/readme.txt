@@ -4,7 +4,7 @@ Tags: google drive, google, gallery, embed, media
 Requires at least: 5.0
 Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -328,6 +328,12 @@ Absolutely. By turning on the "Photo Proofing" option within the gallery module,
 
 == Changelog ==
 
+= 1.4.2 (2024-09-29) =
+* New: Added option for specific folders accessibility in the app.
+* New: Added folder selection options in the uploader.
+* New: Added a "None" preloader setting option to disable the preloader during file loading.
+
+* Update: Upgraded plugin's integrated Google App.
 = 1.4.1 (2024-09-14) =
 * Update: Upgraded plugin's integrated Google App.
 

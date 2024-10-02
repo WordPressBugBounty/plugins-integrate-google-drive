@@ -750,7 +750,8 @@ class Ajax {
             wp_send_json_error( __( 'You do not have permission to access this page', 'integrate-google-drive' ) );
         }
         $id = ( !empty( $_POST['id'] ) ? sanitize_text_field( $_POST['id'] ) : '' );
-        wp_send_json_success( Account::instance()->set_active_account( $id ) );
+        Account::instance()->set_active_account_id( $id );
+        wp_send_json_success();
     }
 
     public function preview() {

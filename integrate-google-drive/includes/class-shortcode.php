@@ -225,6 +225,12 @@ class Shortcode {
         if ( !empty( $this->data['acfDynamicFiles'] ) ) {
             $this->data['folders'] = ( !empty( $this->data['acfFieldKey'] ) ? $this->get_acf_dynamic_field_files( $this->data['acfFieldKey'] ) : [] );
         }
+        // Check if uploader module and selected folder is enabled
+        if ( 'uploader' == $this->type && !empty( $this->data['uploadFolderSelection'] ) ) {
+            if ( empty( $this->data['folders'] ) ) {
+                $this->data['folders'] = $this->data['uploadFolders'] ?? [];
+            }
+        }
         // First, we check if the 'type' is one of the specified values and 'folders' is not empty.
         if ( !in_array( $this->type, [
             'browser',

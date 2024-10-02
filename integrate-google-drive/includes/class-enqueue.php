@@ -255,7 +255,7 @@ class Enqueue {
         );
         // Admin Localize Data
         if ( is_admin() ) {
-            //check if dokan vendor dashboard page
+            // Check if dokan vendor dashboard page
             $admin_pages = Admin::instance()->get_pages();
             $is_settings_page = !empty( $admin_pages['settings_page'] ) && $admin_pages['settings_page'] === $hook;
             if ( !$is_settings_page && isset( $_GET['page'] ) && $_GET['page'] == 'integrate-google-drive-settings' ) {

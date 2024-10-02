@@ -71,65 +71,60 @@ class Account {
 		return $data;
 	}
 
+	public function set_active_account_id( $account_id ) {
+		$accounts = $this->get_accounts();
+
+		if ( ! empty( $accounts[ $account_id ] ) ) {
+			$this->set_active_account_id_cookie( $account_id );
+		} elseif ( ! empty( $accounts ) ) {
+			$account = @array_shift( $accounts );
+			$this->set_active_account_id_cookie( $account['id'] );
+		} else {
+			$this->clear_active_account_id_cookie();
+		}
+	}
+
 	public function get_active_account() {
 		$accounts = $this->get_accounts();
 
-		$cookie = $_COOKIE['igd_active_account'] ?? null;
+		$account_id = $this->get_active_account_id_from_cookie();
 
-		if ( ! empty( $cookie ) ) {
-			$cookie = str_replace( [ "\\\"", "\/" ], [ "\"", "/" ], $cookie );
+		if ( ! empty( $account_id ) ) {
 
-			$account = json_decode( $cookie, true );
+			$account = ! empty( $accounts[ $account_id ] ) ? $accounts[ $account_id ] : [];
 
-			//check if user id is not same then remove cookie
-			if ( ! empty( $this->user_id ) && ! empty( $account['user_id'] ) && ! in_array( $this->user_id, $account['user_id'] ) ) {
-				setcookie( 'igd_active_account', '', time() - 3600, '/' );
-
-				$account = @array_shift( $accounts );
-
-				return ! empty( $account ) ? $account : [];
+			// If user ID doesn't match, clear cookie and set account to the first available one
+			if ( ! empty( $this->user_id ) && ! empty( $account['user_id'] ) && ! in_array( $this->user_id, (array) $account['user_id'] ) ) {
+				$this->clear_active_account_id_cookie();
+				$account = array_shift( $accounts ) ?? [];
 			}
 
+			// If account ID in the cookie is invalid, clear the cookie
 			if ( ! empty( $account['id'] ) && empty( $accounts[ $account['id'] ] ) ) {
-				setcookie( 'igd_active_account', '', time() - 3600, '/' );
-			} else {
-				return $account;
+				$this->clear_active_account_id_cookie();
+				$account = array_shift( $accounts ) ?? [];
 			}
-		}
 
-		if ( ! empty( $accounts ) ) {
-			$account = @array_shift( $accounts );
-
-			if ( ! empty( $account ) ) {
-				return $account;
-			}
-		}
-
-		return [];
-	}
-
-	/**
-	 * @param string $account_id
-	 *
-	 * @return bool
-	 */
-	public function set_active_account( $account_id ) {
-		$accounts = $this->get_accounts();
-
-		$account = [];
-
-		if ( ! empty( $accounts[ $account_id ] ) ) {
-			$account = $accounts[ $account_id ];
-			setcookie( 'igd_active_account', json_encode( $account ), time() + ( 30 * DAY_IN_SECONDS ), "/" );
-		} elseif ( ! empty( $accounts ) ) {
-			$account = @array_shift( $accounts );
-
-			setcookie( 'igd_active_account', json_encode( $account ), time() + ( 30 * DAY_IN_SECONDS ), "/" );
 		} else {
-			setcookie( 'igd_active_account', '', time() - 3600, "/" );
+			// Set account to the first available one if no valid cookie found
+			$account = array_shift( $accounts ) ?? [];
 		}
 
 		return $account;
+
+	}
+
+	// Helper functions for setting, getting, and clearing the cookie
+	private function set_active_account_id_cookie( $account_id ) {
+		setcookie( 'igd_active_account_id', $account_id, time() + ( 30 * DAY_IN_SECONDS ), "/" );
+	}
+
+	private function clear_active_account_id_cookie() {
+		setcookie( 'igd_active_account_id', '', time() - 3600, "/" );
+	}
+
+	private function get_active_account_id_from_cookie() {
+		return $_COOKIE['igd_active_account_id'] ?? '';
 	}
 
 	/**
@@ -166,7 +161,7 @@ class Account {
 		// Update active account
 		if ( ! empty( $active_account ) && $account_id == $active_account['id'] ) {
 			if ( count( $accounts ) ) {
-				self::set_active_account( array_key_first( $accounts ) );
+				self::set_active_account_id( array_key_first( $accounts ) );
 			}
 		}
 
@@ -237,6 +232,18 @@ class Account {
 
 		return false;
 
+	}
+
+	public function get_specific_folders( $account_id ) {
+		$account = $this->get_accounts( $account_id );
+
+		return ! empty( $account['specific_folders'] ) ? $account['specific_folders'] : [];
+	}
+
+	public function get_access_token( $account_id ) {
+		$tokens = get_option( 'igd_tokens', [] );
+
+		return ! empty( $tokens[ $account_id ] ) ? $tokens[ $account_id ] : false;
 	}
 
 	public static function instance( $user_id = null ) {

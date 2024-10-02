@@ -942,7 +942,7 @@ function igd_get_embed_url( $file, $embed_type = 'readOnly', $direct_image = fal
 	$account_id = $file['accountId'];
 	$type       = isset( $file['type'] ) ? $file['type'] : '';
 
-	$is_editable       = in_array( $embed_type, [ 'editable', 'fullEditable' ] );
+	$is_editable        = in_array( $embed_type, [ 'editable', 'fullEditable' ] );
 	$editable_arguments = $is_editable && $embed_type === 'fullEditable' ? 'edit?usp=drivesdk&rm=embedded&embedded=true' : 'edit?usp=drivesdk&rm=minimal&embedded=true';
 
 	$permissions = Permissions::instance( $account_id );
@@ -1713,7 +1713,7 @@ function igd_get_user_access_data() {
 		}
 	}
 
-	return $data;
+	return ! empty( $data ) ? $data : false;
 }
 
 function igd_contains_tags( $type = '', $template = '' ) {
