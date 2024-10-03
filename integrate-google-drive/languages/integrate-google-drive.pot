@@ -2,21 +2,21 @@
 # This file is distributed under the same license as the Integrate Google Drive plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Integrate Google Drive 1.4.2\n"
+"Project-Id-Version: Integrate Google Drive 1.4.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integrate-google-drive\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-01T16:32:41+00:00\n"
+"POT-Creation-Date: 2024-10-03T10:20:40+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: integrate-google-drive\n"
 
 #. Plugin Name of the plugin
 #: includes/blocks/class-blocks.php:92
-#: includes/class-admin.php:201
+#: includes/class-admin.php:200
 #: includes/elementor/class-elementor.php:554
 #: includes/integrations/class-acf.php:15
 #: includes/views/getting-started/index.php:14
@@ -76,26 +76,26 @@ msgstr ""
 msgid "Docs"
 msgstr ""
 
-#: includes/class-admin.php:136
+#: includes/class-admin.php:135
 msgid "File Browser - Integrate Google Drive"
 msgstr ""
 
-#: includes/class-admin.php:137
+#: includes/class-admin.php:136
 #: includes/elementor/class-elementor-browser-widget__premium_only.php:18
 #: includes/elementor/class-elementor-browser-widget__premium_only.php:57
 #: includes/elementor/class-elementor.php:434
 #: includes/elementor/class-elementor.php:564
-#: includes/views/getting-started/introduction.php:145
-#: includes/views/getting-started/introduction.php:158
+#: includes/views/getting-started/introduction.php:161
+#: includes/views/getting-started/introduction.php:174
 #: assets/js/admin.js:1
 msgid "File Browser"
 msgstr ""
 
-#: includes/class-admin.php:141
+#: includes/class-admin.php:140
 msgid "Shortcode Builder - Integrate Google Drive"
 msgstr ""
 
-#: includes/class-admin.php:142
+#: includes/class-admin.php:141
 #: includes/views/getting-started/basic-usage.php:90
 #: includes/views/getting-started/basic-usage.php:117
 #: includes/views/getting-started/get-pro.php:25
@@ -103,50 +103,50 @@ msgstr ""
 msgid "Shortcode Builder"
 msgstr ""
 
-#: includes/class-admin.php:146
+#: includes/class-admin.php:145
 msgid "Users Private Files - Integrate Google Drive"
 msgstr ""
 
-#: includes/class-admin.php:147
+#: includes/class-admin.php:146
 msgid "Users Private Files"
 msgstr ""
 
-#: includes/class-admin.php:151
+#: includes/class-admin.php:150
 msgid "Getting Started - Integrate Google Drive"
 msgstr ""
 
-#: includes/class-admin.php:152
+#: includes/class-admin.php:151
 #: includes/views/getting-started/index.php:18
 msgid "Getting Started"
 msgstr ""
 
-#: includes/class-admin.php:156
+#: includes/class-admin.php:155
 msgid "Statistics - Integrate Google Drive"
 msgstr ""
 
-#: includes/class-admin.php:157
+#: includes/class-admin.php:156
 #: includes/views/getting-started/get-pro.php:65
 #: assets/js/settings.js:1
 #: assets/js/statistics.js:1
 msgid "Statistics"
 msgstr ""
 
-#: includes/class-admin.php:161
+#: includes/class-admin.php:160
 msgid "Settings - Integrate Google Drive"
 msgstr ""
 
-#: includes/class-admin.php:162
+#: includes/class-admin.php:161
 #: includes/integrations/templates/tutor/dashboard/settings/google-drive.php:19
 #: assets/js/settings.js:1
 msgid "Settings"
 msgstr ""
 
+#: includes/class-admin.php:188
 #: includes/class-admin.php:189
-#: includes/class-admin.php:190
 msgid "Recommended Plugins"
 msgstr ""
 
-#: includes/class-admin.php:202
+#: includes/class-admin.php:201
 #: includes/class-tinymce.php:35
 #: includes/integrations/class-dokan.php:471
 #: includes/integrations/class-formidableforms.php:226
@@ -350,64 +350,64 @@ msgid " Statistics Summary of Integrate Google Drive."
 msgstr ""
 
 #. translators: %d: number of files
-#: includes/class-hooks.php:346
-#: includes/class-hooks.php:362
+#: includes/class-hooks.php:349
+#: includes/class-hooks.php:365
 msgid "%d file uploaded to Google Drive"
 msgid_plural "%d files uploaded to Google Drive"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-hooks.php:411
+#: includes/class-hooks.php:414
 msgid "Integrate Google Drive Synchronize Interval"
 msgstr ""
 
-#: includes/class-notifications__premium_only.php:200
+#: includes/class-notifications__premium_only.php:264
 msgid "An anonymous user"
 msgstr ""
 
-#: includes/class-notifications__premium_only.php:204
+#: includes/class-notifications__premium_only.php:268
 msgid "file"
 msgstr ""
 
 #. translators: %1$s: number of files, %2$s: folder name
-#: includes/class-notifications__premium_only.php:222
+#: includes/class-notifications__premium_only.php:286
 msgid "%1$s files to %2$s."
 msgstr ""
 
 #. translators: %1$s: file name, %2$s: folder name
-#: includes/class-notifications__premium_only.php:225
+#: includes/class-notifications__premium_only.php:289
 msgid "%1$s file to %2$s."
 msgstr ""
 
-#: includes/class-notifications__premium_only.php:230
+#: includes/class-notifications__premium_only.php:294
 msgid "User %1$s uploaded %2$s"
 msgstr ""
 
 #. translators: %1$s: number of files
-#: includes/class-notifications__premium_only.php:236
-#: includes/class-notifications__premium_only.php:263
+#: includes/class-notifications__premium_only.php:300
+#: includes/class-notifications__premium_only.php:327
 msgid "(%1$s) file(s)"
 msgstr ""
 
-#: includes/class-notifications__premium_only.php:241
+#: includes/class-notifications__premium_only.php:305
 msgid "User %1$s deleted %2$s"
 msgstr ""
 
-#: includes/class-notifications__premium_only.php:248
+#: includes/class-notifications__premium_only.php:312
 msgid "User %1$s searched for %2$s"
 msgstr ""
 
 #. translators: %1$s: user name, %2$s: file name
-#: includes/class-notifications__premium_only.php:253
+#: includes/class-notifications__premium_only.php:317
 msgid "User %1$s played %2$s"
 msgstr ""
 
 #. translators: %1$s: user name, %2$s: file name
-#: includes/class-notifications__premium_only.php:258
+#: includes/class-notifications__premium_only.php:322
 msgid "User %1$s viewed %2$s"
 msgstr ""
 
-#: includes/class-notifications__premium_only.php:268
+#: includes/class-notifications__premium_only.php:332
 msgid "User %1$s downloaded %2$s"
 msgstr ""
 
@@ -659,7 +659,7 @@ msgstr ""
 #: includes/elementor/class-elementor-embed-widget.php:53
 #: includes/elementor/class-elementor.php:573
 #: includes/views/getting-started/basic-usage.php:85
-#: includes/views/getting-started/introduction.php:243
+#: includes/views/getting-started/introduction.php:259
 #: assets/js/admin.js:1
 msgid "Embed Documents"
 msgstr ""
@@ -688,7 +688,7 @@ msgstr ""
 
 #: includes/elementor/class-elementor-gallery-widget.php:18
 #: includes/elementor/class-elementor.php:567
-#: includes/views/getting-started/introduction.php:201
+#: includes/views/getting-started/introduction.php:217
 #: assets/js/admin.js:1
 msgid "Gallery"
 msgstr ""
@@ -701,7 +701,7 @@ msgstr ""
 #: includes/elementor/class-elementor-media-widget__premium_only.php:60
 #: includes/elementor/class-elementor.php:446
 #: includes/elementor/class-elementor.php:576
-#: includes/views/getting-started/introduction.php:185
+#: includes/views/getting-started/introduction.php:201
 #: assets/js/admin.js:1
 msgid "Media Player"
 msgstr ""
@@ -728,7 +728,7 @@ msgstr ""
 
 #: includes/elementor/class-elementor-slider-widget__premium_only.php:19
 #: includes/elementor/class-elementor.php:458
-#: includes/views/getting-started/introduction.php:215
+#: includes/views/getting-started/introduction.php:231
 #: assets/js/admin.js:1
 msgid "Slider Carousel"
 msgstr ""
@@ -742,8 +742,8 @@ msgstr ""
 #: includes/elementor/class-elementor.php:440
 #: includes/elementor/class-elementor.php:585
 #: includes/views/getting-started/basic-usage.php:52
-#: includes/views/getting-started/introduction.php:165
-#: includes/views/getting-started/introduction.php:177
+#: includes/views/getting-started/introduction.php:181
+#: includes/views/getting-started/introduction.php:193
 #: assets/js/admin.js:1
 msgid "File Uploader"
 msgstr ""
@@ -1661,7 +1661,7 @@ msgid "Play audio and video in a single player using this module."
 msgstr ""
 
 #: includes/views/getting-started/basic-usage.php:60
-#: includes/views/getting-started/introduction.php:231
+#: includes/views/getting-started/introduction.php:247
 #: assets/js/admin.js:1
 msgid "File Search"
 msgstr ""
@@ -1935,7 +1935,7 @@ msgid "User Private Files & Folders"
 msgstr ""
 
 #: includes/views/getting-started/get-pro.php:57
-#: includes/views/getting-started/introduction.php:303
+#: includes/views/getting-started/introduction.php:319
 msgid "Multiple Google Accounts"
 msgstr ""
 
@@ -1961,7 +1961,7 @@ msgid "Elementor Integration"
 msgstr ""
 
 #: includes/views/getting-started/get-pro.php:85
-#: includes/views/getting-started/introduction.php:127
+#: includes/views/getting-started/introduction.php:143
 msgid "Media Library Integration"
 msgstr ""
 
@@ -2430,117 +2430,126 @@ msgstr ""
 msgid "Let's explore the awesome features of the plugin"
 msgstr ""
 
+#: includes/views/getting-started/introduction.php:127
+msgid "Specific Folders Accessibility"
+msgstr ""
+
 #: includes/views/getting-started/introduction.php:128
+#: includes/views/getting-started/introduction.php:144
 msgid "New ⚡"
 msgstr ""
 
 #: includes/views/getting-started/introduction.php:131
+msgid "Restrict access to specific folders within the plugin. This feature enhances security and control over your Google Drive files and ensures that only the designated folders are available for use and management within the app."
+msgstr ""
+
+#: includes/views/getting-started/introduction.php:147
 msgid "Integrating Google Drive with WordPress Media Library, allows you to use Google Drive files as media attachments directly in WordPress. This integration facilitates easy uploading, importing, and synchronizing of media content between WordPress and Google Drive, streamlining your digital asset management and enhancing your website's media capabilities."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:149
+#: includes/views/getting-started/introduction.php:165
 msgid ""
 "You can manage your cloud files from your website using the full-featured file browser of the\n"
 "                    plugin. Manage preview, download, upload, rename, move, delete, permissions per user using\n"
 "                    the file browser. Users can also browse your cloud files using the File Browser."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:169
+#: includes/views/getting-started/introduction.php:185
 msgid ""
 "You and also your users can upload files directly to your Google Drive account from your\n"
 "                    site. You can upload unlimited size of files."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:187
+#: includes/views/getting-started/introduction.php:203
 msgid ""
 "You can play your Google Drive audio & video files with a playlist into your website. Audio and\n"
 "                video can be played in a single player."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:203
+#: includes/views/getting-started/introduction.php:219
 msgid ""
 "You can add a grid lightbox popup gallery of photos and videos in your page/ post using the gallery\n"
 "                    module of the plugin. The gallery will be generated based on the folders, photos and images that you select."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:217
+#: includes/views/getting-started/introduction.php:233
 msgid "With the Slider Carousel module, you can create a beautiful and interactive slider carousel to showcase your Google Drive images, videos, and documents. Simply use the shortcode to embed the slider anywhere on your site."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:232
+#: includes/views/getting-started/introduction.php:248
 msgid ""
 "You can search any of your cloud files from your site and also let the users to search the\n"
 "                    cloud files to view and download."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:246
+#: includes/views/getting-started/introduction.php:262
 msgid ""
 "You can easily embed any Google Drive Cloud files in any post/ page of your WordPress website\n"
 "                directly using this plugin."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:262
+#: includes/views/getting-started/introduction.php:278
 msgid "File Importer"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:264
+#: includes/views/getting-started/introduction.php:280
 msgid ""
 "Import any Google Drive document and media files to your media library by one click and use\n"
 "                    them on any post/ page."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:276
+#: includes/views/getting-started/introduction.php:292
 msgid "File View & Download Links"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:277
+#: includes/views/getting-started/introduction.php:293
 msgid ""
 "You can insert direct links to your post/ page to download/ view your Google Drive cloud\n"
 "                    files."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:290
+#: includes/views/getting-started/introduction.php:306
 #: assets/js/settings.js:1
 msgid "Private Folders"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:292
+#: includes/views/getting-started/introduction.php:308
 msgid "Using Private Folders you can easily and securely share your Google Drive documents with your users/clients."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:304
+#: includes/views/getting-started/introduction.php:320
 msgid "You can link multiple Google accounts and can use files from the multiple accounts."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:314
+#: includes/views/getting-started/introduction.php:330
 msgid "Powerful Integrations with Popular Plugins"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:315
+#: includes/views/getting-started/introduction.php:331
 msgid "Using this plugin, you can integrate your Google Drive with available popular plugins."
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:124
+#: includes/views/getting-started/what-new.php:135
 msgid "Exploring the Latest Updates"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:125
+#: includes/views/getting-started/what-new.php:136
 msgid "Dive Into the Recent Change Logs for Fresh Insights"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:143
+#: includes/views/getting-started/what-new.php:154
 msgid "New Features"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:152
+#: includes/views/getting-started/what-new.php:163
 msgid "Bug Fixes"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:160
+#: includes/views/getting-started/what-new.php:171
 msgid "Improvements"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:168
+#: includes/views/getting-started/what-new.php:179
 msgid "Removes"
 msgstr ""
 
@@ -2977,6 +2986,7 @@ msgstr ""
 
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
+#: assets/js/settings.js:1
 msgid "OK"
 msgstr ""
 
@@ -4033,15 +4043,15 @@ msgid "Use ACF field Files"
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "Upgrade to Pro to use ACF field files"
-msgstr ""
-
-#: assets/js/admin.js:1
 msgid "ACF integration is not enabled"
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "Enable ACF integration form the plugin settings page to use the ACF field selected files"
+msgid "Enable ACF integration from the plugin settings page to access and utilize files selected from ACF fields."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Upgrade to Pro to use ACF field files"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -5956,7 +5966,63 @@ msgid "Upgrade to PRO to use the private folders for users."
 msgstr ""
 
 #: assets/js/settings.js:1
-msgid "Google Accounts"
+msgid "Account Connection"
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Connection Type"
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Automatic"
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Manual"
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Choose how you want to connect your Google accounts with the plugin."
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Sign-in with your Google account using the plugin's default Google App. No configuration needed."
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Create your own Google App and use it to connect your Google account with the plugin."
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Using your own Google App is an optional option. For an easy setup you can just use the default App of the plugin itself. The advantage of using your own app is limited. If you decided to create your own Google App anyway, please enter your app Client ID & Secret key in the below settings."
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "App Client ID"
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Insert you app client ID."
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "App Secret Key"
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Insert you app secret key."
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Redirect URI"
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Copied to clipboard."
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Copy the above redirect URI and set to your own google app."
 msgstr ""
 
 #: assets/js/settings.js:1
@@ -5996,6 +6062,18 @@ msgid "Multiple Accounts - PRO"
 msgstr ""
 
 #: assets/js/settings.js:1
+msgid "App Client ID & Secret Key is required."
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Please enter your app client ID & secret key."
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Save changes and reload the page."
+msgstr ""
+
+#: assets/js/settings.js:1
 msgid "See what happens with your data when you authorize?"
 msgstr ""
 
@@ -6004,13 +6082,7 @@ msgid "Requested scopes and justification"
 msgstr ""
 
 #: assets/js/settings.js:1
-msgid ""
-"In order to display your Google Drive cloud files, you have to authorize it with your Google account.\n"
-"\n"
-"                            The authorization will ask you to grant the application the https://www.googleapis.com/auth/drive scope.\n"
-"\n"
-"                            The scope is needed to allow the plugin to see, edit, create, and delete all of your Google\n"
-"                            Drive files and files that are shared with you."
+msgid "In order to display your Google Drive cloud files, you have to authorize it with your Google account. The authorization will ask you to grant the application the %s scope. The scope is needed to allow the plugin to see, edit, create, and delete all of your Google Drive files and files that are shared with you."
 msgstr ""
 
 #: assets/js/settings.js:1
@@ -6055,50 +6127,6 @@ msgstr ""
 
 #: assets/js/settings.js:1
 msgid "By default, the plugin will manage the sharing permissions of the documents. If you want to manage the sharing permissions manually, please disable this option."
-msgstr ""
-
-#: assets/js/settings.js:1
-msgid "Link Own Google App"
-msgstr ""
-
-#: assets/js/settings.js:1
-msgid "Upgrade to PRO to use your own Google App."
-msgstr ""
-
-#: assets/js/settings.js:1
-msgid "Use your own Google app API instead of using the plugin default app API."
-msgstr ""
-
-#: assets/js/settings.js:1
-msgid "Using your own Google App is an optional option. For an easy setup you can just use the default App of the plugin itself. The advantage of using your own app is limited. If you decided to create your own Google App anyway, please enter your app Client ID & Secret key in the below settings."
-msgstr ""
-
-#: assets/js/settings.js:1
-msgid "App Client ID"
-msgstr ""
-
-#: assets/js/settings.js:1
-msgid "Insert you app client ID."
-msgstr ""
-
-#: assets/js/settings.js:1
-msgid "App Secret Key"
-msgstr ""
-
-#: assets/js/settings.js:1
-msgid "Insert you app secret key."
-msgstr ""
-
-#: assets/js/settings.js:1
-msgid "Redirect URI"
-msgstr ""
-
-#: assets/js/settings.js:1
-msgid "Copied to clipboard."
-msgstr ""
-
-#: assets/js/settings.js:1
-msgid "Copy the above redirect URI and set to your own google app."
 msgstr ""
 
 #: assets/js/settings.js:1

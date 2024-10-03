@@ -1606,7 +1606,7 @@ function igd_user_can_access( $access_right ) {
 		$private_folders_in_admin_dashboard = igd_get_settings( 'privateFoldersInAdminDashboard', false );
 
 		if ( $private_folders_in_admin_dashboard ) {
-			$folders = get_user_option( 'folders', get_current_user_id() );
+			$folders = get_user_meta( get_current_user_id(), 'igd_folders', true );
 
 			$can_access = $can_access || ! empty( $folders );
 		}
@@ -1661,7 +1661,7 @@ function igd_get_user_access_data() {
 		$private_folders_in_admin_dashboard = igd_get_settings( 'privateFoldersInAdminDashboard', false );
 
 		if ( $private_folders_in_admin_dashboard ) {
-			$private_folders = get_user_option( 'folders', get_current_user_id() );
+			$private_folders = get_user_meta( get_current_user_id(),'igd_folders', true );
 
 			// if not empty $private_folders, merge private folders with assigned folders
 			if ( ! empty( $private_folders ) ) {

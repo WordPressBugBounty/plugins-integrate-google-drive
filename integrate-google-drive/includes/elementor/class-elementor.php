@@ -129,7 +129,7 @@ class Elementor {
                 // Check Private Folders
                 $private_folders = !empty( $igd_data['privateFolders'] );
                 if ( $private_folders && is_user_logged_in() ) {
-                    $folders = get_user_option( 'folders', get_current_user_id() );
+                    $folders = get_user_meta( get_current_user_id(), 'igd_folders', true );
                     if ( !empty( $folders ) ) {
                         $folders = array_values( array_filter( (array) $folders, function ( $item ) {
                             return igd_is_dir( $item );
@@ -276,7 +276,7 @@ class Elementor {
             // Check Private Folders
             $private_folders = !empty( $igd_data['privateFolders'] );
             if ( $private_folders && is_user_logged_in() ) {
-                $folders = get_user_option( 'folders', get_current_user_id() );
+                $folders = get_user_meta( get_current_user_id(), 'igd_folders', true );
                 if ( !empty( $folders ) ) {
                     $folders = array_values( array_filter( (array) $folders, function ( $item ) {
                         return igd_is_dir( $item );

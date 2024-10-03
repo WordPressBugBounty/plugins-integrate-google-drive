@@ -157,7 +157,7 @@ class CF7 {
 					// Check Private Folders
 					$private_folders = ! empty( $igd_data['privateFolders'] );
 					if ( $private_folders && $user_id ) {
-						$folders = get_user_option( 'folders', $user_id );
+						$folders = get_user_meta( $user_id,'igd_folders', true );
 
 						if ( ! empty( $folders ) ) {
 							$folders = array_values( array_filter( (array) $folders, function ( $item ) {

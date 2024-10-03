@@ -4,7 +4,7 @@ Tags: google drive, google, gallery, embed, media
 Requires at least: 5.0
 Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -80,6 +80,9 @@ Display Google Drive images and videos in a dynamic lightbox grid gallery. This 
 Integrate the plugin with Contact Form 7 to add file upload functionality to your forms, saving uploaded files directly to Google Drive. 🎬 [Watch Video](https://youtu.be/UIRswwNcIY0)
 
 == 🚀 PRO Features ==
+
+**📂 Specific Folders Accessibility in the Plugin**
+Restrict access to specific folders for use and management within the plugin.
 
 **🔒 User Private Files**
 Using Private Folders you can easily and securely share your Google Drive documents with your users/clients. 🎬 [Watch Video](https://youtu.be/ZUJBjQdYy4k)
@@ -327,6 +330,10 @@ Absolutely. By turning on the "Photo Proofing" option within the gallery module,
 
 
 == Changelog ==
+
+= 1.4.2 (2024-10-03) =
+* Fix: Fixed module notifications not reaching to the correct recipients.
+* Update: Improve Accounts connection UI/UX.
 
 = 1.4.2 (2024-09-29) =
 * New: Added option for specific folders accessibility in the app.

@@ -319,7 +319,7 @@ class Ajax {
         }
         $user_id = ( !empty( $_POST['id'] ) ? intval( $_POST['id'] ) : 0 );
         $folders = ( !empty( $_POST['folders'] ) ? igd_sanitize_array( $_POST['folders'] ) : [] );
-        update_user_option( $user_id, 'folders', $folders );
+        update_user_meta( $user_id, 'igd_folders', $folders );
         wp_send_json_success();
     }
 
@@ -386,7 +386,7 @@ class Ajax {
             $user_files = array();
             $users = get_users();
             foreach ( $users as $user ) {
-                $folders = get_user_option( 'folders', $user->ID );
+                $folders = get_user_meta( $user->ID, 'igd_folders', true );
                 $user_files[$user->ID] = ( !empty( $folders ) ? $folders : array() );
             }
             $export_data['user_files'] = $user_files;
@@ -422,7 +422,7 @@ class Ajax {
             }
             if ( 'user_files' == $key ) {
                 foreach ( $data as $user_id => $files ) {
-                    update_user_option( $user_id, 'folders', $files );
+                    update_user_meta( $user_id, 'igd_folders', $files );
                 }
             }
         }

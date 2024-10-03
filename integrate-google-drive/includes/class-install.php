@@ -8,31 +8,54 @@ defined( 'ABSPATH' ) || exit;
  */
 class Install {
     /**
-     * Plugin activation stuffs
+     * Plugin activation logic
      *
      * @since 1.0.0
      */
     public static function activate() {
-        if ( !class_exists( 'IGD\\Update' ) ) {
-            require_once IGD_INCLUDES . '/class-update.php';
-        }
-        $updater = new Update();
+        self::load_dependencies();
+        $updater = Update::instance();
         if ( $updater->needs_update() ) {
-            $updater->perform_updates();
+            self::safe_update( $updater );
         } else {
             self::create_default_data();
-            self::add_settings();
+            self::add_default_settings();
             self::create_tables();
         }
     }
 
-    public static function add_settings() {
-        // Don't need to add settings if not first time install
-        $version = get_option( 'igd_version' );
-        if ( $version ) {
+    /**
+     * Load required dependencies for the plugin activation and update process.
+     */
+    private static function load_dependencies() {
+        if ( !class_exists( 'IGD\\Update' ) ) {
+            require_once IGD_INCLUDES . '/class-update.php';
+        }
+    }
+
+    /**
+     * Safely perform updates, with error handling and logging.
+     *
+     * @param Update $updater Instance of the Update class
+     */
+    private static function safe_update( $updater ) {
+        try {
+            $updater->perform_updates();
+        } catch ( \Exception $e ) {
+            error_log( '[IGD Update Error] ' . $e->getMessage() );
+        }
+    }
+
+    /**
+     * Add default settings during plugin activation.
+     */
+    public static function add_default_settings() {
+        // Only add settings if this is a fresh install
+        if ( get_option( 'igd_version' ) ) {
             return;
         }
         $settings = igd_get_settings();
+        // Setup default integrations
         $integrations = [
             'classic-editor',
             'gutenberg-editor',
@@ -40,14 +63,20 @@ class Install {
             'divi'
         ];
         $settings['integrations'] = $integrations;
-        update_option( 'igd_settings', $integrations );
+        update_option( 'igd_settings', $settings );
     }
 
+    /**
+     * Deactivate the plugin and clean up scheduled events.
+     */
     public static function deactivate() {
-        self::remove_cron_event();
+        self::remove_scheduled_events();
     }
 
-    public static function remove_cron_event() {
+    /**
+     * Remove scheduled cron events during deactivation.
+     */
+    private static function remove_scheduled_events() {
         $hooks = [
             'igd_sync_interval',
             'igd_statistics_daily_report',
@@ -62,38 +91,48 @@ class Install {
         }
     }
 
+    /**
+     * Create required database tables during plugin activation.
+     */
     public static function create_tables() {
         global $wpdb;
         $wpdb->hide_errors();
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        $tables = [
-            // files table
-            "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}integrate_google_drive_files( id VARCHAR(60) NOT NULL, `name` TEXT NULL, `size` BIGINT NULL, `parent_id` TEXT, `account_id` TEXT NOT NULL, `type` VARCHAR(255) NOT NULL, `extension` VARCHAR(10) NOT NULL, `data` LONGTEXT, is_computers TINYINT(1) DEFAULT 0, is_shared_with_me TINYINT(1) DEFAULT 0, is_starred TINYINT(1) DEFAULT 0, is_shared_drive TINYINT(1) DEFAULT 0, `created` TEXT NULL, `updated` TEXT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
-            // shortcodes table
-            "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}integrate_google_drive_shortcodes( id BIGINT(20) NOT NULL AUTO_INCREMENT, title VARCHAR(255) NULL, status VARCHAR(6) NULL DEFAULT 'on', config LONGTEXT NULL, locations LONGTEXT NULL, created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
-            // logs table
-            "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}integrate_google_drive_logs( id INT NOT NULL AUTO_INCREMENT, `type` VARCHAR(255) NULL, `user_id` INT NULL, file_id TEXT NOT NULL, file_type text NULL, file_name TEXT NULL, account_id TEXT NOT NULL, created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
-        ];
+        $tables = self::get_table_definitions();
         foreach ( $tables as $table ) {
             dbDelta( $table );
         }
     }
 
     /**
-     * Create plugin settings default data
+     * Get the table creation SQL for the plugin.
      *
-     * @since 1.0.0
+     * @return array List of SQL table creation statements
+     */
+    private static function get_table_definitions() {
+        global $wpdb;
+        return [
+            // Files table
+            "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}integrate_google_drive_files (\n                id VARCHAR(60) NOT NULL,\n                name TEXT NULL,\n                size BIGINT NULL,\n                parent_id TEXT,\n                account_id TEXT NOT NULL,\n                type VARCHAR(255) NOT NULL,\n                extension VARCHAR(10) NOT NULL,\n                data LONGTEXT,\n                is_computers TINYINT(1) DEFAULT 0,\n                is_shared_with_me TINYINT(1) DEFAULT 0,\n                is_starred TINYINT(1) DEFAULT 0,\n                is_shared_drive TINYINT(1) DEFAULT 0,\n                created TEXT NULL,\n                updated TEXT NULL,\n                PRIMARY KEY (id)\n            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
+            // Shortcodes table
+            "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}integrate_google_drive_shortcodes (\n                id BIGINT(20) NOT NULL AUTO_INCREMENT,\n                title VARCHAR(255) NULL,\n                status VARCHAR(6) NULL DEFAULT 'on',\n                config LONGTEXT NULL,\n                locations LONGTEXT NULL,\n                created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n                updated_at TIMESTAMP NULL,\n                PRIMARY KEY (id)\n            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
+            // Logs table
+            "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}integrate_google_drive_logs (\n                id INT NOT NULL AUTO_INCREMENT,\n                type VARCHAR(255) NULL,\n                user_id INT NULL,\n                file_id TEXT NOT NULL,\n                file_type TEXT NULL,\n                file_name TEXT NULL,\n                account_id TEXT NOT NULL,\n                created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n                PRIMARY KEY (id)\n            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
+        ];
+    }
+
+    /**
+     * Create default data for the plugin (version, installation time, etc.).
      */
     private static function create_default_data() {
-        $version = get_option( 'igd_version' );
-        $install_time = get_option( 'igd_install_time', '' );
-        if ( empty( $version ) ) {
+        if ( !get_option( 'igd_version' ) ) {
             update_option( 'igd_version', IGD_VERSION );
         }
-        if ( empty( $install_time ) ) {
-            $date_format = get_option( 'date_format' );
-            $time_format = get_option( 'time_format' );
-            update_option( 'igd_install_time', date( $date_format . ' ' . $time_format ) );
+        if ( !get_option( 'igd_db_version' ) ) {
+            update_option( 'igd_db_version', IGD_DB_VERSION );
+        }
+        if ( !get_option( 'igd_install_time' ) ) {
+            update_option( 'igd_install_time', current_time( 'mysql' ) );
         }
         set_transient( 'igd_rating_notice_interval', 'off', 10 * DAY_IN_SECONDS );
     }

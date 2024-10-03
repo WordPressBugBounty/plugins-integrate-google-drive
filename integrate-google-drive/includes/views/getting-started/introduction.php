@@ -121,6 +121,22 @@ $integrations = [
         <p><?php esc_html_e( 'Let\'s explore the awesome features of the plugin', 'integrate-google-drive' ); ?></p>
     </div>
 
+    <!-- Specific Folders Accessibility -->
+    <section class="section-media-library section-full">
+        <div class="col-description">
+            <h2><?php esc_html_e( 'Specific Folders Accessibility', 'integrate-google-drive' ); ?>
+            <span class="badge"><?php esc_html_e( 'New ⚡', 'integrate-google-drive' ); ?></span>
+            </h2>
+            <p>
+				<?php esc_html_e( 'Restrict access to specific folders within the plugin. This feature enhances security and control over your Google Drive files and ensures that only the designated folders are available for use and management within the app.', 'integrate-google-drive' ); ?>
+            </p>
+        </div>
+
+        <div class="col-image">
+            <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/specific-folders-accessibility.png' ); ?>"/>
+        </div>
+    </section>
+
     <!-- Media Library Integration -->
     <section class="section-media-library section-full">
         <div class="col-description">

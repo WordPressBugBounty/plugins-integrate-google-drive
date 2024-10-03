@@ -2,6 +2,17 @@
 
 $logs = [
 
+	'v.1.4.3' => [
+		'date'        => '2024-10-03',
+		'fix'         => [
+			'Fixed module notifications not reaching to the correct recipients.',
+		],
+		'enhancement' => [
+			'Improve Accounts connection UI/UX.',
+		],
+	],
+
+
 	'v.1.4.2' => [
 		'date'        => '2024-09-29',
 		'new'         => [

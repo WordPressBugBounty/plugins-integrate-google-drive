@@ -53,7 +53,7 @@ class Private_Folders {
 
 		$user_folder = $this->create_folder( $args );
 
-		update_user_option( $user_id, 'folders', [ $user_folder ] );
+		update_user_meta( $user_id, 'igd_folders', [ $user_folder ] );
 
 		// Check if the template folder should be copied to the user folder
 		if ( ! empty( $template_folder ) ) {
@@ -105,7 +105,7 @@ class Private_Folders {
 	}
 
 	public function delete_user_folder( $user_id ) {
-		$folders = get_user_option( 'folders', $user_id );
+		$folders = get_user_meta( $user_id,'igd_folders', true );
 		if ( empty( $folders ) ) {
 			return;
 		}
@@ -149,7 +149,7 @@ class Private_Folders {
 				'name'     => $user->display_name,
 				'email'    => $user->user_email,
 				'role'     => implode( ', ', $this->get_role_list( $user ) ),
-				'folders'  => array_values( array_filter( (array) get_user_option( 'folders', $user->ID ) ) ),
+				'folders'  => array_values( array_filter( (array) get_user_meta( $user->ID, 'igd_folders', true ) ) ),
 			];
 		}, $users_query->get_results() );
 

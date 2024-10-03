@@ -161,9 +161,11 @@ class Hooks {
     public function create_user_folder( $user_id ) {
         $allowed_user_roles = igd_get_settings( 'privateFolderRoles', ['editor', 'contributor', 'author'] );
         // Check if user role is allowed
-        $user = get_user_by( 'id', $user_id );
-        if ( !in_array( $user->roles[0], $allowed_user_roles ) ) {
-            return;
+        if ( !in_array( 'all', $allowed_user_roles ) ) {
+            $user = get_user_by( 'id', $user_id );
+            if ( !in_array( $user->roles[0], $allowed_user_roles ) ) {
+                return;
+            }
         }
         Private_Folders::instance()->create_user_folder( $user_id );
     }
