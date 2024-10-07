@@ -1992,8 +1992,6 @@ function igd_replace_template_tags( $data, $extra_tag_values = [] ) {
 			}
 
 		}
-
-
 	}
 
 	// Handle wc product data

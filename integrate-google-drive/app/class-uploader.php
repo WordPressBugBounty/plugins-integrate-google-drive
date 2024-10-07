@@ -37,8 +37,9 @@ class Uploader {
 			$data[ $field ] = ! empty( $data[ $field ] ) ? $data[ $field ] : '';
 		}
 
-		$data['overwrite']             = isset( $data['overwrite'] ) && filter_var( $data['overwrite'], FILTER_VALIDATE_BOOLEAN );
-		$data['isWooCommerceUploader'] = ! empty( $data['isWooCommerceUploader'] );
+		$data['overwrite']               = isset( $data['overwrite'] ) && filter_var( $data['overwrite'], FILTER_VALIDATE_BOOLEAN );
+		$data['isWooCommerceUploader']   = ! empty( $data['isWooCommerceUploader'] );
+		$data['wcUploadFolderSelection'] = ! empty( $data['wcUploadFolderSelection'] );
 
 		$data['folderId'] = ! empty( $data['folderId'] ) ? $data['folderId'] : 'root';
 
@@ -49,16 +50,12 @@ class Uploader {
 			$data['folderId'] = ! empty( $last_folders[ $path_key ] ) ? $last_folders[ $path_key ] : $data['folderId'];
 		}
 
-		if ( $data['isWooCommerceUploader'] ) {
-			$order   = $data['wcOrderId'] ? wc_get_order( $data['wcOrderId'] ) : null;
-			$product = $data['wcProductId'] ? wc_get_product( $data['wcProductId'] ) : null;
-
-			$folder           = WooCommerce_Uploads::instance()->get_upload_folder( $product, $order );
-			$data['folderId'] = $folder['id'];
-		}
-
 		// Handle name template
 		$name_template = ! empty( $data['uploadFileName'] ) ? $data['uploadFileName'] : '%file_name%%file_extension%';
+
+		if ( $data['isWooCommerceUploader'] ) {
+			$name_template = igd_get_settings( 'wcUploadFileName', '%file_name%%file_extension%' );
+		}
 
 		$tag_args = [
 			'name' => $name_template,
@@ -68,6 +65,20 @@ class Uploader {
 				'queue_index'    => $data['queueIndex'],
 			]
 		];
+
+		if ( $data['isWooCommerceUploader'] ) {
+			$order   = $data['wcOrderId'] ? wc_get_order( $data['wcOrderId'] ) : null;
+			$product = $data['wcProductId'] ? wc_get_product( $data['wcProductId'] ) : null;
+
+			$tag_args['wc_order']   = $order;
+			$tag_args['wc_product'] = $product;
+
+			$enable_folder_selection = igd_get_settings( 'wcUploadFolderSelection', false );
+			if ( ! $enable_folder_selection ) {
+				$folder           = WooCommerce_Uploads::instance()->get_upload_folder( $product, $order );
+				$data['folderId'] = $folder['id'];
+			}
+		}
 
 		if ( igd_contains_tags( 'user', $name_template ) ) {
 			if ( is_user_logged_in() ) {
