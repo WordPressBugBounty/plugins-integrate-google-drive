@@ -4,7 +4,7 @@ Tags: google drive, google, gallery, embed, media
 Requires at least: 5.0
 Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -331,7 +331,13 @@ Absolutely. By turning on the "Photo Proofing" option within the gallery module,
 
 == Changelog ==
 
-= 1.4.2 (2024-10-03) =
+= 1.4.4 (2024-10-09) =
+* New: Added upload folder selection and file renaming settings in WooCommerce uploads.
+* Fix: Fixed database tables not created.
+* Fix: Fixed file, folder not renaming properly in WooCommerce uploads.
+* Fix: Fixed remember last folder not working issue.
+
+= 1.4.3 (2024-10-03) =
 * Fix: Fixed module notifications not reaching to the correct recipients.
 * Update: Improve Accounts connection UI/UX.
 

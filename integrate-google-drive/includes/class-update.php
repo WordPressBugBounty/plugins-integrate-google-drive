@@ -16,6 +16,7 @@ class Update {
 	private static $required_updates = array(
 		'1.4.1',
 		'1.4.3',
+		'1.4.4',
 	);
 
 	/**
@@ -24,7 +25,7 @@ class Update {
 	 * @return string
 	 */
 	public function get_installed_version() {
-		return get_option( 'igd_version', 0 ); // Default to '1.0.0' for new installs
+		return get_option( 'igd_version', 0 );
 	}
 
 	/**
@@ -33,7 +34,7 @@ class Update {
 	 * @return string
 	 */
 	public function get_installed_db_version() {
-		return get_option( 'igd_db_version', '1.0.0' ); // Default to '1.0.0' for new installs
+		return get_option( 'igd_db_version', 0 );
 	}
 
 	/**
@@ -46,7 +47,8 @@ class Update {
 		$db_version     = $this->get_installed_db_version();
 
 		// If both versions are empty, it's likely a fresh install, no updates required
-		if ( empty( $plugin_version ) && empty( $db_version ) ) {
+		// Check $db_version in future
+		if ( empty( $plugin_version ) ) {
 			return false;
 		}
 

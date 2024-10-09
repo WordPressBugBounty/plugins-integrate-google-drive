@@ -2,6 +2,19 @@
 
 $logs = [
 
+	'v.1.4.4' => [
+		'date'        => '2024-10-09',
+		'new'         => [
+			'Added upload folder selection and file renaming settings in WooCommerce uploads.',
+		],
+		'fix' => [
+			'Fixed database tables not created.',
+			'Fixed file, folder not renaming properly in WooCommerce uploads.',
+			'Fixed remember last folder not working issue.',
+		],
+	],
+
+
 	'v.1.4.3' => [
 		'date'        => '2024-10-03',
 		'fix'         => [
