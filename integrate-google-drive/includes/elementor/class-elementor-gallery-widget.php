@@ -80,6 +80,10 @@ class Gallery_Widget extends Widget_Base {
 
 		$settings_data = json_decode( $settings['module_data'], true );
 
+		if ( empty( $settings_data['uniqueId'] ) ) {
+			$settings_data['uniqueId'] = 'igd_' . uniqid();
+		}
+
 		$is_init = ! empty( $settings_data['isInit'] );
 
 		if ( $is_init && Plugin::$instance->editor->is_edit_mode() ) {

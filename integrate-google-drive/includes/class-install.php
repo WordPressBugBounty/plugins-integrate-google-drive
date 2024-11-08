@@ -56,12 +56,7 @@ class Install {
         }
         $settings = igd_get_settings();
         // Setup default integrations
-        $integrations = [
-            'classic-editor',
-            'gutenberg-editor',
-            'elementor',
-            'divi'
-        ];
+        $integrations = ['classic-editor', 'gutenberg-editor', 'elementor'];
         $settings['integrations'] = $integrations;
         update_option( 'igd_settings', $settings );
     }

@@ -15,10 +15,6 @@ class Enqueue {
     }
 
     public function frontend_scripts() {
-        // Check if already registered then return
-        if ( wp_script_is( 'igd-frontend', 'registered' ) ) {
-            return;
-        }
         // LightGallery CSS
         wp_register_style(
             'lightgallery',
@@ -88,10 +84,6 @@ class Enqueue {
     }
 
     public function admin_scripts( $hook = '', $should_check = true ) {
-        //check if already registered then return
-        if ( wp_script_is( 'igd-admin', 'registered' ) ) {
-            return;
-        }
         wp_register_style(
             'igd-lightgallery',
             IGD_ASSETS . '/vendor/lightgallery/css/lightgallery-bundle.min.css',

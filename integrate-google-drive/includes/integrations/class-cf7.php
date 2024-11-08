@@ -157,7 +157,7 @@ class CF7 {
 					// Check Private Folders
 					$private_folders = ! empty( $igd_data['privateFolders'] );
 					if ( $private_folders && $user_id ) {
-						$folders = get_user_meta( $user_id,'igd_folders', true );
+						$folders = get_user_meta( $user_id, 'igd_folders', true );
 
 						if ( ! empty( $folders ) ) {
 							$folders = array_values( array_filter( (array) $folders, function ( $item ) {
@@ -306,11 +306,91 @@ class CF7 {
 	public function add_tag_generator() {
 		if ( class_exists( 'WPCF7_TagGenerator' ) ) {
 			$tag_generator = \WPCF7_TagGenerator::get_instance();
-			$tag_generator->add( 'google_drive', __( 'Google Drive Upload', 'integrate-google-drive' ), [
-				$this,
-				'tag_generator_body'
-			] );
+
+			$tag_generator->add(
+				'google_drive',
+				__( 'Google Drive Upload', 'integrate-google-drive' ),
+				[
+					$this,
+					version_compare( WPCF7_VERSION, '6.0', '>=' ) ? 'tag_generator_body_v6' : 'tag_generator_body',
+				],
+				[
+					'version' => '2',
+				]
+			);
 		}
+	}
+
+	public function tag_generator_body_v6( $contact_form, $options = '' ) {
+		$tgg = new \WPCF7_TagGeneratorGenerator( $options['content'] );
+
+		$description = esc_html__( 'Generate a form-tag for this upload field.', 'integrate-google-drive' );
+
+		?>
+        <header class="description-box">
+            <h3><?php echo esc_html__( 'Google Drive Upload', 'integrate-google-drive' ); ?></h3>
+
+            <p>
+				<?php
+				$description = wp_kses(
+					$description,
+					array(
+						'a'      => array( 'href' => true ),
+						'strong' => array(),
+					),
+					array( 'http', 'https' )
+				);
+
+				echo $description;
+				?>
+            </p>
+        </header>
+
+        <div class="control-box">
+			<?php
+
+			$tgg->print( 'field_type', array(
+				'with_required'  => true,
+				'select_options' => array(
+					'google_drive' => esc_html__( 'Google Drive Upload', 'integrate-google-drive' ),
+				),
+			) );
+
+			$tgg->print( 'field_name' );
+
+
+			?>
+
+            <fieldset>
+                <legend><?php echo esc_html__( 'Configure Uploader', 'integrate-google-drive' ); ?></legend>
+
+                <input type="hidden"
+                       data-tag-part="option"
+                       data-tag-option="data:"
+                       id="<?php echo esc_attr( $options['content'] . '-data' ); ?>"/>
+
+                <button id="igd-form-uploader-config-cf7" type="button"
+                        class="igd-form-uploader-trigger igd-form-uploader-trigger-cf7 igd-btn btn-primary">
+                    <i class="dashicons dashicons-admin-generic"></i>
+                    <span><?php esc_html_e( 'Configure Uploader', 'integrate-google-drive' ); ?></span>
+                </button>
+            </fieldset>
+
+			<?php
+			?>
+        </div>
+
+        <footer class="insert-box">
+			<?php
+			$tgg->print( 'insert_box_content' );
+
+			$tgg->print( 'mail_tag_tip' );
+			?>
+        </footer>
+
+
+		<?php
+
 	}
 
 	public function tag_generator_body( $contact_form, $args = '' ) {

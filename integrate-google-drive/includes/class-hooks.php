@@ -41,6 +41,7 @@ class Hooks {
         // Get preview thumbnail
         add_action( 'template_redirect', [$this, 'preview_image'] );
         add_action( 'template_redirect', [$this, 'direct_content'] );
+        add_action( 'template_redirect', [$this, 'secure_embed'] );
         // Handle direct download
         add_action( 'template_redirect', [$this, 'direct_download'] );
         // Handle direct stream
@@ -65,11 +66,11 @@ class Hooks {
         if ( get_query_var( 'igd_download' ) ) {
             $file_id = ( !empty( $_REQUEST['id'] ) ? sanitize_text_field( $_REQUEST['id'] ) : '' );
             $file_ids = ( !empty( $_REQUEST['file_ids'] ) ? json_decode( base64_decode( sanitize_text_field( $_REQUEST['file_ids'] ) ) ) : [] );
-            $request_id = ( !empty( $_REQUEST['id'] ) ? sanitize_text_field( $_REQUEST['id'] ) : '' );
             $account_id = ( !empty( $_REQUEST['accountId'] ) ? sanitize_text_field( $_REQUEST['accountId'] ) : '' );
             $mimetype = ( !empty( $_REQUEST['mimetype'] ) ? sanitize_text_field( $_REQUEST['mimetype'] ) : 'default' );
             $ignore_limit = !empty( $_REQUEST['ignore_limit'] );
             if ( !empty( $file_ids ) ) {
+                $request_id = ( !empty( $_REQUEST['id'] ) ? sanitize_text_field( $_REQUEST['id'] ) : '' );
                 igd_download_zip( $file_ids, $request_id, $account_id );
             } elseif ( !empty( $file_id ) ) {
                 Download::instance(
@@ -98,6 +99,7 @@ class Hooks {
         $vars[] = 'igd_download';
         $vars[] = 'igd_stream';
         $vars[] = 'direct_file';
+        $vars[] = 'secure_embed';
         return $vars;
     }
 
@@ -279,6 +281,48 @@ class Hooks {
 			<?php 
             exit;
         }
+    }
+
+    public function secure_embed() {
+        // Check if the query variable 'secure_embed' is set
+        if ( !get_query_var( 'secure_embed' ) ) {
+            return;
+        }
+        // Validate the referer to ensure the request originates from your website
+        $referer = ( isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '' );
+        $home_url = esc_url_raw( home_url() );
+        // Deny access if the referer is not from your website
+        if ( strpos( $referer, $home_url ) !== 0 ) {
+            wp_die( esc_html__( 'Sorry, you are not allowed to access this page directly.', 'integrate-google-drive' ), 403 );
+        }
+        // Validate nonce for security
+        $nonce = ( isset( $_REQUEST['nonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ) : '' );
+        if ( !wp_verify_nonce( $nonce, 'igd' ) ) {
+            wp_die( esc_html__( 'Invalid embed URL.', 'integrate-google-drive' ), 400 );
+        }
+        // Ensure 'secure_embed' and 'id' parameters are provided
+        $secure_embed = sanitize_text_field( $_REQUEST['secure_embed'] ?? '' );
+        $encoded_file_id = sanitize_text_field( $_REQUEST['id'] ?? '' );
+        if ( empty( $secure_embed ) || empty( $encoded_file_id ) ) {
+            wp_die( esc_html__( 'Invalid embed URL.', 'integrate-google-drive' ), 400 );
+        }
+        // Decode and validate the file ID and account ID
+        $file_id = base64_decode( $encoded_file_id, true );
+        $encoded_account_id = sanitize_text_field( $_REQUEST['account_id'] ?? '' );
+        $account_id = ( !empty( $encoded_account_id ) ? base64_decode( $encoded_account_id, true ) : '' );
+        if ( $file_id === false || !ctype_alnum( $file_id ) || $account_id && !ctype_alnum( $account_id ) ) {
+            wp_die( esc_html__( 'Invalid embed URL.', 'integrate-google-drive' ), 400 );
+        }
+        // Retrieve the file and check permissions
+        $file = App::instance( $account_id )->get_file_by_id( $file_id );
+        $permissions = Permissions::instance( $account_id );
+        if ( !$permissions->has_permission( $file ) ) {
+            $permissions->set_permission( $file );
+        }
+        // Redirect to the secure embed URL
+        $redirect_url = "https://drive.google.com/file/d/{$file_id}/preview";
+        wp_redirect( esc_url_raw( $redirect_url ) );
+        exit;
     }
 
     public function render_form_field_data( $data, $as_html ) {

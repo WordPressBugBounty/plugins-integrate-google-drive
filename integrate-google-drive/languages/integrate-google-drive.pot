@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Integrate Google Drive plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Integrate Google Drive 1.4.4\n"
+"Project-Id-Version: Integrate Google Drive 1.4.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integrate-google-drive\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-09T12:14:27+00:00\n"
+"POT-Creation-Date: 2024-11-08T11:08:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: integrate-google-drive\n"
@@ -52,6 +52,7 @@ msgid "Error communicating with API:"
 msgstr ""
 
 #: app/class-download.php:33
+#: app/class-download.php:37
 msgid "Something went wrong! File may be deleted or moved to trash."
 msgstr ""
 
@@ -72,8 +73,14 @@ msgstr ""
 msgid "Error creating ZIP file"
 msgstr ""
 
-#: includes/base.php:103
-msgid "Docs"
+#: includes/base.php:102
+#: includes/views/getting-started/help.php:88
+#: includes/views/getting-started/help.php:91
+#: includes/views/getting-started/help.php:97
+#: assets/js/admin.js:1
+#: assets/js/private-folders.js:1
+#: assets/js/settings.js:1
+msgid "Documentation"
 msgstr ""
 
 #: includes/class-admin.php:135
@@ -85,8 +92,8 @@ msgstr ""
 #: includes/elementor/class-elementor-browser-widget__premium_only.php:57
 #: includes/elementor/class-elementor.php:434
 #: includes/elementor/class-elementor.php:564
-#: includes/views/getting-started/introduction.php:161
-#: includes/views/getting-started/introduction.php:174
+#: includes/views/getting-started/introduction.php:156
+#: includes/views/getting-started/introduction.php:169
 #: assets/js/admin.js:1
 msgid "File Browser"
 msgstr ""
@@ -152,122 +159,112 @@ msgstr ""
 #: includes/integrations/class-formidableforms.php:226
 #: includes/integrations/class-gravityforms.php:284
 #: includes/integrations/class-tutor.php:83
-#: includes/integrations/class-tutor.php:339
+#: includes/integrations/class-tutor.php:345
 #: includes/integrations/class-wpforms.php:30
 msgid "Google Drive"
 msgstr ""
 
-#: includes/class-ajax.php:164
-#: includes/class-ajax.php:207
-#: includes/class-ajax.php:226
-#: includes/class-ajax.php:244
-#: includes/class-ajax.php:264
-#: includes/class-ajax.php:280
-#: includes/class-ajax.php:297
-#: includes/class-ajax.php:345
-#: includes/class-ajax.php:370
-#: includes/class-ajax.php:397
-#: includes/class-ajax.php:428
-#: includes/class-ajax.php:448
-#: includes/class-ajax.php:465
-#: includes/class-ajax.php:511
-#: includes/class-ajax.php:563
-#: includes/class-ajax.php:628
-#: includes/class-ajax.php:646
-#: includes/class-ajax.php:663
-#: includes/class-ajax.php:684
-#: includes/class-ajax__premium_only.php:288
-#: includes/class-ajax__premium_only.php:331
-#: includes/class-ajax__premium_only.php:350
-#: includes/class-ajax__premium_only.php:368
-#: includes/class-ajax__premium_only.php:388
-#: includes/class-ajax__premium_only.php:404
-#: includes/class-ajax__premium_only.php:421
-#: includes/class-ajax__premium_only.php:469
-#: includes/class-ajax__premium_only.php:494
-#: includes/class-ajax__premium_only.php:521
-#: includes/class-ajax__premium_only.php:552
-#: includes/class-ajax__premium_only.php:572
-#: includes/class-ajax__premium_only.php:589
-#: includes/class-ajax__premium_only.php:635
-#: includes/class-ajax__premium_only.php:687
-#: includes/class-ajax__premium_only.php:752
-#: includes/class-ajax__premium_only.php:770
+#: includes/class-ajax.php:160
+#: includes/class-ajax.php:203
+#: includes/class-ajax.php:222
+#: includes/class-ajax.php:240
+#: includes/class-ajax.php:260
+#: includes/class-ajax.php:276
+#: includes/class-ajax.php:293
+#: includes/class-ajax.php:341
+#: includes/class-ajax.php:366
+#: includes/class-ajax.php:393
+#: includes/class-ajax.php:424
+#: includes/class-ajax.php:444
+#: includes/class-ajax.php:461
+#: includes/class-ajax.php:507
+#: includes/class-ajax.php:559
+#: includes/class-ajax.php:624
+#: includes/class-ajax.php:642
+#: includes/class-ajax.php:659
+#: includes/class-ajax.php:680
+#: includes/class-ajax__premium_only.php:323
+#: includes/class-ajax__premium_only.php:366
+#: includes/class-ajax__premium_only.php:385
+#: includes/class-ajax__premium_only.php:403
+#: includes/class-ajax__premium_only.php:423
+#: includes/class-ajax__premium_only.php:439
+#: includes/class-ajax__premium_only.php:456
+#: includes/class-ajax__premium_only.php:504
+#: includes/class-ajax__premium_only.php:529
+#: includes/class-ajax__premium_only.php:556
+#: includes/class-ajax__premium_only.php:587
+#: includes/class-ajax__premium_only.php:607
+#: includes/class-ajax__premium_only.php:624
+#: includes/class-ajax__premium_only.php:670
+#: includes/class-ajax__premium_only.php:722
 #: includes/class-ajax__premium_only.php:787
-#: includes/class-ajax__premium_only.php:808
+#: includes/class-ajax__premium_only.php:805
+#: includes/class-ajax__premium_only.php:822
+#: includes/class-ajax__premium_only.php:843
 msgid "Invalid request"
 msgstr ""
 
-#: includes/class-ajax.php:169
-#: includes/class-ajax.php:212
-#: includes/class-ajax.php:350
-#: includes/class-ajax.php:375
-#: includes/class-ajax.php:402
-#: includes/class-ajax.php:433
-#: includes/class-ajax.php:482
-#: includes/class-ajax.php:516
-#: includes/class-ajax.php:568
-#: includes/class-ajax.php:633
-#: includes/class-ajax.php:651
-#: includes/class-ajax.php:1015
-#: includes/class-ajax__premium_only.php:293
-#: includes/class-ajax__premium_only.php:336
-#: includes/class-ajax__premium_only.php:474
-#: includes/class-ajax__premium_only.php:499
-#: includes/class-ajax__premium_only.php:526
-#: includes/class-ajax__premium_only.php:557
-#: includes/class-ajax__premium_only.php:606
-#: includes/class-ajax__premium_only.php:640
-#: includes/class-ajax__premium_only.php:692
-#: includes/class-ajax__premium_only.php:757
-#: includes/class-ajax__premium_only.php:775
-#: includes/class-ajax__premium_only.php:1115
-#: includes/class-ajax__premium_only.php:1198
+#: includes/class-ajax.php:165
+#: includes/class-ajax.php:208
+#: includes/class-ajax.php:346
+#: includes/class-ajax.php:371
+#: includes/class-ajax.php:398
+#: includes/class-ajax.php:429
+#: includes/class-ajax.php:478
+#: includes/class-ajax.php:512
+#: includes/class-ajax.php:564
+#: includes/class-ajax.php:629
+#: includes/class-ajax.php:647
+#: includes/class-ajax.php:1007
+#: includes/class-ajax__premium_only.php:328
+#: includes/class-ajax__premium_only.php:371
+#: includes/class-ajax__premium_only.php:509
+#: includes/class-ajax__premium_only.php:534
+#: includes/class-ajax__premium_only.php:561
+#: includes/class-ajax__premium_only.php:592
+#: includes/class-ajax__premium_only.php:641
+#: includes/class-ajax__premium_only.php:675
+#: includes/class-ajax__premium_only.php:727
+#: includes/class-ajax__premium_only.php:792
+#: includes/class-ajax__premium_only.php:810
 msgid "You do not have permission to access this page"
 msgstr ""
 
-#: includes/class-ajax.php:231
-#: includes/class-ajax.php:249
-#: includes/class-ajax__premium_only.php:355
-#: includes/class-ajax__premium_only.php:373
+#: includes/class-ajax.php:227
+#: includes/class-ajax.php:245
+#: includes/class-ajax__premium_only.php:390
+#: includes/class-ajax__premium_only.php:408
 msgid "You do not have permission to perform this action."
 msgstr ""
 
-#: includes/class-ajax.php:269
-#: includes/class-ajax.php:285
-#: includes/class-ajax.php:302
-#: includes/class-ajax.php:453
-#: includes/class-ajax.php:668
-#: includes/class-ajax.php:689
-#: includes/class-ajax.php:725
-#: includes/class-ajax.php:802
-#: includes/class-ajax.php:834
-#: includes/class-ajax.php:855
-#: includes/class-ajax.php:879
-#: includes/class-ajax.php:901
-#: includes/class-ajax.php:953
-#: includes/class-ajax.php:975
-#: includes/class-ajax.php:995
-#: includes/class-ajax.php:1034
-#: includes/class-ajax.php:1081
-#: includes/class-ajax.php:1142
-#: includes/class-ajax.php:1192
-#: includes/class-ajax.php:1216
-#: includes/class-ajax.php:1246
-#: includes/class-ajax__premium_only.php:393
-#: includes/class-ajax__premium_only.php:409
-#: includes/class-ajax__premium_only.php:426
-#: includes/class-ajax__premium_only.php:577
-#: includes/class-ajax__premium_only.php:792
-#: includes/class-ajax__premium_only.php:813
-#: includes/class-ajax__premium_only.php:955
-#: includes/class-ajax__premium_only.php:979
-#: includes/class-ajax__premium_only.php:1001
-#: includes/class-ajax__premium_only.php:1053
-#: includes/class-ajax__premium_only.php:1075
-#: includes/class-ajax__premium_only.php:1095
-#: includes/class-ajax__premium_only.php:1173
-#: includes/class-ajax__premium_only.php:1378
+#: includes/class-ajax.php:265
+#: includes/class-ajax.php:281
+#: includes/class-ajax.php:298
+#: includes/class-ajax.php:449
+#: includes/class-ajax.php:664
+#: includes/class-ajax.php:685
+#: includes/class-ajax.php:721
+#: includes/class-ajax.php:826
+#: includes/class-ajax.php:847
+#: includes/class-ajax.php:871
+#: includes/class-ajax.php:893
+#: includes/class-ajax.php:945
+#: includes/class-ajax.php:967
+#: includes/class-ajax.php:987
+#: includes/class-ajax.php:1026
+#: includes/class-ajax.php:1073
+#: includes/class-ajax.php:1134
+#: includes/class-ajax.php:1184
+#: includes/class-ajax.php:1208
+#: includes/class-ajax.php:1238
+#: includes/class-ajax__premium_only.php:428
+#: includes/class-ajax__premium_only.php:444
+#: includes/class-ajax__premium_only.php:461
+#: includes/class-ajax__premium_only.php:612
+#: includes/class-ajax__premium_only.php:827
+#: includes/class-ajax__premium_only.php:848
+#: includes/class-ajax__premium_only.php:1204
 #: includes/class-statistics__premium_only.php:46
 #: includes/class-statistics__premium_only.php:191
 #: includes/class-statistics__premium_only.php:203
@@ -275,53 +272,58 @@ msgid "You do not have permission to perform this action"
 msgstr ""
 
 #. translators: %s: User feedback
-#: includes/class-ajax.php:312
-#: includes/class-ajax__premium_only.php:436
+#: includes/class-ajax.php:308
+#: includes/class-ajax__premium_only.php:471
 msgid "Feedback: %s"
 msgstr ""
 
 #. translators: %s: Website URL
-#: includes/class-ajax.php:316
-#: includes/class-ajax__premium_only.php:440
+#: includes/class-ajax.php:312
+#: includes/class-ajax__premium_only.php:475
 msgid "Website URL: %s"
 msgstr ""
 
 #. translators: %s: Plugin name
-#: includes/class-ajax.php:319
-#: includes/class-ajax__premium_only.php:443
+#: includes/class-ajax.php:315
+#: includes/class-ajax__premium_only.php:478
 msgid "Feedback for %s"
 msgstr ""
 
-#: includes/class-ajax.php:693
-#: includes/class-ajax__premium_only.php:817
+#: includes/class-ajax.php:689
+#: includes/class-ajax__premium_only.php:852
 msgid "Invalid shortcode data"
 msgstr ""
 
-#: includes/class-ajax.php:720
-#: includes/class-ajax__premium_only.php:841
+#: includes/class-ajax.php:716
+#: includes/class-ajax__premium_only.php:876
 msgid "No active account found"
 msgstr ""
 
-#: includes/class-ajax.php:1060
-#: includes/class-ajax.php:1224
-#: includes/class-ajax__premium_only.php:1152
-#: includes/class-ajax__premium_only.php:1386
+#: includes/class-ajax.php:799
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Please enter a keyword to search"
+msgstr ""
+
+#: includes/class-ajax.php:1052
+#: includes/class-ajax.php:1216
+#: includes/class-ajax__premium_only.php:1183
+#: includes/class-ajax__premium_only.php:1422
 msgid "Something went wrong! Preview is not available"
 msgstr ""
 
-#: includes/class-ajax.php:1262
-#: includes/class-ajax__premium_only.php:1416
+#: includes/class-ajax.php:1254
+#: includes/class-ajax__premium_only.php:1452
 msgid "File not found"
 msgstr ""
 
-#: includes/class-ajax.php:1339
-#: includes/class-ajax__premium_only.php:1230
-#: includes/class-ajax__premium_only.php:1487
+#: includes/class-ajax.php:1332
+#: includes/class-ajax__premium_only.php:1523
 #: includes/class-statistics__premium_only.php:187
 msgid "Invalid nonce"
 msgstr ""
 
-#: includes/class-ajax__premium_only.php:1205
+#: includes/class-ajax__premium_only.php:1241
 #: includes/views/photo-proof-email__premium_only.php:169
 msgid "Client Photo Proof Selection"
 msgstr ""
@@ -349,65 +351,75 @@ msgstr ""
 msgid " Statistics Summary of Integrate Google Drive."
 msgstr ""
 
-#. translators: %d: number of files
-#: includes/class-hooks.php:349
+#: includes/class-hooks.php:352
+msgid "Sorry, you are not allowed to access this page directly."
+msgstr ""
+
+#: includes/class-hooks.php:358
 #: includes/class-hooks.php:365
+#: includes/class-hooks.php:374
+msgid "Invalid embed URL."
+msgstr ""
+
+#. translators: %d: number of files
+#: includes/class-hooks.php:405
+#: includes/class-hooks.php:421
 msgid "%d file uploaded to Google Drive"
 msgid_plural "%d files uploaded to Google Drive"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-hooks.php:414
+#: includes/class-hooks.php:470
 msgid "Integrate Google Drive Synchronize Interval"
 msgstr ""
 
-#: includes/class-notifications__premium_only.php:264
+#: includes/class-notifications__premium_only.php:231
 msgid "An anonymous user"
 msgstr ""
 
-#: includes/class-notifications__premium_only.php:268
+#: includes/class-notifications__premium_only.php:235
 msgid "file"
 msgstr ""
 
 #. translators: %1$s: number of files, %2$s: folder name
-#: includes/class-notifications__premium_only.php:286
+#: includes/class-notifications__premium_only.php:253
 msgid "%1$s files to %2$s."
 msgstr ""
 
 #. translators: %1$s: file name, %2$s: folder name
-#: includes/class-notifications__premium_only.php:289
+#: includes/class-notifications__premium_only.php:256
 msgid "%1$s file to %2$s."
 msgstr ""
 
-#: includes/class-notifications__premium_only.php:294
+#: includes/class-notifications__premium_only.php:261
 msgid "User %1$s uploaded %2$s"
 msgstr ""
 
 #. translators: %1$s: number of files
-#: includes/class-notifications__premium_only.php:300
-#: includes/class-notifications__premium_only.php:327
+#: includes/class-notifications__premium_only.php:267
+#: includes/class-notifications__premium_only.php:294
 msgid "(%1$s) file(s)"
 msgstr ""
 
-#: includes/class-notifications__premium_only.php:305
+#: includes/class-notifications__premium_only.php:272
 msgid "User %1$s deleted %2$s"
 msgstr ""
 
-#: includes/class-notifications__premium_only.php:312
+#: includes/class-notifications__premium_only.php:279
 msgid "User %1$s searched for %2$s"
 msgstr ""
 
 #. translators: %1$s: user name, %2$s: file name
-#: includes/class-notifications__premium_only.php:317
+#: includes/class-notifications__premium_only.php:284
 msgid "User %1$s played %2$s"
 msgstr ""
 
 #. translators: %1$s: user name, %2$s: file name
-#: includes/class-notifications__premium_only.php:322
+#: includes/class-notifications__premium_only.php:289
 msgid "User %1$s viewed %2$s"
 msgstr ""
 
-#: includes/class-notifications__premium_only.php:332
+#: includes/class-notifications__premium_only.php:299
 msgid "User %1$s downloaded %2$s"
 msgstr ""
 
@@ -431,15 +443,15 @@ msgstr ""
 msgid "You have reached the number of ZIP downloads allowed for today. You will be able to download new ZIP files tomorrow."
 msgstr ""
 
-#: includes/class-restrictions__premium_only.php:231
+#: includes/class-restrictions__premium_only.php:256
 msgid "User %s has reached the download limitation"
 msgstr ""
 
-#: includes/class-restrictions__premium_only.php:232
+#: includes/class-restrictions__premium_only.php:257
 msgid "You have reached the download limitation"
 msgstr ""
 
-#: includes/class-restrictions__premium_only.php:284
+#: includes/class-restrictions__premium_only.php:318
 msgid "Usage Limit Reached"
 msgstr ""
 
@@ -448,9 +460,25 @@ msgstr ""
 msgid "Access Denied"
 msgstr ""
 
-#: includes/class-shortcode.php:136
+#: includes/class-shortcode.php:137
 #: assets/js/admin.js:1
 msgid "We're sorry, but your account does not currently have access to this content. To gain access, please contact the site administrator who can assist in linking your account to the appropriate content. Thank you."
+msgstr ""
+
+#: includes/class-shortcode.php:155
+msgid "This content is password protected"
+msgstr ""
+
+#: includes/class-shortcode.php:156
+msgid "To view it please enter your password below:"
+msgstr ""
+
+#: includes/class-shortcode.php:157
+msgid "Enter Password"
+msgstr ""
+
+#: includes/class-shortcode.php:158
+msgid "Unlock"
 msgstr ""
 
 #: includes/class-statistics__premium_only.php:66
@@ -629,7 +657,7 @@ msgstr ""
 #: includes/elementor/class-elementor-uploader-widget__premium_only.php:71
 #: includes/elementor/class-elementor-view-widget.php:71
 #: includes/elementor/class-metform__premium_only.php:83
-#: includes/integrations/class-cf7.php:356
+#: includes/integrations/class-cf7.php:436
 #: includes/integrations/class-fluentforms.php:252
 #: includes/integrations/class-formidableforms.php:270
 #: includes/integrations/class-gravityforms.php:234
@@ -659,14 +687,16 @@ msgstr ""
 #: includes/elementor/class-elementor-embed-widget.php:53
 #: includes/elementor/class-elementor.php:573
 #: includes/views/getting-started/basic-usage.php:85
-#: includes/views/getting-started/introduction.php:259
+#: includes/views/getting-started/introduction.php:254
 #: assets/js/admin.js:1
 msgid "Embed Documents"
 msgstr ""
 
 #: includes/elementor/class-elementor-form__premium_only.php:26
 #: includes/elementor/class-metform__premium_only.php:25
-#: includes/integrations/class-cf7.php:309
+#: includes/integrations/class-cf7.php:312
+#: includes/integrations/class-cf7.php:331
+#: includes/integrations/class-cf7.php:355
 #: includes/integrations/class-fluentforms.php:16
 msgid "Google Drive Upload"
 msgstr ""
@@ -688,7 +718,7 @@ msgstr ""
 
 #: includes/elementor/class-elementor-gallery-widget.php:18
 #: includes/elementor/class-elementor.php:567
-#: includes/views/getting-started/introduction.php:217
+#: includes/views/getting-started/introduction.php:212
 #: assets/js/admin.js:1
 msgid "Gallery"
 msgstr ""
@@ -701,7 +731,7 @@ msgstr ""
 #: includes/elementor/class-elementor-media-widget__premium_only.php:60
 #: includes/elementor/class-elementor.php:446
 #: includes/elementor/class-elementor.php:576
-#: includes/views/getting-started/introduction.php:201
+#: includes/views/getting-started/introduction.php:196
 #: assets/js/admin.js:1
 msgid "Media Player"
 msgstr ""
@@ -728,7 +758,7 @@ msgstr ""
 
 #: includes/elementor/class-elementor-slider-widget__premium_only.php:19
 #: includes/elementor/class-elementor.php:458
-#: includes/views/getting-started/introduction.php:231
+#: includes/views/getting-started/introduction.php:226
 #: assets/js/admin.js:1
 msgid "Slider Carousel"
 msgstr ""
@@ -742,8 +772,8 @@ msgstr ""
 #: includes/elementor/class-elementor.php:440
 #: includes/elementor/class-elementor.php:585
 #: includes/views/getting-started/basic-usage.php:52
-#: includes/views/getting-started/introduction.php:181
-#: includes/views/getting-started/introduction.php:193
+#: includes/views/getting-started/introduction.php:176
+#: includes/views/getting-started/introduction.php:188
 #: assets/js/admin.js:1
 msgid "File Uploader"
 msgstr ""
@@ -812,7 +842,7 @@ msgstr ""
 msgid "Computers"
 msgstr ""
 
-#: includes/functions.php:1522
+#: includes/functions.php:1540
 msgid "The file you are trying to load does not exist in your theme or Tutor LMS plugin location. If you are extending the Tutor LMS plugin, please create a php file here: "
 msgstr ""
 
@@ -821,7 +851,7 @@ msgid "Google Drive Files"
 msgstr ""
 
 #: includes/integrations/class-acf.php:122
-#: includes/integrations/class-cf7.php:344
+#: includes/integrations/class-cf7.php:424
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
 #: assets/js/private-folders.js:1
@@ -872,20 +902,14 @@ msgstr ""
 msgid "Please upload at least %d files."
 msgstr ""
 
-#: includes/integrations/class-cf7.php:320
+#: includes/integrations/class-cf7.php:327
+#: includes/integrations/class-cf7.php:400
 msgid "Generate a form-tag for this upload field."
 msgstr ""
 
-#: includes/integrations/class-cf7.php:328
-#: includes/integrations/class-cf7.php:332
-msgid "Field type"
-msgstr ""
-
-#: includes/integrations/class-cf7.php:335
-msgid "Required field"
-msgstr ""
-
-#: includes/integrations/class-cf7.php:366
+#: includes/integrations/class-cf7.php:365
+#: includes/integrations/class-cf7.php:375
+#: includes/integrations/class-cf7.php:446
 #: includes/integrations/class-formidableforms.php:260
 #: includes/integrations/class-gravityforms.php:240
 #: includes/integrations/class-ninjaforms.php:263
@@ -894,7 +918,16 @@ msgstr ""
 msgid "Configure Uploader"
 msgstr ""
 
-#: includes/integrations/class-cf7.php:382
+#: includes/integrations/class-cf7.php:408
+#: includes/integrations/class-cf7.php:412
+msgid "Field type"
+msgstr ""
+
+#: includes/integrations/class-cf7.php:415
+msgid "Required field"
+msgstr ""
+
+#: includes/integrations/class-cf7.php:462
 msgid "Insert Tag"
 msgstr ""
 
@@ -1134,25 +1167,25 @@ msgid "Please upload at least %s files."
 msgstr ""
 
 #: includes/integrations/class-tutor.php:198
-#: includes/integrations/class-tutor.php:388
+#: includes/integrations/class-tutor.php:393
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
 msgid "Size"
 msgstr ""
 
-#: includes/integrations/class-tutor.php:361
+#: includes/integrations/class-tutor.php:367
 msgid "Select Your Video"
 msgstr ""
 
-#: includes/integrations/class-tutor.php:362
+#: includes/integrations/class-tutor.php:368
 msgid "File Format: "
 msgstr ""
 
-#: includes/integrations/class-tutor.php:369
+#: includes/integrations/class-tutor.php:374
 msgid "Browse Video"
 msgstr ""
 
-#: includes/integrations/class-tutor.php:417
+#: includes/integrations/class-tutor.php:432
 msgid "Upload Video Poster"
 msgstr ""
 
@@ -1662,7 +1695,7 @@ msgid "Play audio and video in a single player using this module."
 msgstr ""
 
 #: includes/views/getting-started/basic-usage.php:60
-#: includes/views/getting-started/introduction.php:247
+#: includes/views/getting-started/introduction.php:242
 #: assets/js/admin.js:1
 msgid "File Search"
 msgstr ""
@@ -1936,7 +1969,7 @@ msgid "User Private Files & Folders"
 msgstr ""
 
 #: includes/views/getting-started/get-pro.php:57
-#: includes/views/getting-started/introduction.php:319
+#: includes/views/getting-started/introduction.php:314
 msgid "Multiple Google Accounts"
 msgstr ""
 
@@ -1962,7 +1995,7 @@ msgid "Elementor Integration"
 msgstr ""
 
 #: includes/views/getting-started/get-pro.php:85
-#: includes/views/getting-started/introduction.php:143
+#: includes/views/getting-started/introduction.php:138
 msgid "Media Library Integration"
 msgstr ""
 
@@ -2170,15 +2203,6 @@ msgstr ""
 msgid "Read our knowledge base documentation or you can contact us directly."
 msgstr ""
 
-#: includes/views/getting-started/help.php:88
-#: includes/views/getting-started/help.php:91
-#: includes/views/getting-started/help.php:97
-#: assets/js/admin.js:1
-#: assets/js/private-folders.js:1
-#: assets/js/settings.js:1
-msgid "Documentation"
-msgstr ""
-
 #: includes/views/getting-started/help.php:93
 msgid ""
 "Check out our detailed online documentation and video tutorials to find out more about what you can\n"
@@ -2259,298 +2283,298 @@ msgstr ""
 msgid "Add Google Drive modules, embed documents and insert file view links and download links using the Google Drive Gutenberg editor blocks"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:20
+#: includes/views/getting-started/introduction.php:19
 #: assets/js/settings.js:1
 msgid "Elementor"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:21
+#: includes/views/getting-started/introduction.php:20
 #: assets/js/settings.js:1
 msgid "Add Google Drive modules, embed documents and insert file view links and download links using the Google Drive Elementor widgets."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:26
+#: includes/views/getting-started/introduction.php:23
 #: assets/js/settings.js:1
 msgid "Divi"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:27
+#: includes/views/getting-started/introduction.php:24
 msgid "Add Google Drive modules, embed documents and insert file view links and download links using the Google Drive Divi Page Builder modules."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:31
+#: includes/views/getting-started/introduction.php:27
 #: assets/js/settings.js:1
 msgid "Advanced Custom Fields"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:32
+#: includes/views/getting-started/introduction.php:28
 #: assets/js/settings.js:1
 msgid "Allows you to select Google Drive files and folders using ACF field and display in theme template file."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:36
+#: includes/views/getting-started/introduction.php:31
 #: assets/js/settings.js:1
 msgid "WooCommerce"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:37
+#: includes/views/getting-started/introduction.php:32
 msgid "You can serve your downloadable product's files directly from Google Drive, and also you can let your customers upload files to your Google Drive account when they purchase your products."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:40
+#: includes/views/getting-started/introduction.php:35
 #: assets/js/settings.js:1
 msgid "Dokan"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:41
+#: includes/views/getting-started/introduction.php:36
 #: assets/js/settings.js:1
 msgid "Allows vendors to serve their Google Drive files as downloadable files and let customer upload files to Google Drive on checkout."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:44
+#: includes/views/getting-started/introduction.php:39
 #: assets/js/settings.js:1
 msgid "Easy Digital Downloads"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:45
+#: includes/views/getting-started/introduction.php:40
 #: assets/js/settings.js:1
 msgid "Allows you to serve your Easy Digital Downloads files directly from Google Drive."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:48
+#: includes/views/getting-started/introduction.php:43
 #: assets/js/settings.js:1
 msgid "Tutor LMS"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:49
+#: includes/views/getting-started/introduction.php:44
 #: assets/js/settings.js:1
 msgid "Allows Instructors to link their Google accounts for efficient and independent course material management."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:52
+#: includes/views/getting-started/introduction.php:47
 #: assets/js/settings.js:1
 msgid "Contact Form 7"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:53
+#: includes/views/getting-started/introduction.php:48
 #: assets/js/settings.js:1
 msgid "Allows you to upload your files directly to Google Drive from your Contact Form 7 upload field."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:56
+#: includes/views/getting-started/introduction.php:51
 #: assets/js/settings.js:1
 msgid "WPForms"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:57
+#: includes/views/getting-started/introduction.php:52
 #: assets/js/settings.js:1
 msgid "Allows you to upload your files directly to Google Drive from your WPForms upload field."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:60
+#: includes/views/getting-started/introduction.php:55
 #: assets/js/settings.js:1
 msgid "Gravity Forms"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:61
+#: includes/views/getting-started/introduction.php:56
 #: assets/js/settings.js:1
 msgid "Allows you to upload your files directly to Google Drive from your Gravity Forms upload field."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:64
+#: includes/views/getting-started/introduction.php:59
 #: assets/js/settings.js:1
 msgid "Fluent Forms"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:65
+#: includes/views/getting-started/introduction.php:60
 #: assets/js/settings.js:1
 msgid "Allows you to upload your files directly to Google Drive from your Fluent Forms upload field."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:68
+#: includes/views/getting-started/introduction.php:63
 #: assets/js/settings.js:1
 msgid "Formidable Forms"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:69
+#: includes/views/getting-started/introduction.php:64
 #: assets/js/settings.js:1
 msgid "Allows you to upload your files directly to Google Drive from your Formidable Forms upload field."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:72
+#: includes/views/getting-started/introduction.php:67
 #: assets/js/settings.js:1
 msgid "Ninja Forms"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:73
+#: includes/views/getting-started/introduction.php:68
 msgid "Allows you to upload your files directly to Google Drive from your Ninja Forms upload field."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:77
+#: includes/views/getting-started/introduction.php:72
 #: assets/js/settings.js:1
 msgid "Elementor Form"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:78
+#: includes/views/getting-started/introduction.php:73
 #: assets/js/settings.js:1
 msgid "Allows effortless file uploads from Elementor PRO Form widget to Google Drive for quick and efficient storage."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:81
+#: includes/views/getting-started/introduction.php:76
 #: assets/js/settings.js:1
 msgid "MetForm"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:82
+#: includes/views/getting-started/introduction.php:77
 #: assets/js/settings.js:1
 msgid "Allows effortless file uploads from MetForm to Google Drive for quick and efficient storage."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:93
+#: includes/views/getting-started/introduction.php:88
 msgid "Quick Overview"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:96
+#: includes/views/getting-started/introduction.php:91
 msgid ""
 "Integrate Google Drive is the best and easy to use Google Drive integration plugin for\n"
 "                WordPress to use your Google Drive files and documents into your WordPress website."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:102
+#: includes/views/getting-started/introduction.php:97
 msgid ""
 "Share your Google Drive cloud files into your site very fast and easily. You can browse, manage,\n"
 "                embed, display, upload, download, search, play, share your Google Drive files directly into your\n"
 "                website without any hassle and coding."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:120
+#: includes/views/getting-started/introduction.php:115
 msgid "Never miss a valuable features"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:121
+#: includes/views/getting-started/introduction.php:116
 msgid "Let's explore the awesome features of the plugin"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:127
+#: includes/views/getting-started/introduction.php:122
 msgid "Specific Folders Accessibility"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:128
-#: includes/views/getting-started/introduction.php:144
+#: includes/views/getting-started/introduction.php:123
+#: includes/views/getting-started/introduction.php:139
 msgid "New ⚡"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:131
+#: includes/views/getting-started/introduction.php:126
 msgid "Restrict access to specific folders within the plugin. This feature enhances security and control over your Google Drive files and ensures that only the designated folders are available for use and management within the app."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:147
+#: includes/views/getting-started/introduction.php:142
 msgid "Integrating Google Drive with WordPress Media Library, allows you to use Google Drive files as media attachments directly in WordPress. This integration facilitates easy uploading, importing, and synchronizing of media content between WordPress and Google Drive, streamlining your digital asset management and enhancing your website's media capabilities."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:165
+#: includes/views/getting-started/introduction.php:160
 msgid ""
 "You can manage your cloud files from your website using the full-featured file browser of the\n"
 "                    plugin. Manage preview, download, upload, rename, move, delete, permissions per user using\n"
 "                    the file browser. Users can also browse your cloud files using the File Browser."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:185
+#: includes/views/getting-started/introduction.php:180
 msgid ""
 "You and also your users can upload files directly to your Google Drive account from your\n"
 "                    site. You can upload unlimited size of files."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:203
+#: includes/views/getting-started/introduction.php:198
 msgid ""
 "You can play your Google Drive audio & video files with a playlist into your website. Audio and\n"
 "                video can be played in a single player."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:219
+#: includes/views/getting-started/introduction.php:214
 msgid ""
 "You can add a grid lightbox popup gallery of photos and videos in your page/ post using the gallery\n"
 "                    module of the plugin. The gallery will be generated based on the folders, photos and images that you select."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:233
+#: includes/views/getting-started/introduction.php:228
 msgid "With the Slider Carousel module, you can create a beautiful and interactive slider carousel to showcase your Google Drive images, videos, and documents. Simply use the shortcode to embed the slider anywhere on your site."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:248
+#: includes/views/getting-started/introduction.php:243
 msgid ""
 "You can search any of your cloud files from your site and also let the users to search the\n"
 "                    cloud files to view and download."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:262
+#: includes/views/getting-started/introduction.php:257
 msgid ""
 "You can easily embed any Google Drive Cloud files in any post/ page of your WordPress website\n"
 "                directly using this plugin."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:278
+#: includes/views/getting-started/introduction.php:273
 msgid "File Importer"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:280
+#: includes/views/getting-started/introduction.php:275
 msgid ""
 "Import any Google Drive document and media files to your media library by one click and use\n"
 "                    them on any post/ page."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:292
+#: includes/views/getting-started/introduction.php:287
 msgid "File View & Download Links"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:293
+#: includes/views/getting-started/introduction.php:288
 msgid ""
 "You can insert direct links to your post/ page to download/ view your Google Drive cloud\n"
 "                    files."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:306
+#: includes/views/getting-started/introduction.php:301
 #: assets/js/settings.js:1
 msgid "Private Folders"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:308
+#: includes/views/getting-started/introduction.php:303
 msgid "Using Private Folders you can easily and securely share your Google Drive documents with your users/clients."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:320
+#: includes/views/getting-started/introduction.php:315
 msgid "You can link multiple Google accounts and can use files from the multiple accounts."
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:330
+#: includes/views/getting-started/introduction.php:325
 msgid "Powerful Integrations with Popular Plugins"
 msgstr ""
 
-#: includes/views/getting-started/introduction.php:331
+#: includes/views/getting-started/introduction.php:326
 msgid "Using this plugin, you can integrate your Google Drive with available popular plugins."
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:148
+#: includes/views/getting-started/what-new.php:166
 msgid "Exploring the Latest Updates"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:149
+#: includes/views/getting-started/what-new.php:167
 msgid "Dive Into the Recent Change Logs for Fresh Insights"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:167
+#: includes/views/getting-started/what-new.php:185
 msgid "New Features"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:176
+#: includes/views/getting-started/what-new.php:194
 msgid "Bug Fixes"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:184
+#: includes/views/getting-started/what-new.php:202
 msgid "Improvements"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:192
+#: includes/views/getting-started/what-new.php:210
 msgid "Removes"
 msgstr ""
 
@@ -2814,76 +2838,6 @@ msgstr ""
 
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
-msgid "Are You Enjoying This Plugin?"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Your feedback helps us create a better experience for you."
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Yes, I'm enjoying it"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Not really"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "We're glad to hear that!"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Would you mind taking a few minutes to rate us and write a review?"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Sure, I'd be happy to"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Maybe later"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Sorry to hear that!"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Could you please provide us with some feedback to help us improve?"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Enter your feedback here..."
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Submit"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Thank you for your feedback!"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "We'll use your feedback to improve our plugin."
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
 msgid "You are about to delete the file."
 msgid_plural "You are about to delete %s files."
 msgstr[0] ""
@@ -2914,13 +2868,13 @@ msgstr[1] ""
 
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
-#: assets/js/media-library.js:1
-msgid "Error"
+msgid "Invalid password."
 msgstr ""
 
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
-msgid "Please enter a keyword to search"
+#: assets/js/media-library.js:1
+msgid "Error"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -3723,6 +3677,31 @@ msgstr ""
 
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
+msgid "Back"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "No items found"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Previous"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Next"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Toggle Playlist"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
 msgid "Search for files & content"
 msgstr ""
 
@@ -3751,10 +3730,6 @@ msgstr ""
 
 #: assets/js/admin.js:1
 msgid "Add New Shortcode"
-msgstr ""
-
-#: assets/js/admin.js:1
-msgid "Back"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -3881,32 +3856,52 @@ msgid "Done"
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "Don't select any items if you don't want to show the module for the users who are not linked any folders."
+msgid "Select Files & Folders"
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "Select files & folders for non-linked users"
-msgstr ""
-
-#: assets/js/admin.js:1
-msgid "Select Upload Folder for non-linked users"
-msgstr ""
-
-#: assets/js/admin.js:1
-msgid "Select image files and folders for non-linked users"
-msgstr ""
-
-#: assets/js/admin.js:1
-msgid "Select audio, video files and folders for non-linked users"
-msgstr ""
-
-#: assets/js/admin.js:1
-msgid "Select folders for non-linked users."
+msgid "Select the files and folders to display in the module."
 msgstr ""
 
 #: assets/js/admin.js:1
 #: assets/js/media-library.js:1
 msgid "Select Upload Folder"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Select the folder where the files will be uploaded."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Select the files and folders to showcase in the gallery. You can include both image and video files in the gallery module."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Select the files to display in the media player. You can include both audio and video files in the media player."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Select the files to embed."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Select the files to display in the slider."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Select the files to generate download links."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Select the files to generate view links."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Select Search Folders"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Select the folders to search for files."
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -4142,6 +4137,26 @@ msgstr ""
 
 #: assets/js/admin.js:1
 msgid "Enable to generate view link for the files inside the selected folders."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Video Type"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Direct Media"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Select the video player style for the LMS module."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Plays the video using Google Drive's native embed player, ensuring smooth playback without server load. This method requires setting the video permission to public."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Streams the video through your server as a proxy, which may slow down loading. No permission changes are required for the video."
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -4718,14 +4733,6 @@ msgid "Show/ hide the files sorting options button in the header"
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "Allow Embed Player"
-msgstr ""
-
-#: assets/js/admin.js:1
-msgid "Enable embed player for the large video files using Google Drive native player."
-msgstr ""
-
-#: assets/js/admin.js:1
 msgid "Show Next & Previous"
 msgstr ""
 
@@ -4750,11 +4757,27 @@ msgid "Show/hide the playlist in the player."
 msgstr ""
 
 #: assets/js/admin.js:1
+msgid "Playlist Style"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Select the playlist style in the player."
+msgstr ""
+
+#: assets/js/admin.js:1
 msgid "Opened Playlist"
 msgstr ""
 
 #: assets/js/admin.js:1
 msgid "Should be the playlist opened by default."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Show Playlist Toggle"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Show/hide the playlist toggle button in the player controls."
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -5547,6 +5570,30 @@ msgid "When activated, the download restrictions will be only applied to the sel
 msgstr ""
 
 #: assets/js/admin.js:1
+msgid "Password Protection"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Enable Password Protection"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Upgrade to Pro to enable password protection."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Enable password protection for this module. Users will need to enter the password to access the module."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Password"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Set the password for this module."
+msgstr ""
+
+#: assets/js/admin.js:1
 msgid "Visibility"
 msgstr ""
 
@@ -5583,7 +5630,7 @@ msgid "When activated, the module will be visible to everyone except for those s
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "Show Access Denied Message"
+msgid "Show Denied Message"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -5641,10 +5688,6 @@ msgid "Select the folders & files to display in the file browser."
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "Select the folder where the files will be uploaded."
-msgstr ""
-
-#: assets/js/admin.js:1
 msgid "Select Files and Folders"
 msgstr ""
 
@@ -5681,7 +5724,7 @@ msgid "Select the files to attach in the product for download."
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "Filter Folders and Files"
+msgid "Filters"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -5725,7 +5768,15 @@ msgid "Receive email notifications for various user activities (upload, download
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "Set the permissions to access the module."
+msgid "Set access permissions for the module."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Expand"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Collapse"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -5743,10 +5794,6 @@ msgstr ""
 
 #: assets/js/admin.js:1
 msgid "Finish"
-msgstr ""
-
-#: assets/js/admin.js:1
-msgid "Next"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -6127,6 +6174,14 @@ msgstr ""
 
 #: assets/js/settings.js:1
 msgid "Enable this to load the last opened folder when a visitor revisit a File Browser or Gallery module."
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Hide Preview Thumbnails"
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Enable this option to hide the bottom thumbnails in the File Browser and Gallery modules when previewing a file."
 msgstr ""
 
 #: assets/js/settings.js:1

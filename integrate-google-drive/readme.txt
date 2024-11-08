@@ -4,7 +4,7 @@ Tags: google drive, google, gallery, embed, media
 Requires at least: 5.0
 Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 1.4.4
+Stable tag: 1.4.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -331,11 +331,21 @@ Absolutely. By turning on the "Photo Proofing" option within the gallery module,
 
 == Changelog ==
 
+= 1.4.5 (2024-11-04) =
+* **New:** Added password protection for the shortcode modules.
+* **New:** Added grid playlist style for the media player module.
+* **New:** Added settings to hide the preview bottom thumbnails.
+* **New:** Added video type embed, direct option for the media player module and Tutor LMS video.
+* **Fix:** Fixed WooCommerce products import image not setting properly.
+* **Fix:** Fixed nonce validation issue for the shortcode modules.
+* **Fix:** Fixed Upload module not displaying error messages.
+* **Update:** Updated contact form 7 integration to support the latest version.
+
 = 1.4.4 (2024-10-09) =
-* New: Added upload folder selection and file renaming settings in WooCommerce uploads.
-* Fix: Fixed database tables not created.
-* Fix: Fixed file, folder not renaming properly in WooCommerce uploads.
-* Fix: Fixed remember last folder not working issue.
+* **New:** Added upload folder selection and file renaming settings in WooCommerce uploads.
+* **Fix:** Fixed database tables not created.
+* **Fix:** Fixed file, folder not renaming properly in WooCommerce uploads.
+* **Fix:** Fixed remember last folder not working issue.
 
 = 1.4.3 (2024-10-03) =
 * Fix: Fixed module notifications not reaching to the correct recipients.
@@ -345,8 +355,8 @@ Absolutely. By turning on the "Photo Proofing" option within the gallery module,
 * New: Added option for specific folders accessibility in the app.
 * New: Added folder selection options in the uploader.
 * New: Added a "None" preloader setting option to disable the preloader during file loading.
-
 * Update: Upgraded plugin's integrated Google App.
+
 = 1.4.1 (2024-09-14) =
 * Update: Upgraded plugin's integrated Google App.
 

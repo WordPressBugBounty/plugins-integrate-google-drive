@@ -23,13 +23,17 @@ class Download {
 
 		// Check download restrictions
 		if ( ! $ignore_limit && igd_fs()->can_use_premium_code__premium_only() && $limit_message = Restrictions::instance()->has_reached_download_limit( $id ) ) {
-			Restrictions::display_error($limit_message);
+			Restrictions::display_error( $limit_message );
 		}
 
 		// Get file data
 		try {
 			$file = App::instance( $account_id )->get_file_by_id( $id );
 		} catch ( \Exception $e ) {
+			wp_die( __( 'Something went wrong! File may be deleted or moved to trash.', 'integrate-google-drive' ) );
+		}
+
+		if ( empty( $file ) ) {
 			wp_die( __( 'Something went wrong! File may be deleted or moved to trash.', 'integrate-google-drive' ) );
 		}
 

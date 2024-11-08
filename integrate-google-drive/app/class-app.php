@@ -138,17 +138,18 @@ class App {
 				return $data;
 			}
 
+			$files = $this->sort_and_insert_files( $files, $sort, $folder_id, $folder_account_id );
+
 			// Filter files
 			if ( igd_should_filter_files( $filters ) ) {
-				$files = array_values( array_filter(
+				$files = array_filter(
 					$files,
 					function ( $item ) use ( $filters ) {
 						return igd_should_allow( $item, $filters );
 					}
-				) );
+				);
 			}
 
-			$files = $this->sort_and_insert_files( $files, $sort, $folder_id, $folder_account_id );
 			$count = count( $files );
 
 			$data['count'] = $count;
@@ -188,7 +189,7 @@ class App {
 			}
 		}
 
-		$data['files'] = $files;
+		$data['files'] = array_values( $files );
 
 		return $data;
 	}
@@ -211,6 +212,7 @@ class App {
 		// Insert files to database
 		if ( $folder_id ) {
 			Files::set( $files, $folder_id );
+
 			igd_update_cached_folders( $folder_id, $folder_account_id );
 		}
 
@@ -282,8 +284,14 @@ class App {
 
 	}
 
-	public function get_search_files( $keyword, $folders = [], $sort = [], $full_text_search = true ) {
-		$keyword = str_replace( [ "\'", '\"' ], [ "'", '"' ], $keyword );
+	public function get_search_files( $posted = [] ) {
+
+		// Get posted data
+		$folders          = $posted['folders'] ?? [];
+		$keyword          = ! empty( $posted['keyword'] ) ? stripslashes( $posted['keyword'] ) : '';
+		$sort             = $posted['sort'] ?? [];
+		$full_text_search = isset( $posted['fullTextSearch'] ) ? filter_var( $posted['fullTextSearch'], FILTER_VALIDATE_BOOLEAN ) : true;
+		$filters          = $posted['filters'] ?? [];
 
 		$files = [];
 
@@ -339,6 +347,7 @@ class App {
 				'sortBy'        => 'name',
 				'sortDirection' => 'asc'
 			],
+			'filters'     => $filters,
 		);
 
 		if ( ! empty( $sort ) ) {
@@ -411,6 +420,8 @@ class App {
 				if ( ! is_object( $item ) || ! method_exists( $item, 'getId' ) || $item->trashed ) {
 					do_action( 'igd_trash_detected', $id, $this->account_id );
 
+					return false;
+				} elseif ( empty( $item->getId() ) ) {
 					return false;
 				}
 

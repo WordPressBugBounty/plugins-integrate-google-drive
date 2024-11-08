@@ -29,7 +29,7 @@ class Private_Folders {
 		$name_template   = ! empty( $data['nameTemplate'] ) ? $data['nameTemplate'] : igd_get_settings( 'nameTemplate', '%user_login% (%user_email%)' );
 		$parent_folder   = ! empty( $data['parentFolder'] ) ? $data['parentFolder'] : igd_get_settings( 'parentFolder', [] );
 		$template_folder = ! empty( $data['templateFolder'] ) ? $data['templateFolder'] : igd_get_settings( 'templateFolder' );
-		$merge_folders   = ! empty( $data ) ? ! empty( $data['mergePrivateFolders'] ) : igd_get_settings( 'mergeFolders' );
+		$merge_folders   = $data['mergePrivateFolders'] ?? igd_get_settings( 'mergeFolders', true );
 
 
 		if ( empty( $parent_folder ) ) {
@@ -105,7 +105,7 @@ class Private_Folders {
 	}
 
 	public function delete_user_folder( $user_id ) {
-		$folders = get_user_meta( $user_id,'igd_folders', true );
+		$folders = get_user_meta( $user_id, 'igd_folders', true );
 		if ( empty( $folders ) ) {
 			return;
 		}

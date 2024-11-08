@@ -934,13 +934,13 @@ function igd_get_settings( $key = null, $default = null ) {
 		return ! empty( $settings ) ? $settings : [];
 	}
 
-	return isset( $settings[ $key ] ) ? $settings[ $key ] : $default;
+	return $settings[ $key ] ?? $default;
 }
 
 function igd_get_embed_url( $file, $embed_type = 'readOnly', $direct_image = false, $is_preview = false, $popout = false, $download = true ) {
 	$id         = $file['id'];
 	$account_id = $file['accountId'];
-	$type       = isset( $file['type'] ) ? $file['type'] : '';
+	$type       = $file['type'] ?? '';
 
 	$is_editable        = in_array( $embed_type, [ 'editable', 'fullEditable' ] );
 	$editable_arguments = $is_editable && $embed_type === 'fullEditable' ? 'edit?usp=drivesdk&rm=embedded&embedded=true' : 'edit?usp=drivesdk&rm=minimal&embedded=true';
@@ -1031,7 +1031,6 @@ function igd_get_embed_url( $file, $embed_type = 'readOnly', $direct_image = fal
 
 	return $url;
 }
-
 
 function igd_is_public_file( $file ) {
 	if ( isset( $file['permissions'] ) &&
@@ -1340,6 +1339,25 @@ function igd_should_allow( $item, $filters = [] ) {
 				}
 			}
 		}
+	}
+
+
+	if ( ! empty( $filters['isMedia'] ) ) {
+		return $is_dir || preg_match( '/^(audio|video)\//', $item['type'] );
+	}
+
+
+	if ( ! empty( $filters['isGallery'] ) ) {
+		return $is_dir || preg_match( '/^(image|video)\//', $item['type'] );
+	}
+
+	if ( ! empty( $filters['onlyFolders'] ) ) {
+		return $is_dir;
+	}
+
+
+	if ( ! empty( $filters['onlyVideo'] ) ) {
+		return $is_dir || preg_match( '/^video\//', $item['type'] );
 	}
 
 	return true;
@@ -1661,7 +1679,7 @@ function igd_get_user_access_data() {
 		$private_folders_in_admin_dashboard = igd_get_settings( 'privateFoldersInAdminDashboard', false );
 
 		if ( $private_folders_in_admin_dashboard ) {
-			$private_folders = get_user_meta( get_current_user_id(),'igd_folders', true );
+			$private_folders = get_user_meta( get_current_user_id(), 'igd_folders', true );
 
 			// if not empty $private_folders, merge private folders with assigned folders
 			if ( ! empty( $private_folders ) ) {
@@ -2331,4 +2349,13 @@ function igd_purge_3rd_party_cache() {
 	} catch ( \Exception $ex ) {
 		error_log( 'IGD ERROR MESSAGE : ' . sprintf( 'Cannot clear cache on line %s: %s', __LINE__, $ex->getMessage() ) );
 	}
+}
+
+function igd_get_secure_embed_url( $file_id ) {
+	$embed_url = 'https://drive.google.com/file/d/';
+
+	$file_id = preg_replace( '/[^a-zA-Z0-9-_]/', '', $file_id );
+
+	return $embed_url . $file_id . '/preview';
+
 }

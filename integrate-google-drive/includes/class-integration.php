@@ -43,7 +43,6 @@ class Integration {
             'classic-editor',
             'gutenberg-editor',
             'elementor',
-            'divi',
             'cf7'
         ] );
         return in_array( $key, $integrations );

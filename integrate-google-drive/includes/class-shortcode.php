@@ -75,21 +75,16 @@ class Shortcode {
     private function set_shortcode_transient() {
         // Set ID
         if ( empty( $this->data['id'] ) ) {
-            if ( !empty( $data['uniqueId'] ) ) {
-                $id = $data['uniqueId'];
-            } else {
-                $id = 'igd_' . md5( serialize( $this->data ) );
-            }
-            $this->data['id'] = $id;
+            $this->data['id'] = $this->data['uniqueId'] ?? 'igd_' . md5( maybe_serialize( $this->data ) );
         }
-        $shortcode_transient = get_transient( $this->data['id'] );
         // Add nonce for non-logged in users
         if ( !is_user_logged_in() ) {
-            $this->data['nonce'] = ( !empty( $shortcode_transient['nonce'] ) ? $shortcode_transient['nonce'] : wp_create_nonce( 'igd-shortcode-nonce' ) );
+            $this->data['nonce'] = wp_create_nonce( 'igd-shortcode-nonce' );
         }
         // Set transient
-        if ( !$shortcode_transient ) {
-            set_transient( $this->data['id'], $this->data, DAY_IN_SECONDS );
+        $transient_key = 'shortcode_' . $this->data['id'];
+        if ( !get_transient( $transient_key ) ) {
+            set_transient( $transient_key, $this->data, 7 * DAY_IN_SECONDS );
         }
     }
 
@@ -103,9 +98,45 @@ class Shortcode {
     }
 
     private function get_access_denied_message() {
-        $default_message = '<img width="100" src="' . IGD_ASSETS . '/images/access-denied.png" ><h3 class="placeholder-title">' . __( 'Access Denied', 'integrate-google-drive' ) . '</h3><p class="placeholder-description">' . __( "We're sorry, but your account does not currently have access to this content. To gain access, please contact the site administrator who can assist in linking your account to the appropriate content. Thank you.", 'integrate-google-drive' ) . '</p>';
+        // Define the default message parts with proper escaping
+        $image_url = esc_url( IGD_ASSETS . '/images/access-denied.png' );
+        $title = esc_html__( 'Access Denied', 'integrate-google-drive' );
+        $description = esc_html__( "We're sorry, but your account does not currently have access to this content. To gain access, please contact the site administrator who can assist in linking your account to the appropriate content. Thank you.", 'integrate-google-drive' );
+        // Construct the default message using a heredoc for readability
+        $default_message = <<<HTML
+<img width="100" src="{$image_url}" alt="Access Denied">
+<h3 class="placeholder-title">{$title}</h3>
+<p class="placeholder-description">{$description}</p>
+HTML;
+        // Use custom access denied message if available, otherwise default
         $access_denied_message = ( !empty( $this->data['accessDeniedMessage'] ) ? $this->data['accessDeniedMessage'] : $default_message );
+        // Return the complete access denied message if it should be shown
         return ( !empty( $this->data['showAccessDeniedMessage'] ) ? sprintf( '<div class="igd-access-denied-placeholder">%s</div>', $access_denied_message ) : false );
+    }
+
+    private function get_password_protected_screen() {
+        // Localize text strings for translation and escape them for security
+        $title = esc_html__( "This content is password protected", "integrate-google-drive" );
+        $description = esc_html__( "To view it please enter your password below:", "integrate-google-drive" );
+        $placeholder = esc_attr__( "Enter Password", "integrate-google-drive" );
+        $button_text = esc_html__( "Unlock", "integrate-google-drive" );
+        $spinner_url = includes_url( 'images/wpspin.gif' );
+        // Use heredoc syntax for cleaner HTML structure
+        return <<<HTML
+        <div class="igd-password-protected">
+            <h3>{$title}</h3>
+            <p>{$description}</p>
+    
+            <form id="igd-password-form" class="igd-password-form" method="post">
+                <input type="hidden" name="shortcode_id" value="{$this->data['id']}">
+                <input type="password" name="password" placeholder="{$placeholder}" />
+                
+                <button type="submit"><img src="{$spinner_url}" width="20" height="20" class="" />{$button_text}</button>
+            </form>
+            
+            <p class="igd-password-error"></p>
+        </div>
+HTML;
     }
 
     private function set_permissions() {
@@ -323,7 +354,7 @@ class Shortcode {
                 if ( $transient ) {
                     $args['from_server'] = false;
                 } else {
-                    set_transient( 'igd_latest_fetch_' . $folder_id, true, 60 * MINUTE_IN_SECONDS );
+                    set_transient( 'igd_latest_fetch_' . $folder_id, true, HOUR_IN_SECONDS );
                 }
             }
             // Fetch files
@@ -343,7 +374,7 @@ class Shortcode {
     }
 
     private function get_files_from_server() {
-        $cache_key = "igd_latest_fetch_" . md5( serialize( $this->data['folders'] ) );
+        $cache_key = "igd_latest_fetch_" . md5( maybe_serialize( $this->data['folders'] ) );
         // Get files from server to update the cache
         if ( !get_transient( $cache_key ) ) {
             set_transient( $cache_key, true, HOUR_IN_SECONDS );
@@ -615,7 +646,7 @@ class Shortcode {
             $id = $file['id'];
             $account_id = $file['accountId'];
             $name = $file['name'];
-            $download_link = admin_url( "admin-ajax.php?action=igd_download&" . (( igd_is_dir( $file ) ? "file_ids=" . base64_encode( json_encode( [$id] ) ) : "id={$id}&accountId={$account_id}&shortcodeId={$shortcode_id}&nonce={$nonce}" )) );
+            $download_link = home_url( "?igd_download=1&" . (( igd_is_dir( $file ) ? "file_ids=" . base64_encode( json_encode( [$id] ) ) : "id={$id}&accountId={$account_id}&shortcodeId={$shortcode_id}&nonce={$nonce}" )) );
             $file_data_html = ( $should_send_notification ? ' data-id="' . esc_attr( $id ) . '" data-account-id="' . esc_attr( $account_id ) . '"' : '' );
             $data_html = $notification_data_html . $file_data_html;
             $html .= sprintf(
@@ -744,11 +775,11 @@ class Shortcode {
     public static function get_shortcode_data( $shortcode_id ) {
         $data = false;
         if ( strpos( $shortcode_id, 'igd_' ) !== false ) {
-            $data = get_transient( $shortcode_id );
+            $data = get_transient( 'shortcode_' . $shortcode_id );
         } else {
             $shortcode = Shortcode::get_shortcode( $shortcode_id );
             if ( !empty( $shortcode ) ) {
-                $data = unserialize( $shortcode->config );
+                $data = maybe_unserialize( $shortcode->config );
             }
         }
         return $data;
@@ -847,8 +878,9 @@ class Shortcode {
      * @return void
      */
     public static function reset_shortcode_transients( $data ) {
-        $shortcode_id = $data['id'] ?? $data['uniqueId'] ?? 'igd_' . md5( serialize( $data ) );
-        set_transient( $shortcode_id, $data, DAY_IN_SECONDS );
+        $shortcode_id = $data['id'] ?? $data['uniqueId'] ?? 'igd_' . md5( maybe_serialize( $data ) );
+        $data['id'] = $shortcode_id;
+        set_transient( 'shortcode_' . $shortcode_id, $data, 7 * DAY_IN_SECONDS );
     }
 
 }

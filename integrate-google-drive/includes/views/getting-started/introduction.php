@@ -15,23 +15,18 @@ $integrations = [
 		'title'       => __( 'Gutenberg Editor', 'integrate-google-drive' ),
 		'description' => __( 'Add Google Drive modules, embed documents and insert file view links and download links using the Google Drive Gutenberg editor blocks', 'integrate-google-drive' ),
 	],
-
 	'elementor' => [
 		'title'       => __( 'Elementor', 'integrate-google-drive' ),
 		'description' => __( 'Add Google Drive modules, embed documents and insert file view links and download links using the Google Drive Elementor widgets.', 'integrate-google-drive' ),
 	],
-
-
 	'divi' => [
 		'title'       => __( 'Divi', 'integrate-google-drive' ),
 		'description' => __( 'Add Google Drive modules, embed documents and insert file view links and download links using the Google Drive Divi Page Builder modules.', 'integrate-google-drive' ),
 	],
-
 	'acf' => [
 		'title'       => __( 'Advanced Custom Fields', 'integrate-google-drive' ),
 		'description' => __( 'Allows you to select Google Drive files and folders using ACF field and display in theme template file.', 'integrate-google-drive' ),
 	],
-
 	'woocommerce'     => [
 		'title'       => __( 'WooCommerce', 'integrate-google-drive' ),
 		'description' => __( 'You can serve your downloadable product\'s files directly from Google Drive, and also you can let your customers upload files to your Google Drive account when they purchase your products.', 'integrate-google-drive' ),

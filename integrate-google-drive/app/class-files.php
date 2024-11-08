@@ -140,6 +140,16 @@ class Files {
 			if ( ! empty( $filters['isMedia'] ) ) {
 				$where_placeholders .= " AND (type LIKE 'audio/%' OR type LIKE 'video/%' OR type = 'application/vnd.google-apps.folder')";
 			}
+
+			// Handle video
+			if ( ! empty( $filters['onlyVideo'] ) ) {
+				$where_placeholders .= " AND (type LIKE 'video/%' OR type = 'application/vnd.google-apps.folder')";
+			}
+
+			// Handle folders
+			if ( ! empty( $filters['onlyFolders'] ) ) {
+				$where_placeholders .= " AND type = 'application/vnd.google-apps.folder'";
+			}
 		}
 
 		// Create a SQL query to  fetch the count of total files applied filters

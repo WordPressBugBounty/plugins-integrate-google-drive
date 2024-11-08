@@ -491,7 +491,7 @@ class Ajax {
         if ( empty( $_POST['data'] ) ) {
             wp_send_json_error( __( 'Invalid shortcode data', 'integrate-google-drive' ) );
         }
-        $data = igd_sanitize_array( $_POST['data'] );
+        $data = json_decode( base64_decode( $_POST['data'] ), true );
         Shortcode::reset_shortcode_transients( $data );
         wp_send_json_success();
     }
@@ -570,22 +570,12 @@ class Ajax {
         $this->check_nonce();
         // Set current shortcode data
         $this->set_current_shortcode_data();
-        // Check permission
-        if ( !Shortcode::can_do( 'search_files' ) ) {
-            wp_send_json_error( __( 'You do not have permission to perform this action', 'integrate-google-drive' ) );
+        $posted = ( !empty( $_POST ) ? igd_sanitize_array( $_POST ) : [] );
+        if ( empty( $posted['keyword'] ) ) {
+            wp_send_json_error( __( 'Please enter a keyword to search', 'integrate-google-drive' ) );
         }
-        // Get posted data
-        $folders = ( !empty( $_POST['folders'] ) ? igd_sanitize_array( $_POST['folders'] ) : [] );
-        $keyword = ( !empty( $_POST['keyword'] ) ? sanitize_text_field( $_POST['keyword'] ) : '' );
-        $account_id = ( !empty( $_POST['accountId'] ) ? sanitize_text_field( $_POST['accountId'] ) : '' );
-        $sort = ( !empty( $_POST['sort'] ) ? igd_sanitize_array( $_POST['sort'] ) : [] );
-        $full_text_search = ( isset( $_POST['fullTextSearch'] ) ? filter_var( $_POST['fullTextSearch'], FILTER_VALIDATE_BOOLEAN ) : true );
-        $files = App::instance( $account_id )->get_search_files(
-            $keyword,
-            $folders,
-            $sort,
-            $full_text_search
-        );
+        $account_id = ( !empty( $posted['accountId'] ) ? sanitize_text_field( $posted['accountId'] ) : '' );
+        $files = App::instance( $account_id )->get_search_files( $posted );
         if ( !empty( $files['error'] ) ) {
             wp_send_json_success( $files );
         }

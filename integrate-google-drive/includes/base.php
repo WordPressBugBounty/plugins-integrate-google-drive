@@ -48,7 +48,12 @@ final class Main {
         do_action( 'igd_loaded' );
         add_action( 'admin_notices', [$this, 'print_notices'], 15 );
         add_action( 'init', [$this, 'localization_setup'] );
-        add_filter( 'plugin_action_links_' . plugin_basename( IGD_FILE ), [$this, 'plugin_action_links'] );
+        add_filter(
+            'plugin_row_meta',
+            [$this, 'plugin_row_meta'],
+            10,
+            2
+        );
     }
 
     public function activate_deactivate( $method ) {
@@ -66,9 +71,11 @@ final class Main {
         $this->activate_deactivate( 'deactivate' );
     }
 
-    public function plugin_action_links( $links ) {
-        $links[] = '<a href="https://softlabbd.com/docs-category/integrate-google-drive-docs/" target="_blank">' . __( 'Docs', 'integrate-google-drive' ) . '</a>';
-        return $links;
+    public function plugin_row_meta( $plugin_meta, $plugin_file ) {
+        if ( $plugin_file == plugin_basename( IGD_FILE ) ) {
+            $plugin_meta[] = sprintf( '<a target="_blank" href="https://softlabbd.com/docs-category/integrate-google-drive-docs/">%s</a>', esc_html__( 'Documentation', 'integrate-google-drive' ) );
+        }
+        return $plugin_meta;
     }
 
     public function localization_setup() {
