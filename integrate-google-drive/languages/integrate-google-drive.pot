@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Integrate Google Drive plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Integrate Google Drive 1.4.5\n"
+"Project-Id-Version: Integrate Google Drive 1.4.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integrate-google-drive\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-11-08T11:08:56+00:00\n"
+"POT-Creation-Date: 2024-11-11T13:06:19+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: integrate-google-drive\n"
@@ -351,25 +351,25 @@ msgstr ""
 msgid " Statistics Summary of Integrate Google Drive."
 msgstr ""
 
-#: includes/class-hooks.php:352
+#: includes/class-hooks.php:354
 msgid "Sorry, you are not allowed to access this page directly."
 msgstr ""
 
-#: includes/class-hooks.php:358
-#: includes/class-hooks.php:365
-#: includes/class-hooks.php:374
+#: includes/class-hooks.php:360
+#: includes/class-hooks.php:367
+#: includes/class-hooks.php:376
 msgid "Invalid embed URL."
 msgstr ""
 
 #. translators: %d: number of files
-#: includes/class-hooks.php:405
-#: includes/class-hooks.php:421
+#: includes/class-hooks.php:407
+#: includes/class-hooks.php:423
 msgid "%d file uploaded to Google Drive"
 msgid_plural "%d files uploaded to Google Drive"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-hooks.php:470
+#: includes/class-hooks.php:472
 msgid "Integrate Google Drive Synchronize Interval"
 msgstr ""
 
@@ -842,7 +842,7 @@ msgstr ""
 msgid "Computers"
 msgstr ""
 
-#: includes/functions.php:1540
+#: includes/functions.php:1541
 msgid "The file you are trying to load does not exist in your theme or Tutor LMS plugin location. If you are extending the Tutor LMS plugin, please create a php file here: "
 msgstr ""
 
@@ -2554,27 +2554,27 @@ msgstr ""
 msgid "Using this plugin, you can integrate your Google Drive with available popular plugins."
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:166
+#: includes/views/getting-started/what-new.php:174
 msgid "Exploring the Latest Updates"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:167
+#: includes/views/getting-started/what-new.php:175
 msgid "Dive Into the Recent Change Logs for Fresh Insights"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:185
+#: includes/views/getting-started/what-new.php:193
 msgid "New Features"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:194
+#: includes/views/getting-started/what-new.php:202
 msgid "Bug Fixes"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:202
+#: includes/views/getting-started/what-new.php:210
 msgid "Improvements"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:210
+#: includes/views/getting-started/what-new.php:218
 msgid "Removes"
 msgstr ""
 

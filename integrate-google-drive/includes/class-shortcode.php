@@ -199,7 +199,7 @@ HTML;
             'comment'     => 'commentUsers',
             'photoProof'  => 'photoProofUsers',
         ];
-        $userKey = ( isset( $typeUserKeyMap[$permission_type] ) ? $typeUserKeyMap[$permission_type] : null );
+        $userKey = $typeUserKeyMap[$permission_type] ?? null;
         $users = ( $userKey && isset( $this->data[$userKey] ) ? $this->data[$userKey] : ['everyone'] );
         if ( in_array( 'everyone', $users ) ) {
             return true;

@@ -36,18 +36,7 @@ class Files {
 
 		$where_placeholders = '';
 		$where_values       = [];
-
-		if ( empty( $sort ) ) {
-			$sort = [ 'sortBy' => 'name', 'sortDirection' => 'asc' ];
-		}
-
-		$order_by = "ORDER BY (type = 'application/vnd.google-apps.folder') DESC ";
-
-		$order_by .= 'random' == $sort['sortBy'] ? ", RAND() " : ", {$sort['sortBy']} " . strtoupper( $sort['sortDirection'] );
-
-		if ( ! empty( $limit ) ) {
-			$order_by .= " LIMIT $start_index, $limit";
-		}
+		$limit_text         = ! empty( $limit ) ? " LIMIT $start_index, $limit" : '';
 
 		foreach ( $where as $key => $value ) {
 			$where_placeholders .= " AND $key=%s";
@@ -161,7 +150,7 @@ class Files {
 		}
 
 		// Create the final SQL
-		$sql = $wpdb->prepare( "SELECT data FROM `$table` WHERE 1 $where_placeholders $order_by", $where_values );
+		$sql = $wpdb->prepare( "SELECT data FROM `$table` WHERE 1 $where_placeholders $limit_text", $where_values );
 
 		$items = $wpdb->get_results( $sql, ARRAY_A );
 

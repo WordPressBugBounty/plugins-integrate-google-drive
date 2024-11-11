@@ -2,22 +2,30 @@
 
 $logs = [
 
+	'v.1.4.6' => [
+		'date' => '2024-11-11',
+		'fix'  => [
+			'Fixed sort by name not working properly.',
+			'Fixed private folders merging issue.',
+		]
+	],
+
 	'v.1.4.5' => [
-		'date' => '2024-11-04',
-		'new'  => [
+		'date'        => '2024-11-04',
+		'new'         => [
 			'Added password protection for the shortcode modules.',
 			'Added grid playlist style for the media player module.',
 			'Added settings to hide the preview bottom thumbnails.',
-            'Added video type embed, direct option for the media player module and Tutor LMS video.',
+			'Added video type embed, direct option for the media player module and Tutor LMS video.',
 		],
-		'fix'  => [
+		'fix'         => [
 			'Fixed WooCommerce products import image not setting properly.',
 			'Fixed nonce validation issue for the shortcode modules.',
-            'Fixed Upload module not displaying error messages.',
+			'Fixed Upload module not displaying error messages.',
 		],
-        'enhancement' => [
-            'Updated contact form 7 integration to support the latest version.',
-        ],
+		'enhancement' => [
+			'Updated contact form 7 integration to support the latest version.',
+		],
 	],
 
 	'v.1.4.4' => [

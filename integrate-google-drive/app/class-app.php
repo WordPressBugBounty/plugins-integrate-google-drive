@@ -138,7 +138,7 @@ class App {
 				return $data;
 			}
 
-			$files = $this->sort_and_insert_files( $files, $sort, $folder_id, $folder_account_id );
+			$files = $this->insert_files( $files, $folder_id, $folder_account_id );
 
 			// Filter files
 			if ( igd_should_filter_files( $filters ) ) {
@@ -189,12 +189,14 @@ class App {
 			}
 		}
 
+		$files = $this->sort_files( $files, $sort );
+
 		$data['files'] = array_values( $files );
 
 		return $data;
 	}
 
-	public function sort_and_insert_files( $files, $sort, $folder_id, $folder_account_id ) {
+	public function insert_files( $files, $folder_id, $folder_account_id ) {
 
 		// If folder is computers, filter files without parents and not shared
 		if ( 'computers' == $folder_id ) {
@@ -202,9 +204,6 @@ class App {
 				return empty( $file['parents'] ) && empty( $file['shared'] );
 			} );
 		}
-
-		// Sort files
-		$files = igd_sort_files( $files, $sort );
 
 		// Reformat shortcuts
 		$files = $this->reformat_shortcuts( $files );
@@ -214,6 +213,50 @@ class App {
 			Files::set( $files, $folder_id );
 
 			igd_update_cached_folders( $folder_id, $folder_account_id );
+		}
+
+		return $files;
+	}
+
+	public function sort_files( $files, $sort = [] ) {
+
+		if ( empty( $sort ) ) {
+			$sort = [ 'sortBy' => 'name', 'sortDirection' => 'asc' ];
+		}
+
+		$sort_by        = $sort['sortBy'];
+		$sort_direction = $sort['sortDirection'] === 'asc' ? SORT_ASC : SORT_DESC;
+
+		$is_random = 'random' == $sort_by;
+
+		// Initializing sorting arrays
+		$sort_array           = [];
+		$sort_array_secondary = [];
+
+		// Populating sorting arrays and adding isFolder attribute to files
+		foreach ( $files as $key => $file ) {
+
+			if ( empty( $file[ $sort_by ] ) ) {
+				$sort_array_secondary[ $key ] = 0;
+				$file[ $sort_by ]             = '';
+			}
+
+			$files[ $key ]['isFolder'] = igd_is_dir( $file );
+			$sort_array[ $key ]        = $files[ $key ]['isFolder'];
+
+			if ( ! $is_random ) {
+				// Convert date to timestamp if needed
+				$sort_array_secondary[ $key ] = in_array( $sort_by, [
+					'created',
+					'updated'
+				] ) ? strtotime( $file[ $sort_by ] ) : $file[ $sort_by ];
+			}
+		}
+
+		if ( $is_random ) {
+			shuffle( $files );
+		} else {
+			array_multisort( $sort_array, SORT_DESC, $sort_array_secondary, $sort_direction, SORT_NATURAL | SORT_FLAG_CASE, $files );
 		}
 
 		return $files;
@@ -873,8 +916,7 @@ class App {
 	 */
 	public static function view() { ?>
         <div id="igd-app" class="igd-app"></div>
-		<?php
-	}
+	<?php }
 
 	public static function instance( $account_id = null ) {
 		if ( is_null( self::$instance ) || self::$instance->account_id != $account_id ) {
