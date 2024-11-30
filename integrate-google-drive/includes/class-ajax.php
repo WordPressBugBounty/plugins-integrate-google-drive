@@ -45,8 +45,8 @@ class Ajax {
         add_action( 'wp_ajax_igd_reset_usage_limits', [$this, 'reset_current_usage'] );
         // Reset shortcode transient
         add_action( 'wp_ajax_igd_reset_shortcode_transient', [$this, 'reset_shortcode_transient'] );
-        // Update storage size
-        add_action( 'wp_ajax_igd_update_storage_size', [$this, 'update_storage_size'] );
+        // get account storage usage
+        add_action( 'wp_ajax_igd_get_storage', [$this, 'get_account_storage'] );
         /*--- Frontend Actions ---*/
         // Search Files
         add_action( 'wp_ajax_igd_search_files', [$this, 'search_files'] );
@@ -60,9 +60,6 @@ class Ajax {
         // Preview Content
         add_action( 'wp_ajax_igd_preview', [$this, 'preview'] );
         add_action( 'wp_ajax_nopriv_igd_preview', [$this, 'preview'] );
-        // Get share URL
-        add_action( 'wp_ajax_igd_get_share_link', [$this, 'get_share_link'] );
-        add_action( 'wp_ajax_nopriv_igd_get_share_link', [$this, 'get_share_link'] );
         // Download file
         add_action( 'wp_ajax_igd_download', [$this, 'download'] );
         add_action( 'wp_ajax_nopriv_igd_download', [$this, 'download'] );
@@ -336,12 +333,20 @@ class Ajax {
         wp_send_json_success();
     }
 
-    public function update_storage_size() {
+    public function get_account_storage() {
         // Check nonce
         if ( !check_ajax_referer( 'igd', 'nonce', false ) ) {
             wp_send_json_error( __( 'Invalid request', 'integrate-google-drive' ) );
         }
-        $usage = Account::instance()->get_storage_usage();
+        // Check permission
+        if ( !igd_user_can_access( 'settings' ) ) {
+            wp_send_json_error( __( 'You do not have permission to access this page', 'integrate-google-drive' ) );
+        }
+        $accounts = ( !empty( $_POST['accounts'] ) ? igd_sanitize_array( $_POST['accounts'] ) : [] );
+        $usage = [];
+        foreach ( $accounts as $account_id ) {
+            $usage[$account_id] = Account::instance()->get_storage_usage( $account_id );
+        }
         wp_send_json_success( $usage );
     }
 
@@ -449,7 +454,7 @@ class Ajax {
             wp_send_json_error( __( 'Invalid request', 'integrate-google-drive' ) );
         }
         // Check permission
-        if ( !igd_user_can_access( 'shortcode_builder' ) ) {
+        if ( !igd_user_can_access( 'settings' ) ) {
             wp_send_json_error( __( 'You do not have permission to access this page', 'integrate-google-drive' ) );
         }
         $id = ( !empty( $_POST['id'] ) ? sanitize_text_field( $_POST['id'] ) : '' );
@@ -555,6 +560,7 @@ class Ajax {
         } else {
             $data = App::instance( $account_id )->get_files( $args );
         }
+        // Handle error
         if ( !empty( $data['error'] ) ) {
             wp_send_json_success( $data );
         }
@@ -575,13 +581,10 @@ class Ajax {
             wp_send_json_error( __( 'Please enter a keyword to search', 'integrate-google-drive' ) );
         }
         $account_id = ( !empty( $posted['accountId'] ) ? sanitize_text_field( $posted['accountId'] ) : '' );
-        $files = App::instance( $account_id )->get_search_files( $posted );
-        if ( !empty( $files['error'] ) ) {
-            wp_send_json_success( $files );
+        $data = App::instance( $account_id )->get_search_files( $posted );
+        if ( !empty( $data['error'] ) ) {
+            wp_send_json_success( $data );
         }
-        $data = [
-            'files' => array_values( $files ),
-        ];
         wp_send_json_success( $data );
     }
 
@@ -892,36 +895,6 @@ class Ajax {
             wp_send_json_error( $url );
         }
         wp_send_json_success( $url );
-    }
-
-    public function get_share_link() {
-        // Check nonce
-        $this->check_nonce();
-        // Set current shortcode data
-        $this->set_current_shortcode_data();
-        // Check permission
-        if ( !Shortcode::can_do( 'share' ) ) {
-            wp_send_json_error( __( 'You do not have permission to perform this action', 'integrate-google-drive' ) );
-        }
-        $file = ( !empty( $_POST['file'] ) ? igd_sanitize_array( $_POST['file'] ) : [] );
-        $embed_link = igd_get_embed_url( $file );
-        if ( !$embed_link ) {
-            wp_send_json_error( [
-                'message' => __( 'Something went wrong! Preview is not available', 'integrate-google-drive' ),
-            ] );
-        }
-        $view_link = str_replace( ['edit?usp=drivesdk', 'preview?rm=minimal', 'preview'], 'view', $embed_link );
-        // Insert log
-        do_action(
-            'igd_insert_log',
-            'share',
-            $file['id'],
-            $file['accountId']
-        );
-        wp_send_json_success( [
-            'embedLink' => $embed_link,
-            'viewLink'  => $view_link,
-        ] );
     }
 
     public function download() {

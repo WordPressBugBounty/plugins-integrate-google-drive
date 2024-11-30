@@ -1,6 +1,24 @@
 <?php
 
+defined( 'ABSPATH' ) || exit();
+
 $logs = [
+
+	'v.1.4.7' => [
+		'date'        => '2024-11-30',
+		'fix'         => [
+			'Fixed folders not sorting properly.',
+			'Fixed statistics email report not sending.',
+			'Fixed media player responsive issue.',
+			'Fixed links not opening in the file inlined view.',
+			'Fixed classic editor conflicts in formidable forms settings.',
+			'Fixed auto-save not working.',
+		],
+		'enhancement' => [
+			'Added integration support for Tutor LMS v3.0.',
+			'Improved overall plugin performance and user interface.',
+		]
+	],
 
 	'v.1.4.6' => [
 		'date' => '2024-11-11',

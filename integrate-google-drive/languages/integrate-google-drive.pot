@@ -1,15 +1,15 @@
 # Copyright (C) 2024 SoftLab
-# This file is distributed under the same license as the Integrate Google Drive plugin.
+# This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Integrate Google Drive 1.4.6\n"
+"Project-Id-Version: Integrate Google Drive 1.4.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integrate-google-drive\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-11-11T13:06:19+00:00\n"
+"POT-Creation-Date: 2024-11-30T03:16:19+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: integrate-google-drive\n"
@@ -159,176 +159,175 @@ msgstr ""
 #: includes/integrations/class-formidableforms.php:226
 #: includes/integrations/class-gravityforms.php:284
 #: includes/integrations/class-tutor.php:83
-#: includes/integrations/class-tutor.php:345
+#: includes/integrations/class-tutor.php:350
 #: includes/integrations/class-wpforms.php:30
 msgid "Google Drive"
 msgstr ""
 
-#: includes/class-ajax.php:160
-#: includes/class-ajax.php:203
-#: includes/class-ajax.php:222
-#: includes/class-ajax.php:240
-#: includes/class-ajax.php:260
-#: includes/class-ajax.php:276
-#: includes/class-ajax.php:293
-#: includes/class-ajax.php:341
-#: includes/class-ajax.php:366
-#: includes/class-ajax.php:393
-#: includes/class-ajax.php:424
-#: includes/class-ajax.php:444
-#: includes/class-ajax.php:461
-#: includes/class-ajax.php:507
-#: includes/class-ajax.php:559
-#: includes/class-ajax.php:624
-#: includes/class-ajax.php:642
-#: includes/class-ajax.php:659
-#: includes/class-ajax.php:680
-#: includes/class-ajax__premium_only.php:323
-#: includes/class-ajax__premium_only.php:366
-#: includes/class-ajax__premium_only.php:385
-#: includes/class-ajax__premium_only.php:403
-#: includes/class-ajax__premium_only.php:423
-#: includes/class-ajax__premium_only.php:439
-#: includes/class-ajax__premium_only.php:456
-#: includes/class-ajax__premium_only.php:504
-#: includes/class-ajax__premium_only.php:529
-#: includes/class-ajax__premium_only.php:556
-#: includes/class-ajax__premium_only.php:587
-#: includes/class-ajax__premium_only.php:607
-#: includes/class-ajax__premium_only.php:624
-#: includes/class-ajax__premium_only.php:670
-#: includes/class-ajax__premium_only.php:722
-#: includes/class-ajax__premium_only.php:787
-#: includes/class-ajax__premium_only.php:805
-#: includes/class-ajax__premium_only.php:822
-#: includes/class-ajax__premium_only.php:843
+#: includes/class-ajax.php:156
+#: includes/class-ajax.php:199
+#: includes/class-ajax.php:218
+#: includes/class-ajax.php:236
+#: includes/class-ajax.php:256
+#: includes/class-ajax.php:272
+#: includes/class-ajax.php:289
+#: includes/class-ajax.php:337
+#: includes/class-ajax.php:362
+#: includes/class-ajax.php:389
+#: includes/class-ajax.php:420
+#: includes/class-ajax.php:440
+#: includes/class-ajax.php:457
+#: includes/class-ajax.php:514
+#: includes/class-ajax.php:566
+#: includes/class-ajax.php:631
+#: includes/class-ajax.php:649
+#: includes/class-ajax.php:666
+#: includes/class-ajax.php:687
+#: includes/class-ajax__premium_only.php:322
+#: includes/class-ajax__premium_only.php:365
+#: includes/class-ajax__premium_only.php:384
+#: includes/class-ajax__premium_only.php:402
+#: includes/class-ajax__premium_only.php:422
+#: includes/class-ajax__premium_only.php:438
+#: includes/class-ajax__premium_only.php:455
+#: includes/class-ajax__premium_only.php:503
+#: includes/class-ajax__premium_only.php:528
+#: includes/class-ajax__premium_only.php:555
+#: includes/class-ajax__premium_only.php:586
+#: includes/class-ajax__premium_only.php:606
+#: includes/class-ajax__premium_only.php:623
+#: includes/class-ajax__premium_only.php:680
+#: includes/class-ajax__premium_only.php:732
+#: includes/class-ajax__premium_only.php:797
+#: includes/class-ajax__premium_only.php:815
+#: includes/class-ajax__premium_only.php:832
+#: includes/class-ajax__premium_only.php:853
 msgid "Invalid request"
 msgstr ""
 
-#: includes/class-ajax.php:165
-#: includes/class-ajax.php:208
-#: includes/class-ajax.php:346
-#: includes/class-ajax.php:371
-#: includes/class-ajax.php:398
-#: includes/class-ajax.php:429
-#: includes/class-ajax.php:478
-#: includes/class-ajax.php:512
-#: includes/class-ajax.php:564
-#: includes/class-ajax.php:629
-#: includes/class-ajax.php:647
-#: includes/class-ajax.php:1007
-#: includes/class-ajax__premium_only.php:328
-#: includes/class-ajax__premium_only.php:371
-#: includes/class-ajax__premium_only.php:509
-#: includes/class-ajax__premium_only.php:534
-#: includes/class-ajax__premium_only.php:561
-#: includes/class-ajax__premium_only.php:592
-#: includes/class-ajax__premium_only.php:641
-#: includes/class-ajax__premium_only.php:675
-#: includes/class-ajax__premium_only.php:727
-#: includes/class-ajax__premium_only.php:792
-#: includes/class-ajax__premium_only.php:810
+#: includes/class-ajax.php:161
+#: includes/class-ajax.php:204
+#: includes/class-ajax.php:342
+#: includes/class-ajax.php:367
+#: includes/class-ajax.php:394
+#: includes/class-ajax.php:425
+#: includes/class-ajax.php:462
+#: includes/class-ajax.php:485
+#: includes/class-ajax.php:519
+#: includes/class-ajax.php:571
+#: includes/class-ajax.php:636
+#: includes/class-ajax.php:654
+#: includes/class-ajax.php:1013
+#: includes/class-ajax__premium_only.php:327
+#: includes/class-ajax__premium_only.php:370
+#: includes/class-ajax__premium_only.php:508
+#: includes/class-ajax__premium_only.php:533
+#: includes/class-ajax__premium_only.php:560
+#: includes/class-ajax__premium_only.php:591
+#: includes/class-ajax__premium_only.php:628
+#: includes/class-ajax__premium_only.php:651
+#: includes/class-ajax__premium_only.php:685
+#: includes/class-ajax__premium_only.php:737
+#: includes/class-ajax__premium_only.php:802
+#: includes/class-ajax__premium_only.php:820
 msgid "You do not have permission to access this page"
 msgstr ""
 
-#: includes/class-ajax.php:227
-#: includes/class-ajax.php:245
-#: includes/class-ajax__premium_only.php:390
-#: includes/class-ajax__premium_only.php:408
+#: includes/class-ajax.php:223
+#: includes/class-ajax.php:241
+#: includes/class-ajax__premium_only.php:389
+#: includes/class-ajax__premium_only.php:407
 msgid "You do not have permission to perform this action."
 msgstr ""
 
-#: includes/class-ajax.php:265
-#: includes/class-ajax.php:281
-#: includes/class-ajax.php:298
-#: includes/class-ajax.php:449
-#: includes/class-ajax.php:664
-#: includes/class-ajax.php:685
-#: includes/class-ajax.php:721
-#: includes/class-ajax.php:826
-#: includes/class-ajax.php:847
-#: includes/class-ajax.php:871
-#: includes/class-ajax.php:893
-#: includes/class-ajax.php:945
-#: includes/class-ajax.php:967
-#: includes/class-ajax.php:987
-#: includes/class-ajax.php:1026
-#: includes/class-ajax.php:1073
-#: includes/class-ajax.php:1134
-#: includes/class-ajax.php:1184
-#: includes/class-ajax.php:1208
-#: includes/class-ajax.php:1238
-#: includes/class-ajax__premium_only.php:428
-#: includes/class-ajax__premium_only.php:444
-#: includes/class-ajax__premium_only.php:461
-#: includes/class-ajax__premium_only.php:612
-#: includes/class-ajax__premium_only.php:827
-#: includes/class-ajax__premium_only.php:848
-#: includes/class-ajax__premium_only.php:1204
+#: includes/class-ajax.php:261
+#: includes/class-ajax.php:277
+#: includes/class-ajax.php:294
+#: includes/class-ajax.php:445
+#: includes/class-ajax.php:671
+#: includes/class-ajax.php:692
+#: includes/class-ajax.php:728
+#: includes/class-ajax.php:832
+#: includes/class-ajax.php:853
+#: includes/class-ajax.php:877
+#: includes/class-ajax.php:899
+#: includes/class-ajax.php:951
+#: includes/class-ajax.php:973
+#: includes/class-ajax.php:993
+#: includes/class-ajax.php:1032
+#: includes/class-ajax.php:1079
+#: includes/class-ajax.php:1140
+#: includes/class-ajax.php:1190
+#: includes/class-ajax.php:1215
+#: includes/class-ajax__premium_only.php:427
+#: includes/class-ajax__premium_only.php:443
+#: includes/class-ajax__premium_only.php:460
+#: includes/class-ajax__premium_only.php:611
+#: includes/class-ajax__premium_only.php:837
+#: includes/class-ajax__premium_only.php:858
+#: includes/class-ajax__premium_only.php:1223
 #: includes/class-statistics__premium_only.php:46
 #: includes/class-statistics__premium_only.php:191
-#: includes/class-statistics__premium_only.php:203
+#: includes/class-statistics__premium_only.php:205
 msgid "You do not have permission to perform this action"
 msgstr ""
 
 #. translators: %s: User feedback
-#: includes/class-ajax.php:308
-#: includes/class-ajax__premium_only.php:471
+#: includes/class-ajax.php:304
+#: includes/class-ajax__premium_only.php:470
 msgid "Feedback: %s"
 msgstr ""
 
 #. translators: %s: Website URL
-#: includes/class-ajax.php:312
-#: includes/class-ajax__premium_only.php:475
+#: includes/class-ajax.php:308
+#: includes/class-ajax__premium_only.php:474
 msgid "Website URL: %s"
 msgstr ""
 
 #. translators: %s: Plugin name
-#: includes/class-ajax.php:315
-#: includes/class-ajax__premium_only.php:478
+#: includes/class-ajax.php:311
+#: includes/class-ajax__premium_only.php:477
 msgid "Feedback for %s"
 msgstr ""
 
-#: includes/class-ajax.php:689
-#: includes/class-ajax__premium_only.php:852
+#: includes/class-ajax.php:696
+#: includes/class-ajax__premium_only.php:862
 msgid "Invalid shortcode data"
 msgstr ""
 
-#: includes/class-ajax.php:716
-#: includes/class-ajax__premium_only.php:876
+#: includes/class-ajax.php:723
+#: includes/class-ajax__premium_only.php:886
 msgid "No active account found"
 msgstr ""
 
-#: includes/class-ajax.php:799
+#: includes/class-ajax.php:807
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
 msgid "Please enter a keyword to search"
 msgstr ""
 
-#: includes/class-ajax.php:1052
-#: includes/class-ajax.php:1216
-#: includes/class-ajax__premium_only.php:1183
-#: includes/class-ajax__premium_only.php:1422
+#: includes/class-ajax.php:1058
+#: includes/class-ajax__premium_only.php:1202
 msgid "Something went wrong! Preview is not available"
 msgstr ""
 
-#: includes/class-ajax.php:1254
-#: includes/class-ajax__premium_only.php:1452
+#: includes/class-ajax.php:1231
+#: includes/class-ajax__premium_only.php:1442
 msgid "File not found"
 msgstr ""
 
-#: includes/class-ajax.php:1332
-#: includes/class-ajax__premium_only.php:1523
+#: includes/class-ajax.php:1309
+#: includes/class-ajax__premium_only.php:1513
 #: includes/class-statistics__premium_only.php:187
 msgid "Invalid nonce"
 msgstr ""
 
-#: includes/class-ajax__premium_only.php:1241
+#: includes/class-ajax__premium_only.php:1260
 #: includes/views/photo-proof-email__premium_only.php:169
 msgid "Client Photo Proof Selection"
 msgstr ""
 
-#: includes/class-email-report__premium_only.php:48
+#: includes/class-email-report__premium_only.php:47
 msgid "Once Monthly"
 msgstr ""
 
@@ -351,25 +350,25 @@ msgstr ""
 msgid " Statistics Summary of Integrate Google Drive."
 msgstr ""
 
-#: includes/class-hooks.php:354
+#: includes/class-hooks.php:365
 msgid "Sorry, you are not allowed to access this page directly."
 msgstr ""
 
-#: includes/class-hooks.php:360
-#: includes/class-hooks.php:367
-#: includes/class-hooks.php:376
+#: includes/class-hooks.php:371
+#: includes/class-hooks.php:378
+#: includes/class-hooks.php:387
 msgid "Invalid embed URL."
 msgstr ""
 
 #. translators: %d: number of files
-#: includes/class-hooks.php:407
-#: includes/class-hooks.php:423
+#: includes/class-hooks.php:418
+#: includes/class-hooks.php:434
 msgid "%d file uploaded to Google Drive"
 msgid_plural "%d files uploaded to Google Drive"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-hooks.php:472
+#: includes/class-hooks.php:483
 msgid "Integrate Google Drive Synchronize Interval"
 msgstr ""
 
@@ -528,8 +527,8 @@ msgstr ""
 msgid "Statistics cleared successfully"
 msgstr ""
 
-#: includes/class-statistics__premium_only.php:307
-#: includes/class-statistics__premium_only.php:348
+#: includes/class-statistics__premium_only.php:310
+#: includes/class-statistics__premium_only.php:351
 msgid "Guest"
 msgstr ""
 
@@ -842,7 +841,7 @@ msgstr ""
 msgid "Computers"
 msgstr ""
 
-#: includes/functions.php:1541
+#: includes/functions.php:1545
 msgid "The file you are trying to load does not exist in your theme or Tutor LMS plugin location. If you are extending the Tutor LMS plugin, please create a php file here: "
 msgstr ""
 
@@ -878,7 +877,6 @@ msgstr ""
 #: includes/integrations/templates/dokan-settings.php:69
 #: includes/integrations/templates/tutor/dashboard/settings/google-drive.php:61
 #: assets/js/admin.js:1
-#: assets/js/frontend.js:1
 #: assets/js/settings.js:1
 msgid "Remove"
 msgstr ""
@@ -1109,7 +1107,7 @@ msgstr ""
 msgid "This field is required. Please upload your files."
 msgstr ""
 
-#: includes/integrations/class-media-library.php:245
+#: includes/integrations/class-media-library.php:242
 #: includes/integrations/templates/dokan-settings.php:63
 #: includes/integrations/templates/tutor/dashboard/settings/google-drive.php:55
 #: assets/js/admin.js:1
@@ -1119,40 +1117,41 @@ msgstr ""
 msgid "Refresh"
 msgstr ""
 
-#: includes/integrations/class-media-library.php:441
+#: includes/integrations/class-media-library.php:395
 #: assets/js/media-library.js:1
 msgid "Replace"
 msgstr ""
 
-#: includes/integrations/class-media-library.php:442
+#: includes/integrations/class-media-library.php:396
 msgid "Replace the file with a Google Drive file"
 msgstr ""
 
-#: includes/integrations/class-media-library.php:449
+#: includes/integrations/class-media-library.php:403
 #: assets/js/admin.js:1
+#: assets/js/frontend.js:1
 #: assets/js/media-library.js:1
 msgid "Upload"
 msgstr ""
 
-#: includes/integrations/class-media-library.php:450
+#: includes/integrations/class-media-library.php:404
 msgid "Upload the file to Google Drive"
 msgstr ""
 
-#: includes/integrations/class-media-library.php:460
+#: includes/integrations/class-media-library.php:414
 #: assets/js/media-library.js:1
 msgid "Restore"
 msgstr ""
 
-#: includes/integrations/class-media-library.php:461
+#: includes/integrations/class-media-library.php:415
 msgid "Restore the file to original media library file"
 msgstr ""
 
-#: includes/integrations/class-media-library.php:470
+#: includes/integrations/class-media-library.php:424
 #: assets/js/settings.js:1
 msgid "Import"
 msgstr ""
 
-#: includes/integrations/class-media-library.php:471
+#: includes/integrations/class-media-library.php:425
 msgid "Import the file to media library"
 msgstr ""
 
@@ -1167,25 +1166,25 @@ msgid "Please upload at least %s files."
 msgstr ""
 
 #: includes/integrations/class-tutor.php:198
-#: includes/integrations/class-tutor.php:393
+#: includes/integrations/class-tutor.php:398
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
 msgid "Size"
 msgstr ""
 
-#: includes/integrations/class-tutor.php:367
+#: includes/integrations/class-tutor.php:372
 msgid "Select Your Video"
 msgstr ""
 
-#: includes/integrations/class-tutor.php:368
+#: includes/integrations/class-tutor.php:373
 msgid "File Format: "
 msgstr ""
 
-#: includes/integrations/class-tutor.php:374
+#: includes/integrations/class-tutor.php:379
 msgid "Browse Video"
 msgstr ""
 
-#: includes/integrations/class-tutor.php:432
+#: includes/integrations/class-tutor.php:437
 msgid "Upload Video Poster"
 msgstr ""
 
@@ -2554,27 +2553,27 @@ msgstr ""
 msgid "Using this plugin, you can integrate your Google Drive with available popular plugins."
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:174
+#: includes/views/getting-started/what-new.php:192
 msgid "Exploring the Latest Updates"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:175
+#: includes/views/getting-started/what-new.php:193
 msgid "Dive Into the Recent Change Logs for Fresh Insights"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:193
+#: includes/views/getting-started/what-new.php:211
 msgid "New Features"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:202
+#: includes/views/getting-started/what-new.php:220
 msgid "Bug Fixes"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:210
+#: includes/views/getting-started/what-new.php:228
 msgid "Improvements"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:218
+#: includes/views/getting-started/what-new.php:236
 msgid "Removes"
 msgstr ""
 
@@ -2744,15 +2743,15 @@ msgstr ""
 msgid "This email has been generated by Integrate Google Drive plugin at %s"
 msgstr ""
 
-#: includes/views/recommended-plugins.php:96
+#: includes/views/recommended-plugins.php:114
 msgid "Try out our recommended plugins"
 msgstr ""
 
-#: includes/views/recommended-plugins.php:97
+#: includes/views/recommended-plugins.php:115
 msgid "Hide From Menu"
 msgstr ""
 
-#: includes/views/recommended-plugins.php:411
+#: includes/views/recommended-plugins.php:429
 #: assets/js/admin.js:1
 #: assets/js/dokan.js:1
 #: assets/js/frontend.js:1
@@ -2761,12 +2760,92 @@ msgstr ""
 msgid "Are you sure?"
 msgstr ""
 
-#: includes/views/recommended-plugins.php:412
+#: includes/views/recommended-plugins.php:430
 msgid "If you hide the recommended plugins page from your menu, it won't appear there again. Are you sure you'd like to do it?"
 msgstr ""
 
-#: plugin.php:17
+#: plugin.php:19
 msgid "You can't access this page"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Copied"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Link copied to clipboard"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Link Type"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Preview Link"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Download Link"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Choose the type of link you want to share."
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Choose the type of link you want to generate."
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Copied!"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Embed code copied to clipboard."
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Copy Link"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Embed"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+#: assets/js/private-folders.js:1
+#: assets/js/settings.js:1
+msgid "Email"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+#: assets/js/settings.js:1
+msgid "Facebook"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+#: assets/js/settings.js:1
+msgid "Twitter"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+#: assets/js/settings.js:1
+msgid "WhatsApp"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -2828,11 +2907,6 @@ msgid "Insert Google Drive files view links."
 msgstr ""
 
 #: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Copied"
-msgstr ""
-
-#: assets/js/admin.js:1
 msgid "Shortcode copied to clipboard"
 msgstr ""
 
@@ -2873,6 +2947,40 @@ msgstr ""
 
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
+msgid "Completed!"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Download completed"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+#: assets/js/media-library.js:1
+#: assets/js/settings.js:1
+#: assets/js/statistics.js:1
+msgid "Error!"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+#: assets/js/settings.js:1
+msgid "OK"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Direct Link"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Share"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
 #: assets/js/media-library.js:1
 msgid "Error"
 msgstr ""
@@ -2880,12 +2988,6 @@ msgstr ""
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
 msgid "Enter a keyword to search"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-#: assets/js/private-folders.js:1
-msgid "Search"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -2916,106 +3018,7 @@ msgstr ""
 
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
-msgid "Created"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Modified"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Ascending"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Descending"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "You can not select more than %s files."
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-#: assets/js/settings.js:1
-msgid "OK"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Approve Selection (%s selected)"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Are you sure you want to approve the selected files?"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Enter a message to send to the author"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Approve"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Sent!"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Your selected images have been sent to the author."
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-#: assets/js/media-library.js:1
-#: assets/js/settings.js:1
-#: assets/js/statistics.js:1
-msgid "Error!"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "An error occurred while sending the files."
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Send Selection"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Delete"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Sort"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "SORT BY"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "SORT DIRECTION"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Options"
+msgid "Sidebar Toggle"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -3034,18 +3037,6 @@ msgstr ""
 #: assets/js/frontend.js:1
 #: assets/js/media-library.js:1
 msgid "Add account"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-#: assets/js/media-library.js:1
-#: assets/js/settings.js:1
-msgid "Select"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Upload Files"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -3181,6 +3172,11 @@ msgstr ""
 
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
+msgid "Upload Files"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
 msgid "Ok"
 msgstr ""
 
@@ -3247,6 +3243,136 @@ msgstr ""
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
 msgid "Clear"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Submit Selections"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Created"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Modified"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Ascending"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Descending"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Sort"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "SORT BY"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "SORT DIRECTION"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Bulk Select"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Selected"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Preview"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Please select at least one file."
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "You can not select more than %s files."
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Approve Selection (%s selected)"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Are you sure you want to approve the selected files?"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Enter a message to send to the author"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Approve"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Sent!"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Your selected images have been sent to the author."
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "An error occurred while sending the files."
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Photo Proofing"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Generate Direct Link"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Delete"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Listing View"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Details"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "Options"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -3351,66 +3477,6 @@ msgstr ""
 
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
-msgid "Link copied to clipboard"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Copied!"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Embed code copied to clipboard."
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Copy Link"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Embed"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-#: assets/js/private-folders.js:1
-#: assets/js/settings.js:1
-msgid "Email"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-#: assets/js/settings.js:1
-msgid "Facebook"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-#: assets/js/settings.js:1
-msgid "Twitter"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-#: assets/js/settings.js:1
-msgid "WhatsApp"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Direct Link"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Share"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
 msgid "Google Doc"
 msgstr ""
 
@@ -3437,11 +3503,6 @@ msgstr ""
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
 msgid "Preview in a new window"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Preview"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -3547,16 +3608,6 @@ msgstr ""
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
 msgid "File has been renamed."
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Completed!"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "Download completed"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -5261,10 +5312,6 @@ msgid "Select users & roles who can preview files."
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "Photo Proofing"
-msgstr ""
-
-#: assets/js/admin.js:1
 msgid "Upgrade to Pro to photo proofing"
 msgstr ""
 
@@ -5273,11 +5320,19 @@ msgid "Allow users to select images and send them to the admin."
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "Maximum Selection"
+msgid "Button Text"
 msgstr ""
 
 #: assets/js/admin.js:1
 msgid "Upgrade to PRO to enable photo proofing"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Enter the text for the photo selection submit button."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Maximum Selection"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -5957,6 +6012,11 @@ msgid "Select Replacement"
 msgstr ""
 
 #: assets/js/media-library.js:1
+#: assets/js/settings.js:1
+msgid "Select"
+msgstr ""
+
+#: assets/js/media-library.js:1
 msgid "File Replaced"
 msgstr ""
 
@@ -6010,6 +6070,10 @@ msgstr ""
 
 #: assets/js/private-folders.js:1
 msgid "Search Users"
+msgstr ""
+
+#: assets/js/private-folders.js:1
+msgid "Search"
 msgstr ""
 
 #: assets/js/private-folders.js:1
@@ -7050,6 +7114,10 @@ msgstr ""
 
 #: assets/js/settings.js:1
 msgid "An error occurred while saving the settings."
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Toggle Menu"
 msgstr ""
 
 #: assets/js/settings.js:1

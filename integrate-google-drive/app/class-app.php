@@ -72,8 +72,8 @@ class App {
 			$folder_id = $args['folder']['shortcutDetails']['targetId'];
 		}
 
-		$limit                = ! empty( $args['limit'] ) ? $args['limit'] : 0;
-		$page_number          = ! empty( $args['folder']['pageNumber'] ) ? $args['folder']['pageNumber'] : 1;
+		$limit                = ! empty( $args['limit'] ) ? intval( $args['limit'] ) : 0;
+		$page_number          = ! empty( $args['folder']['pageNumber'] ) ? intval( $args['folder']['pageNumber'] ) : 1;
 		$start_index          = $page_number > 0 ? ( $page_number - 1 ) * $limit : 0;
 		$filters              = ! empty( $args['filters'] ) ? $args['filters'] : [];
 		$files_number_to_show = ! empty( $args['fileNumbers'] ) ? $args['fileNumbers'] : 0;
@@ -163,7 +163,7 @@ class App {
 		} else {
 
 			// Get files from cache
-			list( $files, $count ) = Files::get( $folder_id, $folder_account_id, $sort, $start_index, $limit, $filters );
+			list( $files, $count ) = Files::get( $folder_id, $folder_account_id, $start_index, $limit, $filters );
 
 			$data['count'] = $count;
 		}
@@ -175,7 +175,7 @@ class App {
 			}
 		}
 
-		// Check max number of files to show
+		// Check the max number of files to show
 		if ( $files_number_to_show > 0 ) {
 
 			if ( ( $page_number * $limit ) > $files_number_to_show ) {
@@ -327,95 +327,75 @@ class App {
 
 	}
 
-	public function get_search_files( $posted = [] ) {
-
-		// Get posted data
-		$folders          = $posted['folders'] ?? [];
-		$keyword          = ! empty( $posted['keyword'] ) ? stripslashes( $posted['keyword'] ) : '';
-		$sort             = $posted['sort'] ?? [];
-		$full_text_search = isset( $posted['fullTextSearch'] ) ? filter_var( $posted['fullTextSearch'], FILTER_VALIDATE_BOOLEAN ) : true;
-		$filters          = $posted['filters'] ?? [];
-
-		$files = [];
+	public function get_search_files(array $posted = []): array {
+		// Extract and sanitize posted data
+		$folders = $posted['folders'] ?? [];
+		$keyword = !empty($posted['keyword']) ? stripslashes($posted['keyword']) : '';
+		$sort = $posted['sort'] ?? [];
+		$full_text_search = filter_var($posted['fullTextSearch'] ?? true, FILTER_VALIDATE_BOOLEAN);
+		$filters = $posted['filters'] ?? [];
 
 		$look_in_to = [];
-		if ( ! empty( $folders ) ) {
 
-			foreach ( $folders as $key => $folder ) {
-
-				if ( in_array( $folder['id'], [
-					'root',
-					'computers',
-					'shared-drives',
-					'shared',
-					'starred'
-				] ) ) {
+		if (!empty($folders)) {
+			foreach ($folders as $key => $folder) {
+				// Skip invalid or unsupported folders
+				$invalid_ids = ['root', 'computers', 'shared-drives', 'shared', 'starred'];
+				if (
+					in_array($folder['id'], $invalid_ids, true) ||
+					(!empty($folder['parents']) && in_array('shared-drives', $folder['parents'], true)) ||
+					!igd_is_dir($folder)
+				) {
 					continue;
 				}
 
-
-				// Skip if shared drives
-				if ( ! empty( $folder['parents'] ) && in_array( 'shared-drives', $folder['parents'] ) ) {
-					continue;
-				}
-
-				// Skip if not a folder
-				if ( ! igd_is_dir( $folder ) ) {
-					continue;
-				}
-
-				// Get target ID from shortcut folder
-				if ( ! empty( $folder['shortcutDetails'] ) ) {
-					$folder_id       = $folder['shortcutDetails']['targetId'];
-					$folder          = $this->get_file_by_id( $folder_id );
-					$folders[ $key ] = $folder;
+				// Resolve shortcut folder target ID
+				if (!empty($folder['shortcutDetails'])) {
+					$folder_id = $folder['shortcutDetails']['targetId'];
+					$folder = $this->get_file_by_id($folder_id);
+					$folders[$key] = $folder;
 				}
 
 				$look_in_to[] = $folder['id'];
 
-				$child_folders     = igd_get_all_child_folders( $folder );
-				$child_folders_ids = wp_list_pluck( $child_folders, 'id' );
-				$look_in_to        = array_merge( $look_in_to, $child_folders_ids );
+				// Add child folder IDs
+				$child_folders = igd_get_all_child_folders($folder);
+				if (!empty($child_folders)) {
+					$look_in_to = array_merge($look_in_to, wp_list_pluck($child_folders, 'id'));
+				}
 			}
 		}
 
-		// Filter files if files parents is in look_in_to
-		$args = array(
+		// Build query based on full_text_search flag
+		$query = $full_text_search
+			? "fullText contains '{$keyword}' and trashed = false"
+			: "name contains '{$keyword}' and trashed = false";
+
+		// Build arguments for file search
+		$args = [
 			'fields'      => $this->list_fields,
 			'pageSize'    => 1000,
-			'orderBy'     => "",
-			'q'           => "fullText contains '{$keyword}' and trashed = false",
+			'orderBy'     => $full_text_search ? '' : 'folder,name',
+			'q'           => $query,
 			'from_server' => true,
-			'sort'        => [
-				'sortBy'        => 'name',
-				'sortDirection' => 'asc'
-			],
+			'sort'        => $sort ?: ['sortBy' => 'name', 'sortDirection' => 'asc'],
 			'filters'     => $filters,
-		);
+		];
 
-		if ( ! empty( $sort ) ) {
-			$args['sort'] = $sort;
+		// Fetch files
+		$data = $this->get_files($args);
+
+		// Filter files by folder parents if necessary
+		if (!empty($look_in_to)) {
+			$data['files'] = array_filter($data['files'], function ($file) use ($look_in_to) {
+				return !empty($file['parents']) && in_array($file['parents'][0], $look_in_to, true);
+			});
 		}
 
-		if ( ! $full_text_search ) {
-			$args['q']       = "name contains '{$keyword}' and trashed = false";
-			$args['orderBy'] = 'folder,name'; // Order by not supported in fullText search
-		}
+		// Log the search
+		do_action('igd_insert_log', 'search', $keyword, $this->account_id);
 
-		$data  = $this->get_files( $args );
-		$files = array_merge( $files, $data['files'] ?? [] );
-
-		if ( ! empty( $look_in_to ) ) {
-			$files = array_filter( $files, function ( $file ) use ( $look_in_to ) {
-				return ! empty( $file['parents'] ) && in_array( $file['parents'][0], $look_in_to );
-			} );
-		}
-
-		// Insert log
-		do_action( 'igd_insert_log', 'search', $keyword, $this->account_id );
-
-		return array_values( $files );
-
+		return $data;
 	}
 
 	public function is_search_query( $args ) {

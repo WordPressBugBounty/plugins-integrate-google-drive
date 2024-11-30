@@ -67,7 +67,7 @@ $data = plugins_api( 'plugin_information', $args );
 if ( $data && ! is_wp_error( $data ) ) {
 	$recommendedPlugins['radio-player']                    = $data;
 	$recommendedPlugins['radio-player']->name              = 'Radio Player – Live Shoutcast, Icecast and Any Audio Stream Player for WordPress';
-	$recommendedPlugins['radio-player']->short_description = 'A simple, easy-to-use and fully customizable web Radio Player for WordPress. Radio Player is specially configured to play any MP3, Shoutcast, IceCast, Radionomy, Airtime, Live365, radio.co, and any Audio stream in your WordPress website.';
+	$recommendedPlugins['radio-player']->short_description = 'The Radio Player plugin adds live audio streaming to WordPress, supporting Shoutcast, Icecast, and more for easy broadcasting.';
 }
 
 
@@ -87,6 +87,24 @@ if ( $data && ! is_wp_error( $data ) ) {
 	$recommendedPlugins['dracula-dark-mode']                    = $data;
 	$recommendedPlugins['dracula-dark-mode']->name              = 'Dracula Dark Mode – The Revolutionary Dark Mode Plugin For WordPress';
 	$recommendedPlugins['dracula-dark-mode']->short_description = 'Dracula Dark Mode is a highly customizable and easy-to-use dark mode plugin for WordPress. It offers an elegant dark mode version of your website, reducing eye strain for your visitors.';
+}
+
+/* Essential Addons for Contact Form 7 */
+$args = [
+	'slug'   => 'essential-addons-for-contact-form-7',
+	'fields' => [
+		'short_description' => true,
+		'icons'             => true,
+		'reviews'           => false, // excludes all reviews
+	],
+];
+
+$data = plugins_api( 'plugin_information', $args );
+
+if ( $data && ! is_wp_error( $data ) ) {
+	$recommendedPlugins['essential-addons-for-contact-form-7']                    = $data;
+	$recommendedPlugins['essential-addons-for-contact-form-7']->name              = 'Essential Addons for Contact Form 7';
+	$recommendedPlugins['essential-addons-for-contact-form-7']->short_description = '48+ Essential Fields & Features for Contact Form 7: Conditional Fields, Drag & Drop Upload, Form Styler, Multi-step Forms, Multi-column layouts & more.';
 }
 
 ?>
@@ -413,6 +431,7 @@ if ( $data && ! is_wp_error( $data ) ) {
     </div>
 
 </div>
+
 <script>
     (function ($) {
         "use strict";
@@ -430,12 +449,15 @@ if ( $data && ! is_wp_error( $data ) ) {
                     confirmButtonText: wp.i18n.__('Yes, hide it!', "integrate-google-drive"),
                     cancelButtonText: wp.i18n.__('No, cancel!', "integrate-google-drive"),
                     reverseButtons: true,
+                    customClass: {
+                        container: 'igd-swal',
+                    }
                 }).then((result) => {
                     if (result.value) {
 
                         wp.ajax.send('igd_hide_recommended_plugins', {
                             data: {
-                                nonce: igd.nonce,
+                                nonce: '<?php echo wp_create_nonce('igd'); ?>',
                             },
                             success: function () {
                                 Swal.fire({

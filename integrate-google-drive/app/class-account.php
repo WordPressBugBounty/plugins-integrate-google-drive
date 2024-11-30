@@ -124,7 +124,7 @@ class Account {
 	}
 
 	private function get_active_account_id_from_cookie() {
-		return $_COOKIE['igd_active_account_id'] ?? '';
+		return ! empty( $_COOKIE['igd_active_account_id'] ) ? sanitize_key( $_COOKIE['igd_active_account_id'] ) : '';
 	}
 
 	/**
@@ -217,6 +217,7 @@ class Account {
 		try {
 			$about = $service->about->get( [ 'fields' => 'storageQuota' ] );
 			$usage = $about->getStorageQuota()->getUsage();
+			$limit = $about->getStorageQuota()->getLimit();
 
 			// Update active account data
 			$accounts                                    = $this->get_accounts();
@@ -224,7 +225,7 @@ class Account {
 
 			update_option( 'igd_accounts', $accounts );
 
-			return $usage;
+			return [ 'usage' => $usage, 'limit' => $limit ];
 
 		} catch ( \Exception $exception ) {
 			error_log( sprintf( 'IGD Error: syncing storage size: %s', $exception->getMessage() ) );

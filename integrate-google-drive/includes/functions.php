@@ -169,6 +169,10 @@ function igd_file_map( $item, $account_id = null ) {
 		'accountId'                    => $account_id,
 	];
 
+	if ( 'My Drive' == $item->getName() ) {
+		$file['id'] = 'root';
+	}
+
 	// Get parents
 	$parents = $item->getParents();
 
@@ -510,7 +514,7 @@ function igd_get_embed_content( $data ) {
 					$sandbox_attrs = 'sandbox="allow-same-origin allow-scripts"';
 				}
 
-				printf( '<iframe class="igd-embed" src="%1$s" frameborder="0" scrolling="no" width="%2$s" height="%3$s" allow="autoplay" allowfullscreen="allowfullscreen" %4$s></iframe>', $url, $embed_width, $embed_height, $sandbox_attrs );
+				printf( '<iframe class="igd-embed" src="%1$s" frameborder="0" scrolling="no" width="%2$s" height="%3$s" referrerpolicy="no-referrer" allow="autoplay" allowfullscreen="allowfullscreen" %4$s></iframe>', $url, $embed_width, $embed_height, $sandbox_attrs );
 			}
 		}
 	}
@@ -540,7 +544,7 @@ function igd_is_cached_folder( $folder_id, $account_id = null ) {
 }
 
 function igd_update_cached_folders( $folder_id, $account_id ) {
-	$cached_folders               = get_option( 'igd_cached_folders', [] );
+	$cached_folders = get_option( 'igd_cached_folders', [] );
 
 	$cached_folders[ $folder_id ] = [
 		'id'        => $folder_id,
@@ -1616,6 +1620,8 @@ function igd_user_can_access( $access_right ) {
 		return false;
 	}
 
+    //error_log(print_r($current_user, true));
+
 	$access_users = igd_get_settings( "access" . str_replace( ' ', '', ucwords( str_replace( '_', ' ', $access_right ) ) ) . "Users", [ 'administrator' ] );
 
 	$can_access = ! empty( array_intersect( $current_user->roles, $access_users ) ) || in_array( $current_user->ID, $access_users ) || ( is_multisite() && is_super_admin() );
@@ -2315,4 +2321,36 @@ function igd_get_secure_embed_url( $file_id ) {
 
 	return $embed_url . $file_id . '/preview';
 
+}
+
+function igd_get_grouped_parent_folders( $file, &$groupedFolders = [] ) {
+	$app = App::instance( $file['accountId'] );
+
+	// Check if file has parents
+	if ( ! empty( $file['parents'] ) ) {
+		foreach ( $file['parents'] as $parent_id ) {
+			$parent_folder = $app->get_file_by_id( $parent_id );
+
+			// Check if retrieved parent folder is indeed a directory
+			if ( igd_is_dir( $parent_folder ) ) {
+
+				// Initialize group for this parent if it doesn't exist
+				if ( ! isset( $groupedFolders[ $parent_id ] ) ) {
+					$groupedFolders[ $parent_id ] = [];
+				}
+
+				// Add to group if not already added
+				if ( ! in_array( $parent_folder, $groupedFolders[ $parent_id ] ) ) {
+					$groupedFolders[ $parent_id ]['folder']   = $parent_folder;
+					$groupedFolders[ $parent_id ]['children'] = array_filter( igd_get_child_items( $parent_folder ), 'igd_is_dir' );
+				}
+
+				// Recursively get parents of the parent folder
+				igd_get_grouped_parent_folders( $parent_folder, $groupedFolders );
+
+			}
+		}
+	}
+
+	return $groupedFolders;
 }

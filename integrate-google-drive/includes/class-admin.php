@@ -22,7 +22,7 @@ class Admin {
 		// Remove admin notices from plugin pages
 		add_action( 'admin_init', [ $this, 'show_review_popup' ] );
 
-		//admin body class
+		// admin body class
 		add_filter( 'admin_body_class', [ $this, 'admin_body_class' ] );
 
 		//Handle custom app authorization

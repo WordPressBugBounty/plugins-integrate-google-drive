@@ -2,9 +2,9 @@
 Contributors: softlab, princeahmed
 Tags: google drive, google, gallery, embed, media
 Requires at least: 5.0
-Tested up to: 6.6
-Requires PHP: 7.0
-Stable tag: 1.4.6
+Tested up to: 6.7
+Requires PHP: 7.4
+Stable tag: 1.4.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -234,6 +234,8 @@ Live Shoutcast, Icecast and Audio Stream Player for WordPress.
 🌙 [Dracula Dark Mode](https://wordpress.org/plugins/dracula-dark-mode/)
 The Revolutionary Dark Mode Plugin For WordPress
 
+📝 [Essential Addons for Contact Form 7](https://wordpress.org/plugins/essential-addons-for-contact-form-7/)
+48+ Essential Fields, Features & Integrations Add-ons for Contact Form 7.
 
 
 == Frequently Asked Questions ==
@@ -330,6 +332,16 @@ Absolutely. By turning on the "Photo Proofing" option within the gallery module,
 
 
 == Changelog ==
+
+= 1.4.7 (2024-11-30) =
+* Fix: Fixed folders not sorting properly.
+* Fix: Fixed statistics email report not sending.
+* Fix: Fixed media player responsive issue.
+* Fix: Fixed links not opening in the file inlined view.
+* Fix: Fixed classic editor conflicts in formidable forms settings.
+* Fix: Fixed auto-save not working.
+* Update: Added integration support for Tutor LMS v3.0.
+* Update: Improved overall plugin performance and user interface.
 
 = 1.4.6 (2024-11-11) =
 * **Fix:** Fixed sort by name not working properly.

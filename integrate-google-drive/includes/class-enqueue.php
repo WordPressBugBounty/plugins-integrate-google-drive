@@ -222,7 +222,9 @@ class Enqueue {
             );
         }
         // TinyMCE Editor
-        wp_enqueue_editor();
+        if ( !empty( $hook ) ) {
+            wp_enqueue_editor();
+        }
         wp_localize_script( 'igd-admin', 'igd', $this->get_localize_data( $hook ) );
         wp_set_script_translations( 'igd-admin', 'integrate-google-drive', plugin_dir_path( IGD_FILE ) . 'languages' );
     }

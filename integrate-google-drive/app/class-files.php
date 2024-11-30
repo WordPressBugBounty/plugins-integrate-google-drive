@@ -13,7 +13,7 @@ class Files {
 		return $wpdb->prefix . 'integrate_google_drive_files';
 	}
 
-	public static function get( $parent_id, $account_id, $sort, $start_index, $limit = '', $filters = [] ) {
+	public static function get( $parent_id, $account_id, $start_index, $limit = '', $filters = [] ) {
 		global $wpdb;
 
 		$table = self::get_table();
@@ -141,7 +141,7 @@ class Files {
 			}
 		}
 
-		// Create a SQL query to  fetch the count of total files applied filters
+		// Create an SQL query to fetch the count of total files applied filters
 		$count_sql = "SELECT COUNT(*) FROM `$table` WHERE 1 $where_placeholders";
 		$count     = $wpdb->get_var( $wpdb->prepare( $count_sql, $where_values ) );
 
@@ -149,8 +149,10 @@ class Files {
 			$count = false;
 		}
 
+		$order_by = "ORDER BY (type = 'application/vnd.google-apps.folder') DESC ";
+
 		// Create the final SQL
-		$sql = $wpdb->prepare( "SELECT data FROM `$table` WHERE 1 $where_placeholders $limit_text", $where_values );
+		$sql = $wpdb->prepare( "SELECT data FROM `$table` WHERE 1 $where_placeholders $order_by $limit_text", $where_values );
 
 		$items = $wpdb->get_results( $sql, ARRAY_A );
 
@@ -233,7 +235,6 @@ class Files {
 		global $wpdb;
 
 		$table = self::get_table();
-
 
 		$sql = "REPLACE INTO `$table` (id, name, size, parent_id, account_id, type, extension, data, created, updated, is_computers, is_shared_with_me, is_starred, is_shared_drive) 
 		VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%d,%d )";

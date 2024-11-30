@@ -179,8 +179,16 @@ class Hooks {
     public function direct_content() {
         if ( $direct_file = get_query_var( 'direct_file' ) ) {
             $file = json_decode( base64_decode( $direct_file ), true );
-            if ( empty( $file['permissions'] ) ) {
-                $file['permissions'] = [];
+            if ( empty( $file['id'] ) ) {
+                wp_die( 'Invalid file ID', 400 );
+            }
+            $file_id = $file['id'];
+            $account_id = $file['accountId'] ?? '';
+            // Retrieve the file and check permissions
+            $file = App::instance( $account_id )->get_file_by_id( $file_id );
+            $permissions = Permissions::instance( $account_id );
+            if ( !igd_is_dir( $file ) && !$permissions->has_permission( $file ) ) {
+                $permissions->set_permission( $file );
             }
             $is_dir = igd_is_dir( $file );
             add_filter( 'show_admin_bar', '__return_false' );

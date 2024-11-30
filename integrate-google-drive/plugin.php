@@ -4,11 +4,13 @@
  * Plugin Name: Integrate Google Drive
  * Plugin URI:  https://softlabbd.com/integrate-google-drive
  * Description: Seamless Google Drive integration for WordPress, allowing you to embed, share, play, and download documents and media files directly from Google Drive to your WordPress site.
- * Version:     1.4.6
+ * Version:     1.4.7
  * Author:      SoftLab
  * Author URI:  https://softlabbd.com/
  * Text Domain: integrate-google-drive
  * Domain Path: /languages/
+ * License:     GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *
  */
 // don't call the file directly
@@ -57,7 +59,7 @@ if ( function_exists( 'igd_fs' ) ) {
         do_action( 'igd_fs_loaded' );
     }
     /** define constants */
-    define( 'IGD_VERSION', '1.4.6' );
+    define( 'IGD_VERSION', '1.4.7' );
     define( 'IGD_DB_VERSION', '1.4.4' );
     define( 'IGD_FILE', __FILE__ );
     define( 'IGD_PATH', dirname( IGD_FILE ) );

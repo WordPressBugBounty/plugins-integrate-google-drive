@@ -59,7 +59,7 @@ class Download {
 
 
 	public function start_download() {
-		//$this->init_process();
+//		$this->init_process();
 
 		$this->set_download_method();
 
@@ -113,6 +113,7 @@ class Download {
 	}
 
 	private function download_stream() {
+
 		$filename = $this->file['name'];
 		header( 'Content-Disposition: attachment; ' . sprintf( 'filename="%s"; ', rawurlencode( $filename ) ) . sprintf( "filename*=utf-8''%s", rawurlencode( $filename ) ) );
 
