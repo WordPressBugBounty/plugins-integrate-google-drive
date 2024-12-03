@@ -4,7 +4,7 @@ Tags: google drive, google, gallery, embed, media
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.4.7
+Stable tag: 1.4.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -333,29 +333,44 @@ Absolutely. By turning on the "Photo Proofing" option within the gallery module,
 
 == Changelog ==
 
+= 1.4.8 (2024-12-03) =
+**Fixes**
+* Fixed Divi builder conflicts.
+* Fixed search box module design broken issue.
+
+**Enhancements**
+* Improved loading pre-loaders animation.
+
 = 1.4.7 (2024-11-30) =
-* Fix: Fixed folders not sorting properly.
-* Fix: Fixed statistics email report not sending.
-* Fix: Fixed media player responsive issue.
-* Fix: Fixed links not opening in the file inlined view.
-* Fix: Fixed classic editor conflicts in formidable forms settings.
-* Fix: Fixed auto-save not working.
-* Update: Added integration support for Tutor LMS v3.0.
-* Update: Improved overall plugin performance and user interface.
+**Fixes**
+* Fixed folders not sorting properly.
+* Fixed statistics email report not sending.
+* Fixed media player responsive issue.
+* Fixed links not opening in the file inlined view.
+* Fixed classic editor conflicts in formidable forms settings.
+* Fixed auto-save not working.
+
+**Enhancements**
+* Added integration support for Tutor LMS v3.0.
+* Improved overall plugin performance and user interface.
 
 = 1.4.6 (2024-11-11) =
-* **Fix:** Fixed sort by name not working properly.
-* **Fix:** Fixed private folders merging issue.
+**Fixes**
+* Fixed sort by name not working properly.
+* Fixed private folders merging issue.
 
 = 1.4.5 (2024-11-04) =
-* **New:** Added password protection for the shortcode modules.
-* **New:** Added grid playlist style for the media player module.
-* **New:** Added settings to hide the preview bottom thumbnails.
-* **New:** Added video type embed, direct option for the media player module and Tutor LMS video.
-* **Fix:** Fixed WooCommerce products import image not setting properly.
-* **Fix:** Fixed nonce validation issue for the shortcode modules.
-* **Fix:** Fixed Upload module not displaying error messages.
-* **Update:** Updated contact form 7 integration to support the latest version.
+**New Features**
+* Added password protection for the shortcode modules.
+* Added grid playlist style for the media player module.
+* Added settings to hide the preview bottom thumbnails.
+* Added video type embed, direct option for the media player module and Tutor LMS video.
+* Fixed WooCommerce products import image not setting properly.
+* Fixed nonce validation issue for the shortcode modules.
+* Fixed Upload module not displaying error messages.
+
+**Enhancements**
+* Updated contact form 7 integration to support the latest version.
 
 = 1.4.4 (2024-10-09) =
 * **New:** Added upload folder selection and file renaming settings in WooCommerce uploads.
@@ -391,7 +406,6 @@ Absolutely. By turning on the "Photo Proofing" option within the gallery module,
 * **Fix:** Fixed Preview not working issue.
 * **Fix:** Fixed Gutenberg editor Google Drive blocks not working properly.
 * **Fix:** Fixed Divi Builder reload issue.
-
 
 = 1.3.97 (2024-08-07) =
 * **New:** Added file description in the notification email.

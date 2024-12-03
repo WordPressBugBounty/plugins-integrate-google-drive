@@ -1620,8 +1620,6 @@ function igd_user_can_access( $access_right ) {
 		return false;
 	}
 
-    //error_log(print_r($current_user, true));
-
 	$access_users = igd_get_settings( "access" . str_replace( ' ', '', ucwords( str_replace( '_', ' ', $access_right ) ) ) . "Users", [ 'administrator' ] );
 
 	$can_access = ! empty( array_intersect( $current_user->roles, $access_users ) ) || in_array( $current_user->ID, $access_users ) || ( is_multisite() && is_super_admin() );
@@ -2194,135 +2192,6 @@ function igd_delete_transients_with_prefix( $prefix ) {
 	}
 }
 
-function igd_purge_3rd_party_cache() {
-	try {
-		// Purge all W3 Total Cache
-		if ( function_exists( 'w3tc_flush_all' ) ) {
-			w3tc_flush_all();
-		}
-
-		// Purge WP Super Cache
-		if ( function_exists( 'wp_cache_clear_cache' ) ) {
-			wp_cache_clear_cache();
-		}
-
-		// Purge WP Rocket
-		if ( function_exists( 'rocket_clean_domain' ) ) {
-			rocket_clean_domain();
-		}
-
-		// Purge Cachify
-		if ( function_exists( 'cachify_flush_cache' ) ) {
-			cachify_flush_cache();
-		}
-
-		// Purge Comet Cache
-		if ( class_exists( 'comet_cache' ) ) {
-			comet_cache::clear();
-		}
-
-		// Purge Zen Cache
-		if ( class_exists( 'zencache' ) ) {
-			zencache::clear();
-		}
-
-		// Purge LiteSpeed Cache
-		if ( class_exists( 'LiteSpeed_Cache_Tags' ) ) {
-			LiteSpeed_Cache_Tags::add_purge_tag( '*' );
-		}
-
-		// Purge Hyper Cache
-		if ( class_exists( 'HyperCache' ) ) {
-			do_action( 'autoptimize_action_cachepurged' );
-		}
-
-		// purge cache enabler
-		if ( has_action( 'ce_clear_cache' ) ) {
-			do_action( 'ce_clear_cache' );
-		}
-
-		// purge wpfc
-		if ( function_exists( 'wpfc_clear_all_cache' ) ) {
-			wpfc_clear_all_cache( true );
-		}
-
-		// add breeze cache purge support
-		if ( class_exists( 'Breeze_PurgeCache' ) ) {
-			Breeze_PurgeCache::breeze_cache_flush();
-		}
-
-		// swift
-		if ( class_exists( 'Swift_Performance_Cache' ) ) {
-			Swift_Performance_Cache::clear_all_cache();
-		}
-
-		// Hummingbird
-		if ( has_action( 'wphb_clear_page_cache' ) ) {
-			do_action( 'wphb_clear_page_cache' );
-		}
-
-		// WP-Optimize
-		if ( has_action( 'wpo_cache_flush' ) ) {
-			do_action( 'wpo_cache_flush' );
-		}
-
-		// hosting companies
-
-		// Purge SG Optimizer (Siteground)
-		if ( function_exists( 'sg_cachepress_purge_cache' ) ) {
-			sg_cachepress_purge_cache();
-		}
-
-		// Purge Godaddy Managed WordPress Hosting (Varnish + APC)
-		if ( class_exists( 'WPaaS\Plugin' ) && method_exists( 'WPass\Plugin', 'vip' ) ) {
-			fvm_godaddy_request( 'BAN' );
-		}
-
-		// Purge WP Engine
-		if ( class_exists( 'WpeCommon' ) ) {
-			if ( method_exists( 'WpeCommon', 'purge_memcached' ) ) {
-				WpeCommon::purge_memcached();
-			}
-			if ( method_exists( 'WpeCommon', 'purge_varnish_cache' ) ) {
-				WpeCommon::purge_varnish_cache();
-			}
-		}
-
-		// Purge Kinsta
-		global $kinsta_cache;
-		if ( isset( $kinsta_cache ) && class_exists( '\\Kinsta\\CDN_Enabler' ) && ! empty( $kinsta_cache->kinsta_cache_purge ) ) {
-			$kinsta_cache->kinsta_cache_purge->purge_complete_caches();
-		}
-
-		// Purge Pagely
-		if ( class_exists( 'PagelyCachePurge' ) ) {
-			$purge_pagely = new \PagelyCachePurge();
-			$purge_pagely->purgeAll();
-		}
-
-		// Purge Pantheon Advanced Page Cache plugin
-		if ( function_exists( 'pantheon_wp_clear_edge_all' ) ) {
-			pantheon_wp_clear_edge_all();
-		}
-
-		// wordpress default cache
-		if ( function_exists( 'wp_cache_flush' ) ) {
-			wp_cache_flush();
-		}
-	} catch ( \Exception $ex ) {
-		error_log( 'IGD ERROR MESSAGE : ' . sprintf( 'Cannot clear cache on line %s: %s', __LINE__, $ex->getMessage() ) );
-	}
-}
-
-function igd_get_secure_embed_url( $file_id ) {
-	$embed_url = 'https://drive.google.com/file/d/';
-
-	$file_id = preg_replace( '/[^a-zA-Z0-9-_]/', '', $file_id );
-
-	return $embed_url . $file_id . '/preview';
-
-}
-
 function igd_get_grouped_parent_folders( $file, &$groupedFolders = [] ) {
 	$app = App::instance( $file['accountId'] );
 
@@ -2354,3 +2223,4 @@ function igd_get_grouped_parent_folders( $file, &$groupedFolders = [] ) {
 
 	return $groupedFolders;
 }
+

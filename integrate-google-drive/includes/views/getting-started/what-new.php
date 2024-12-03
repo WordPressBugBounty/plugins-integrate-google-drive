@@ -4,6 +4,17 @@ defined( 'ABSPATH' ) || exit();
 
 $logs = [
 
+	'v.1.4.8' => [
+		'date'        => '2024-12-03',
+		'fix'         => [
+			'Fixed Divi builder conflicts.',
+			'Fixed search box module design broken issue.',
+		],
+		'enhancement' => [
+			'Improved loading pre-loaders animation.',
+		]
+	],
+
 	'v.1.4.7' => [
 		'date'        => '2024-11-30',
 		'fix'         => [

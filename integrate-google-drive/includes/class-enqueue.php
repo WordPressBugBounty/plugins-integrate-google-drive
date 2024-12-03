@@ -281,7 +281,7 @@ class Enqueue {
         echo $primary_color;
         ?>;
         --color-primary-dark: <?php 
-        echo igd_hex2rgba( $primary_color, 1 );
+        echo igd_color_brightness( $primary_color, -30 );
         ?>;
         --color-primary-light: <?php 
         echo igd_hex2rgba( $primary_color, '.5' );
