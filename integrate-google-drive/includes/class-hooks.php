@@ -104,46 +104,107 @@ class Hooks {
     }
 
     public function preview_image() {
-        if ( $preview_image = get_query_var( 'igd_preview_image' ) ) {
-            $image_data = json_decode( base64_decode( sanitize_text_field( $preview_image ) ), true );
-            $id = $image_data['id'] ?? '';
-            $account_id = $image_data['accountId'] ?? '';
-            $size = $image_data['size'] ?? 'medium';
-            $from_server = false;
-            $transient = get_transient( 'igd_latest_fetch_' . $id );
-            if ( !$transient ) {
-                $from_server = true;
-                set_transient( 'igd_latest_fetch_' . $id, true, 60 * MINUTE_IN_SECONDS );
+        // Check if the query variable exists
+        if ( !get_query_var( 'igd_preview_image' ) ) {
+            return;
+        }
+        // Sanitize and validate input
+        $id = sanitize_text_field( ( isset( $_GET['id'] ) ? $_GET['id'] : '' ) );
+        $account_id = sanitize_text_field( ( isset( $_GET['accountId'] ) ? $_GET['accountId'] : '' ) );
+        $size = sanitize_key( ( isset( $_GET['size'] ) ? $_GET['size'] : 'medium' ) );
+        $w = ( isset( $_GET['w'] ) ? intval( $_GET['w'] ) : 300 );
+        $h = ( isset( $_GET['h'] ) ? intval( $_GET['h'] ) : 300 );
+        if ( empty( $id ) ) {
+            header( "HTTP/1.1 400 Bad Request" );
+            echo "File ID is required.";
+            exit;
+        }
+        // Create app instance and fetch file
+        $app = App::instance( $account_id );
+        $file = $app->get_file_by_id( $id );
+        if ( !$file ) {
+            header( "HTTP/1.1 404 Not Found" );
+            echo "File not found.";
+            exit;
+        }
+        // Caching headers: Last-Modified and ETag
+        $lastModified = strtotime( $file['updated'] );
+        $etagFile = md5( $lastModified );
+        $ifModifiedSince = ( isset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) ? $_SERVER['HTTP_IF_MODIFIED_SINCE'] : false );
+        $etagHeader = ( isset( $_SERVER['HTTP_IF_NONE_MATCH'] ) ? trim( $_SERVER['HTTP_IF_NONE_MATCH'] ) : '' );
+        if ( $ifModifiedSince && strtotime( $ifModifiedSince ) === $lastModified || $etagHeader === $etagFile ) {
+            header( 'HTTP/1.1 304 Not Modified' );
+            exit;
+        }
+        header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', $lastModified ) . ' GMT' );
+        header( "Etag: {$etagFile}" );
+        header( 'Expires: ' . gmdate( 'D, d M Y H:i:s', time() + 300 ) . ' GMT' );
+        header( 'Cache-Control: must-revalidate' );
+        // Determine thumbnail attributes
+        switch ( $size ) {
+            case 'custom':
+                $thumbnail_attributes = "=w{$w}-h{$h}";
+                break;
+            case 'small':
+                $thumbnail_attributes = '=w300-h300';
+                break;
+            case 'medium':
+                $thumbnail_attributes = '=h600-nu';
+                break;
+            case 'large':
+                $thumbnail_attributes = '=w1024-h768-p-k-nu';
+                break;
+            case 'full':
+                $thumbnail_attributes = '=s0';
+                break;
+            default:
+                $thumbnail_attributes = '=w200-h190-p-k-nu-iv1';
+                break;
+        }
+        $thumbnail_file = $id . $thumbnail_attributes . '.png';
+        $thumbnail_path = IGD_CACHE_DIR . '/' . $thumbnail_file;
+        // Serve cached thumbnail if available
+        if ( file_exists( $thumbnail_path ) && filemtime( $thumbnail_path ) === $lastModified ) {
+            $img_info = getimagesize( $thumbnail_path );
+            if ( $img_info ) {
+                header( "Content-Type: {$img_info['mime']}" );
+                readfile( $thumbnail_path );
+                exit;
             }
-            $file = App::instance( $account_id )->get_file_by_id( $id, $from_server );
-            if ( empty( $file ) ) {
-                wp_die( 'File not found', 404 );
+        }
+        // Fetch thumbnail from external source
+        $download_link = "https://lh3.google.com/u/0/d/{$id}{$thumbnail_attributes}";
+        try {
+            $client = $app->client;
+            $request = new \IGDGoogle_Http_Request($download_link, 'GET');
+            $client->getIo()->setOptions( [
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_FOLLOWLOCATION => true,
+            ] );
+            $httpRequest = $client->getAuth()->authenticatedRequest( $request );
+            $headers = $httpRequest->getResponseHeaders();
+            // Validate response content type
+            $content_type = ( isset( $headers['content-type'] ) ? $headers['content-type'] : '' );
+            if ( strpos( $content_type, 'image' ) === false ) {
+                header( "HTTP/1.1 400 Bad Request" );
+                echo "Invalid response type.";
+                exit;
             }
-            $thumbnailLink = $file['thumbnailLink'] ?? '';
-            if ( 'custom' == $size ) {
-                $w = $image_data['w'] ?? 300;
-                $h = $image_data['h'] ?? 300;
-                $thumb_url = str_replace( '=s220', "=w{$w}-h{$h}", $thumbnailLink );
-            } else {
-                if ( 'small' === $size ) {
-                    $thumb_url = str_replace( '=s220', '=w300-h300', $thumbnailLink );
-                } else {
-                    if ( 'medium' === $size ) {
-                        $thumb_url = str_replace( '=s220', '=h600-nu', $thumbnailLink );
-                    } else {
-                        if ( 'large' === $size ) {
-                            $thumb_url = str_replace( '=s220', '=w1024-h768-p-k-nu', $thumbnailLink );
-                        } else {
-                            if ( 'full' === $size ) {
-                                $thumb_url = str_replace( '=s220', '', $thumbnailLink );
-                            } else {
-                                $thumb_url = str_replace( '=s220', '=w200-h190-p-k-nu', $thumbnailLink );
-                            }
-                        }
-                    }
-                }
+            // Save and serve the thumbnail
+            file_put_contents( $thumbnail_path, $httpRequest->getResponseBody() );
+            touch( $thumbnail_path, $lastModified );
+            $img_info = getimagesize( $thumbnail_path );
+            if ( $img_info ) {
+                header( "Content-Type: {$img_info['mime']}" );
+                readfile( $thumbnail_path );
+                exit;
             }
-            wp_redirect( $thumb_url, 301 );
+            header( "HTTP/1.1 500 Internal Server Error" );
+            echo "Failed to process the thumbnail.";
+            exit;
+        } catch ( \Exception $e ) {
+            header( "HTTP/1.1 500 Internal Server Error" );
+            echo "Error: " . esc_html( $e->getMessage() );
             exit;
         }
     }
@@ -318,7 +379,7 @@ class Hooks {
         $file_id = base64_decode( $encoded_file_id, true );
         $encoded_account_id = sanitize_text_field( $_REQUEST['account_id'] ?? '' );
         $account_id = ( !empty( $encoded_account_id ) ? base64_decode( $encoded_account_id, true ) : '' );
-        if ( $file_id === false || !ctype_alnum( $file_id ) || $account_id && !ctype_alnum( $account_id ) ) {
+        if ( !$file_id ) {
             wp_die( esc_html__( 'Invalid embed URL.', 'integrate-google-drive' ), 400 );
         }
         // Retrieve the file and check permissions

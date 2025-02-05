@@ -327,44 +327,48 @@ class App {
 
 	}
 
-	public function get_search_files(array $posted = []): array {
+	public function get_search_files( array $posted = [] ): array {
 		// Extract and sanitize posted data
-		$folders = $posted['folders'] ?? [];
-		$keyword = !empty($posted['keyword']) ? stripslashes($posted['keyword']) : '';
-		$sort = $posted['sort'] ?? [];
-		$full_text_search = filter_var($posted['fullTextSearch'] ?? true, FILTER_VALIDATE_BOOLEAN);
-		$filters = $posted['filters'] ?? [];
+		$folders          = $posted['folders'] ?? [];
+		$keyword          = ! empty( $posted['keyword'] ) ? stripslashes( $posted['keyword'] ) : '';
+		$sort             = $posted['sort'] ?? [];
+		$full_text_search = filter_var( $posted['fullTextSearch'] ?? true, FILTER_VALIDATE_BOOLEAN );
+		$filters          = $posted['filters'] ?? [];
 
 		$look_in_to = [];
 
-		if (!empty($folders)) {
-			foreach ($folders as $key => $folder) {
+		if ( ! empty( $folders ) ) {
+			foreach ( $folders as $key => $folder ) {
 				// Skip invalid or unsupported folders
-				$invalid_ids = ['root', 'computers', 'shared-drives', 'shared', 'starred'];
+				$invalid_ids = [ 'root', 'computers', 'shared-drives', 'shared', 'starred' ];
 				if (
-					in_array($folder['id'], $invalid_ids, true) ||
-					(!empty($folder['parents']) && in_array('shared-drives', $folder['parents'], true)) ||
-					!igd_is_dir($folder)
+					in_array( $folder['id'], $invalid_ids, true ) ||
+					( ! empty( $folder['parents'] ) && in_array( 'shared-drives', $folder['parents'], true ) ) ||
+					! igd_is_dir( $folder )
 				) {
 					continue;
 				}
 
 				// Resolve shortcut folder target ID
-				if (!empty($folder['shortcutDetails'])) {
-					$folder_id = $folder['shortcutDetails']['targetId'];
-					$folder = $this->get_file_by_id($folder_id);
-					$folders[$key] = $folder;
+				if ( ! empty( $folder['shortcutDetails'] ) ) {
+					$folder_id       = $folder['shortcutDetails']['targetId'];
+					$folder          = $this->get_file_by_id( $folder_id );
+					$folders[ $key ] = $folder;
 				}
 
 				$look_in_to[] = $folder['id'];
 
 				// Add child folder IDs
-				$child_folders = igd_get_all_child_folders($folder);
-				if (!empty($child_folders)) {
-					$look_in_to = array_merge($look_in_to, wp_list_pluck($child_folders, 'id'));
+				$child_folders = igd_get_all_child_folders( $folder );
+				if ( ! empty( $child_folders ) ) {
+					$look_in_to = array_merge( $look_in_to, wp_list_pluck( $child_folders, 'id' ) );
 				}
 			}
 		}
+
+
+		// Log the search
+		do_action( 'igd_insert_log', 'search', $keyword, $this->account_id );
 
 		// Build query based on full_text_search flag
 		$query = $full_text_search
@@ -378,22 +382,19 @@ class App {
 			'orderBy'     => $full_text_search ? '' : 'folder,name',
 			'q'           => $query,
 			'from_server' => true,
-			'sort'        => $sort ?: ['sortBy' => 'name', 'sortDirection' => 'asc'],
+			'sort'        => $sort ?: [ 'sortBy' => 'name', 'sortDirection' => 'asc' ],
 			'filters'     => $filters,
 		];
 
 		// Fetch files
-		$data = $this->get_files($args);
+		$data = $this->get_files( $args );
 
 		// Filter files by folder parents if necessary
-		if (!empty($look_in_to)) {
-			$data['files'] = array_filter($data['files'], function ($file) use ($look_in_to) {
-				return !empty($file['parents']) && in_array($file['parents'][0], $look_in_to, true);
-			});
+		if ( ! empty( $look_in_to ) ) {
+			$data['files'] = array_values( array_filter( $data['files'], function ( $file ) use ( $look_in_to ) {
+				return ! empty( $file['parents'] ) && in_array( $file['parents'][0], $look_in_to, true );
+			} ) );
 		}
-
-		// Log the search
-		do_action('igd_insert_log', 'search', $keyword, $this->account_id);
 
 		return $data;
 	}
@@ -430,14 +431,15 @@ class App {
 			$file = Files::get_file_by_id( $id );
 		}
 
-
 		// If no cache file then get file from server
 		if ( empty( $file ) || $from_server ) {
 			try {
+
 				$item = $this->service->files->get( $id, [
 					'supportsAllDrives' => true,
 					'fields'            => $this->file_fields,
 				] );
+
 
 				// Skip errors if folder is not found
 				if ( ! is_object( $item ) || ! method_exists( $item, 'getId' ) || $item->trashed ) {
@@ -470,9 +472,10 @@ class App {
 
 		if ( empty( $file ) || $from_server ) {
 			$args = [
-				'fields'   => $this->list_fields,
-				'pageSize' => 1,
-				'q'        => "name = '{$name}' and trashed = false ",
+				'fields'            => $this->list_fields,
+				'supportsAllDrives' => true,
+				'pageSize'          => 1,
+				'q'                 => "name = '{$name}' and trashed = false ",
 			];
 
 			if ( ! empty( $folder_id ) ) {
@@ -576,12 +579,13 @@ class App {
 
 					// Move the file to the new folder
 					$file = $this->service->files->update( $file_id, $emptyFileMetadata, array(
-						'addParents'    => $new_parent_id,
-						'removeParents' => $previousParents,
-						'fields'        => $this->file_fields,
+						'addParents'        => $new_parent_id,
+						'supportsAllDrives' => true,
+						'removeParents'     => $previousParents,
+						'fields'            => $this->file_fields,
 					) );
 
-					//Update cached file
+					// Update cached file
 					if ( method_exists( $file, 'getId' ) ) {
 						Files::update_file(
 							[
@@ -618,7 +622,8 @@ class App {
 
 			// Move the file to the new folder
 			$file = $this->service->files->update( $file_id, $file_meta_data, array(
-				'fields' => $this->file_fields,
+				'fields'            => $this->file_fields,
+				'supportsAllDrives' => true,
 			) );
 
 			// Update cached file
@@ -660,7 +665,10 @@ class App {
 				$file_met_data->setName( $name );
 
 				// Move the file to the new folder
-				$batch->add( $this->service->files->update( $file_id, $file_met_data, array( 'fields' => $this->file_fields, ) ) );
+				$batch->add( $this->service->files->update( $file_id, $file_met_data, array(
+					'fields'            => $this->file_fields,
+					'supportsAllDrives' => true,
+				) ) );
 
 			}
 
@@ -697,7 +705,8 @@ class App {
 
 			// Move the file to the new folder
 			$update_file = $this->service->files->update( $file_id, $file, array(
-				'fields' => $this->file_fields,
+				'fields'            => $this->file_fields,
+				'supportsAllDrives' => true,
 			) );
 
 			// Insert log
@@ -733,7 +742,10 @@ class App {
 					$file_meta_data->setParents( [ $parent_id ] );
 				}
 
-				$batch->add( $this->service->files->copy( $file['id'], $file_meta_data, [ 'fields' => $this->file_fields ] ) );
+				$batch->add( $this->service->files->copy( $file['id'], $file_meta_data, [
+					'fields'            => $this->file_fields,
+					'supportsAllDrives' => true,
+				] ) );
 			}
 
 			$batch_result = $batch->execute();
@@ -865,11 +877,10 @@ class App {
 				do_action( 'igd_insert_log', 'delete', $file_id, $this->account_id );
 				do_action( 'igd_delete_file', $file_id, $this->account_id );
 
-				$meta_data = new \IGDGoogle_Service_Drive_DriveFile( [
-					'trashed' => true,
-				] );
+				$update_file = new \IGDGoogle_Service_Drive_DriveFile();
+				$update_file->setTrashed( true );
 
-				$batch->add( $this->service->files->update( $file_id, $meta_data ) );
+				$batch->add( $this->service->files->update( $file_id, $update_file, [ 'supportsAllDrives' => true, ] ), $file_id );
 			}
 
 			$batch->execute();

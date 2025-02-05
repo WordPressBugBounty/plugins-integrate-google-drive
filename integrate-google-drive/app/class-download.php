@@ -59,7 +59,7 @@ class Download {
 
 
 	public function start_download() {
-//		$this->init_process();
+		$this->init_process();
 
 		$this->set_download_method();
 
@@ -113,69 +113,74 @@ class Download {
 	}
 
 	private function download_stream() {
-
 		$filename = $this->file['name'];
-		header( 'Content-Disposition: attachment; ' . sprintf( 'filename="%s"; ', rawurlencode( $filename ) ) . sprintf( "filename*=utf-8''%s", rawurlencode( $filename ) ) );
+		$mimetype = isset( $this->file['mimeType'] ) ? $this->file['mimeType'] : 'application/octet-stream';
 
+		// Set headers to ensure proper file download behavior
+		header( "Content-Type: $mimetype" );
+		header( "Content-Disposition: attachment; filename=\"$filename\"" );
+		header( "Content-Transfer-Encoding: binary" );
+		header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
+		header( "Pragma: public" );
+		header( "Accept-Ranges: bytes" );
+
+		// Disable gzip compression
 		if ( function_exists( 'apache_setenv' ) ) {
 			@apache_setenv( 'no-gzip', 1 );
 		}
-
 		@ini_set( 'zlib.output_compression', 'Off' );
 		@session_write_close();
-
-		// Stop WP from buffering
 		wp_ob_end_flush_all();
 
+		// Get access token and file URL
 		$access_token = json_decode( $this->client->getAccessToken() )->access_token;
+		$file_url     = $this->get_api_url();
 
-		// Convert headers to string format expected by stream_context_create
-		$headers = "Authorization: Bearer $access_token";
+		// Check for HTTP Range requests to support resumable downloads
+		$range   = isset( $_SERVER['HTTP_RANGE'] ) ? $_SERVER['HTTP_RANGE'] : null;
+		$headers = "Authorization: Bearer $access_token\r\n";
 
-		$opts = [
+		if ( $range ) {
+			header( "HTTP/1.1 206 Partial Content" );
+			header( "Content-Range: bytes " . str_replace( "bytes=", "", $range ) . "/" . $this->file['size'] );
+			$headers .= "Range: $range\r\n";
+		} else {
+			header( "HTTP/1.1 200 OK" );
+		}
+
+		// Create stream context
+		$opts    = [
 			"http" => [
 				"method" => "GET",
 				"header" => $headers
 			]
 		];
-
 		$context = stream_context_create( $opts );
-
-		$handle = fopen( $this->get_api_url(), 'rb', false, $context );
+		$handle  = fopen( $file_url, 'rb', false, $context );
 
 		if ( $handle === false ) {
-			return false; // Consider adding error handling here
+			wp_die( __( 'Error: Unable to fetch file. Please check your Google Drive permissions.', 'integrate-google-drive' ) );
 		}
 
-		$chunk_size = $this->get_chunk_size();
+		// Read the first chunk to check if it's an HTML response (authentication error)
+		$first_chunk = fread( $handle, 1024 );
+		if ( stripos( $first_chunk, '<html' ) !== false ) {
+			fclose( $handle );
+			wp_die( __( 'Error: Unable to download file. Authentication required or file access denied.', 'integrate-google-drive' ) );
+		}
 
+		echo $first_chunk;
+		flush();
+
+		// Continue streaming in chunks
+		$chunk_size = 1024 * 1024 * 10; // 10MB chunks
 		while ( ! feof( $handle ) ) {
 			echo fread( $handle, $chunk_size );
-
+			flush();
 			igd_server_throttle();
 		}
 
 		fclose( $handle );
-	}
-
-	private function get_chunk_size() {
-		switch ( igd_get_settings( 'serverThrottle' ) ) {
-			case 'low':
-				$chunk_size = 1024 * 1024 * 40;
-				break;
-			case 'medium':
-				$chunk_size = 1024 * 1024 * 30;
-				break;
-			case 'high':
-				$chunk_size = 1024 * 1024 * 10;
-				break;
-			case 'off':
-			default:
-				$chunk_size = 1024 * 1024 * 50;
-				break;
-		}
-
-		return min( igd_get_free_memory_available() - ( 1024 * 1024 * 5 ), $chunk_size ); // Chunks size or less if memory isn't sufficient;
 	}
 
 	public function export_content() {

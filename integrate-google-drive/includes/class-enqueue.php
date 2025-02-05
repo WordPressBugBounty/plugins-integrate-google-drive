@@ -17,12 +17,12 @@ class Enqueue {
     public function frontend_scripts() {
         // LightGallery CSS
         wp_register_style(
-            'lightgallery',
+            'igd-lightgallery',
             IGD_ASSETS . '/vendor/lightgallery/css/lightgallery-bundle.min.css',
             [],
             IGD_VERSION
         );
-        wp_style_add_data( 'lightgallery', 'rtl', 'replace' );
+        wp_style_add_data( 'igd-lightgallery', 'rtl', 'replace' );
         // SweetAlert2 CSS
         wp_register_style(
             'igd-sweetalert2',
@@ -37,7 +37,7 @@ class Enqueue {
                 'dashicons',
                 'wp-components',
                 'igd-sweetalert2',
-                'lightgallery'
+                'igd-lightgallery'
             ],
             IGD_VERSION
         );
@@ -169,7 +169,7 @@ class Enqueue {
             true
         );
         $igd_admin_src = str_replace( ['http:', 'https:'], '', IGD_ASSETS . '/js/admin.js' );
-        wp_register_script(
+        wp_enqueue_script(
             'igd-admin',
             $igd_admin_src,
             array(
@@ -187,7 +187,6 @@ class Enqueue {
             IGD_VERSION,
             true
         );
-        wp_enqueue_script( 'igd-admin' );
         // Private Folders page scripts
         if ( !empty( $admin_pages['private_files_page'] ) && $admin_pages['private_files_page'] === $hook ) {
             wp_enqueue_script(

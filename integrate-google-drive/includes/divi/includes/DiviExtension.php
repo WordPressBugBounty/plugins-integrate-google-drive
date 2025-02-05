@@ -49,13 +49,14 @@ class DiviExtension extends \DiviExtension {
 		add_action( 'et_builder_ready', array( $this, 'enqueue_builder_scripts' ) );
 
 		// Load scripts in admin editor
-//		add_action( 'admin_enqueue_scripts', function () {
-//			Enqueue::instance()->admin_scripts( '', false );
-//		} );
+		add_action( 'admin_enqueue_scripts', function ( $hook ) {
+			if ( ! in_array( $hook, [ 'post.php', 'post-new.php' ] ) ) {
+				return;
+			}
 
-//		add_action( 'wp_enqueue_scripts', function () {
-//			Enqueue::instance()->admin_scripts( '', false );
-//		} );
+			Enqueue::instance()->admin_scripts( '', false );
+			wp_enqueue_script( 'igd-divi', IGD_ASSETS . '/js/divi.js', [ 'igd-admin' ], IGD_VERSION, true );
+		} );
 
 		// Fix RankMath Conflict
 		if ( class_exists( 'RankMath' ) ) {
@@ -65,8 +66,8 @@ class DiviExtension extends \DiviExtension {
 
 	public function enqueue_builder_scripts() {
 
-		if ( function_exists( 'et_core_enqueue_js_admin' ) ) {
-			et_core_enqueue_js_admin();
+		if ( function_exists( 'et_theme_builder_enqueue_scripts' ) ) {
+			et_theme_builder_enqueue_scripts(); //fix the scripts issue
 		}
 
 		// Fix RankMath Conflict
@@ -80,7 +81,6 @@ class DiviExtension extends \DiviExtension {
 
 
 		Enqueue::instance()->admin_scripts( '', false );
-
 		wp_enqueue_script( 'igd-divi', IGD_ASSETS . '/js/divi.js', [ 'igd-admin' ], IGD_VERSION, true );
 
 	}
@@ -93,14 +93,6 @@ class DiviExtension extends \DiviExtension {
 
 		return $tag;
 	}
-
-//	public function wp_hook_enqueue_scripts() {
-//		parent::wp_hook_enqueue_scripts();
-//
-//		Enqueue::instance()->frontend_scripts();
-//		wp_enqueue_script( 'igd-frontend' );
-//
-//	}
 
 
 }

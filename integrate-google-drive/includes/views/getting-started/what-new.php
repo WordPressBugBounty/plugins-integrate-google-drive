@@ -4,6 +4,27 @@ defined( 'ABSPATH' ) || exit();
 
 $logs = [
 
+	'v.1.4.9' => [
+		'date'        => '2025-02-05',
+		'fix'         => [
+			'Resolved an issue where search results were not displaying.',
+			'Fixed a problem causing gallery images to not load properly.',
+			'Addressed an issue where the shortcode builder’s configure button was unresponsive in the Divi Builder.',
+			'Corrected an issue with invalid embed URLs.',
+			'Fixed the next/previous buttons not appearing in the media player.',
+			'Resolved extension filter malfunctions in the File Upload module.',
+			'Fixed the zooming issue in PDF lightbox previews.',
+			'Corrected an issue where files were downloading with the wrong extension.',
+			'Fixed an issue preventing large files from downloading properly.',
+			'Resolved a problem where files were not uploading correctly in shared drives.',
+			'Fixed an issue preventing files in shared drives from being deleted, moved, or renamed.',
+		],
+		'enhancement' => [
+			'Enhanced the file import process from Google Drive to the WordPress media library.',
+			'Improved the overall performance of the plugin.',
+		]
+	],
+
 	'v.1.4.8' => [
 		'date'        => '2024-12-03',
 		'fix'         => [

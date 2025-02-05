@@ -1,20 +1,21 @@
-# Copyright (C) 2024 SoftLab
+# Copyright (C) 2025 SoftLab
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Integrate Google Drive 1.4.8\n"
+"Project-Id-Version: Integrate Google Drive 1.4.9\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integrate-google-drive\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-12-03T09:44:23+00:00\n"
+"POT-Creation-Date: 2025-02-05T10:58:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.6.0\n"
+"X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: integrate-google-drive\n"
 
 #. Plugin Name of the plugin
+#: plugin.php
 #: includes/blocks/class-blocks.php:92
 #: includes/class-admin.php:200
 #: includes/elementor/class-elementor.php:554
@@ -24,18 +25,22 @@ msgid "Integrate Google Drive"
 msgstr ""
 
 #. Plugin URI of the plugin
+#: plugin.php
 msgid "https://softlabbd.com/integrate-google-drive"
 msgstr ""
 
 #. Description of the plugin
+#: plugin.php
 msgid "Seamless Google Drive integration for WordPress, allowing you to embed, share, play, and download documents and media files directly from Google Drive to your WordPress site."
 msgstr ""
 
 #. Author of the plugin
+#: plugin.php
 msgid "SoftLab"
 msgstr ""
 
 #. Author URI of the plugin
+#: plugin.php
 msgid "https://softlabbd.com/"
 msgstr ""
 
@@ -54,6 +59,14 @@ msgstr ""
 #: app/class-download.php:33
 #: app/class-download.php:37
 msgid "Something went wrong! File may be deleted or moved to trash."
+msgstr ""
+
+#: app/class-download.php:162
+msgid "Error: Unable to fetch file. Please check your Google Drive permissions."
+msgstr ""
+
+#: app/class-download.php:169
+msgid "Error: Unable to download file. Authentication required or file access denied."
 msgstr ""
 
 #: app/class-private-folders.php:192
@@ -350,25 +363,25 @@ msgstr ""
 msgid " Statistics Summary of Integrate Google Drive."
 msgstr ""
 
-#: includes/class-hooks.php:365
+#: includes/class-hooks.php:444
 msgid "Sorry, you are not allowed to access this page directly."
 msgstr ""
 
-#: includes/class-hooks.php:371
-#: includes/class-hooks.php:378
-#: includes/class-hooks.php:387
+#: includes/class-hooks.php:450
+#: includes/class-hooks.php:457
+#: includes/class-hooks.php:466
 msgid "Invalid embed URL."
 msgstr ""
 
 #. translators: %d: number of files
-#: includes/class-hooks.php:418
-#: includes/class-hooks.php:434
+#: includes/class-hooks.php:496
+#: includes/class-hooks.php:512
 msgid "%d file uploaded to Google Drive"
 msgid_plural "%d files uploaded to Google Drive"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-hooks.php:483
+#: includes/class-hooks.php:561
 msgid "Integrate Google Drive Synchronize Interval"
 msgstr ""
 
@@ -841,7 +854,7 @@ msgstr ""
 msgid "Computers"
 msgstr ""
 
-#: includes/functions.php:1545
+#: includes/functions.php:1555
 msgid "The file you are trying to load does not exist in your theme or Tutor LMS plugin location. If you are extending the Tutor LMS plugin, please create a php file here: "
 msgstr ""
 
@@ -2553,27 +2566,27 @@ msgstr ""
 msgid "Using this plugin, you can integrate your Google Drive with available popular plugins."
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:203
+#: includes/views/getting-started/what-new.php:224
 msgid "Exploring the Latest Updates"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:204
+#: includes/views/getting-started/what-new.php:225
 msgid "Dive Into the Recent Change Logs for Fresh Insights"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:222
+#: includes/views/getting-started/what-new.php:243
 msgid "New Features"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:231
+#: includes/views/getting-started/what-new.php:252
 msgid "Bug Fixes"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:239
+#: includes/views/getting-started/what-new.php:260
 msgid "Improvements"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:247
+#: includes/views/getting-started/what-new.php:268
 msgid "Removes"
 msgstr ""
 
@@ -3018,7 +3031,7 @@ msgstr ""
 
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
-msgid "Sidebar Toggle"
+msgid "Toggle Sidebar"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -3477,6 +3490,20 @@ msgstr ""
 
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
+#: assets/js/media-library.js:1
+#: assets/js/settings.js:1
+msgid "Imported!"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
+msgid "File has been added to the media library."
+msgid_plural "%d files have been added to the media library."
+msgstr[0] ""
+msgstr[1] ""
+
+#: assets/js/admin.js:1
+#: assets/js/frontend.js:1
 msgid "Google Doc"
 msgstr ""
 
@@ -3570,18 +3597,6 @@ msgstr[1] ""
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
 msgid "Please wait..."
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-#: assets/js/media-library.js:1
-#: assets/js/settings.js:1
-msgid "Imported!"
-msgstr ""
-
-#: assets/js/admin.js:1
-#: assets/js/frontend.js:1
-msgid "File(s) have been imported."
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -4925,22 +4940,6 @@ msgid "Enter the upload confirmation message."
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "Show Upload Label Text"
-msgstr ""
-
-#: assets/js/admin.js:1
-msgid "Show/ hide the upload files label text in the uploader box."
-msgstr ""
-
-#: assets/js/admin.js:1
-msgid "Label Text"
-msgstr ""
-
-#: assets/js/admin.js:1
-msgid "Enter the uploader label text."
-msgstr ""
-
-#: assets/js/admin.js:1
 msgid "Create Entry Folder"
 msgstr ""
 
@@ -5056,6 +5055,22 @@ msgstr ""
 
 #: assets/js/admin.js:1
 msgid "If you have a field with the id \"name\" and a field with the key \"field_12ca45\", you can use the tags %name% and %field_12ca45% to rename the uploaded files."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Show Upload Label Text"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Show/ hide the upload files label text in the uploader box."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Label Text"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Enter the uploader label text."
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -5304,7 +5319,15 @@ msgid "Open preview in a pop-up lightbox. If disabled, the preview will be opene
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "Pop-out button allows the user to view the document on Google Drive with full features, while disabling it will only show the preview document on your website."
+msgid "Allow users to preview the file in Google Drive's native viewer by clicking the pop-out button."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Show Preview Thumbnails"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Show/ hide the file thumbnails at the bottom of the lightbox preview."
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -6242,14 +6265,6 @@ msgstr ""
 
 #: assets/js/settings.js:1
 msgid "Enable this to load the last opened folder when a visitor revisit a File Browser or Gallery module."
-msgstr ""
-
-#: assets/js/settings.js:1
-msgid "Hide Preview Thumbnails"
-msgstr ""
-
-#: assets/js/settings.js:1
-msgid "Enable this option to hide the bottom thumbnails in the File Browser and Gallery modules when previewing a file."
 msgstr ""
 
 #: assets/js/settings.js:1

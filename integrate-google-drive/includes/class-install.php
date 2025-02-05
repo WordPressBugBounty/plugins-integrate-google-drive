@@ -21,6 +21,13 @@ class Install {
             self::create_default_data();
             self::add_default_settings();
             self::create_tables();
+            self::create_thumbnails_folder();
+        }
+    }
+
+    private static function create_thumbnails_folder() {
+        if ( !file_exists( IGD_CACHE_DIR ) ) {
+            wp_mkdir_p( IGD_CACHE_DIR );
         }
     }
 

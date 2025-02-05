@@ -38,12 +38,13 @@ class IGDGoogle_Http_REST {
 		$runner = new IGDGoogle_Task_Runner(
 			$client,
 			sprintf( '%s %s', $req->getRequestMethod(), $req->getUrl() ),
-			array( get_class(), 'doExecute' ),
+			array( self::class, 'doExecute' ), // Replace get_class() with self::class
 			array( $client, $req )
 		);
 
 		return $runner->run();
 	}
+
 
 	/**
 	 * Executes a IGDGoogle_Http_Request

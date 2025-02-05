@@ -1,10 +1,10 @@
-=== Integrate Google Drive - Browse, Upload, Download, Embed, Play, Share, Gallery, and Manage Your Google Drive Files into Your WordPress Site ===
-Contributors: softlab, princeahmed
+=== File Manager for Google Drive - Integrate Google Drive with WordPress ===
+Contributors: softlab, princeahmed, freemius
 Tags: google drive, google, gallery, embed, media
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.4.8
+Stable tag: 1.4.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -333,16 +333,38 @@ Absolutely. By turning on the "Photo Proofing" option within the gallery module,
 
 == Changelog ==
 
+= 1.4.9 (2025-02-05) =
+
+**Fixes**
+* **Fix:** Resolved an issue where search results were not displaying.
+* **Fix:** Fixed a problem causing gallery images to not load properly.
+* **Fix:** Addressed an issue where the shortcode builder’s configure button was unresponsive in the Divi Builder.
+* **Fix:** Corrected an issue with invalid embed URLs.
+* **Fix:** Fixed the next/previous buttons not appearing in the media player.
+* **Fix:** Resolved extension filter malfunctions in the File Upload module.
+* **Fix:** Fixed the zooming issue in PDF lightbox previews.
+* **Fix:** Corrected an issue where files were downloading with the wrong extension.
+* **Fix:** Fixed an issue preventing large files from downloading properly.
+* **Fix:** Resolved a problem where files were not uploading correctly in shared drives.
+* **Fix:** Fixed an issue preventing files in shared drives from being deleted, moved, or renamed.
+
+**Enhancements**
+* **Update:** Enhanced the file import process from Google Drive to the WordPress media library.
+* **Update:** Improved the overall performance of the plugin.
+
 = 1.4.8 (2024-12-03) =
 **Fixes**
+
 * Fixed Divi builder conflicts.
 * Fixed search box module design broken issue.
 
 **Enhancements**
+
 * Improved loading pre-loaders animation.
 
 = 1.4.7 (2024-11-30) =
 **Fixes**
+
 * Fixed folders not sorting properly.
 * Fixed statistics email report not sending.
 * Fixed media player responsive issue.
@@ -351,16 +373,19 @@ Absolutely. By turning on the "Photo Proofing" option within the gallery module,
 * Fixed auto-save not working.
 
 **Enhancements**
+
 * Added integration support for Tutor LMS v3.0.
 * Improved overall plugin performance and user interface.
 
 = 1.4.6 (2024-11-11) =
 **Fixes**
+
 * Fixed sort by name not working properly.
 * Fixed private folders merging issue.
 
 = 1.4.5 (2024-11-04) =
 **New Features**
+
 * Added password protection for the shortcode modules.
 * Added grid playlist style for the media player module.
 * Added settings to hide the preview bottom thumbnails.
@@ -370,6 +395,7 @@ Absolutely. By turning on the "Photo Proofing" option within the gallery module,
 * Fixed Upload module not displaying error messages.
 
 **Enhancements**
+
 * Updated contact form 7 integration to support the latest version.
 
 = 1.4.4 (2024-10-09) =

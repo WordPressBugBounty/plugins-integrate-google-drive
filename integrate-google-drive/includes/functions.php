@@ -1083,41 +1083,45 @@ function igd_get_thumbnail_url( $file, $size, $custom_size = [] ) {
 		} else {
 
 			// get new thumbnail link for non-public files
-			if ( strpos( $thumbnailLink, 'google.com' ) === false ) {
+			if ( str_contains( $thumbnailLink, 'google.com' ) ) {
 
-				$from_server = false;
+				$thumb_data = [
+					'igd_preview_image' => 1,
+					'id'                => $id,
+					'size'              => $size,
+					'account_id'        => $account_id
+				];
 
-				$transient = get_transient( 'igd_latest_fetch_' . $id );
-				if ( ! $transient ) {
-					$from_server = true;
-					set_transient( 'igd_latest_fetch_' . $id, true, 60 * MINUTE_IN_SECONDS );
+				if ( ! empty( $custom_size ) ) {
+					$thumb_data['w'] = $w;
+					$thumb_data['h'] = $h;
 				}
 
-				$file          = App::instance( $account_id )->get_file_by_id( $id, $from_server );
-				$thumbnailLink = $file['thumbnailLink'] ?? '';
+				$thumb = add_query_arg( $thumb_data, home_url() );
+
+			} else {
+
+				switch ( $size ) {
+					case 'custom':
+						$thumb = str_replace( '=s220', "={$w}-h{$h}", $thumbnailLink );
+						break;
+					case 'small':
+						$thumb = str_replace( '=s220', '=w300-h300', $thumbnailLink );
+						break;
+					case 'medium':
+						$thumb = str_replace( '=s220', '=h600-nu', $thumbnailLink );
+						break;
+					case 'large':
+						$thumb = str_replace( '=s220', '=w1024-h768-p-k-nu', $thumbnailLink );
+						break;
+					case 'full':
+						$thumb = str_replace( '=s220', '', $thumbnailLink );
+						break;
+					default:
+						$thumb = str_replace( '=s220', '=w200-h190-p-k-nu', $thumbnailLink );
+				}
 
 			}
-
-			switch ( $size ) {
-				case 'custom':
-					$thumb = str_replace( '=s220', "={$w}-h{$h}", $thumbnailLink );
-					break;
-				case 'small':
-					$thumb = str_replace( '=s220', '=w300-h300', $thumbnailLink );
-					break;
-				case 'medium':
-					$thumb = str_replace( '=s220', '=h600-nu', $thumbnailLink );
-					break;
-				case 'large':
-					$thumb = str_replace( '=s220', '=w1024-h768-p-k-nu', $thumbnailLink );
-					break;
-				case 'full':
-					$thumb = str_replace( '=s220', '', $thumbnailLink );
-					break;
-				default:
-					$thumb = str_replace( '=s220', '=w200-h190-p-k-nu', $thumbnailLink );
-			}
-
 		}
 	}
 
@@ -1406,6 +1410,7 @@ function igd_delete_cache( $folder_ids = [], $account_id = false ) {
 	} else {
 		delete_option( 'igd_cached_folders' );
 		Files::delete_account_files( $account_id );
+		igd_delete_thumbnail_cache();
 	}
 
 }
@@ -1480,7 +1485,12 @@ function igd_hex2rgba( $color, $opacity = false ) {
 }
 
 function igd_get_user_gravatar( $user_id, $size = 32 ) {
+
 	$user = get_user_by( 'id', $user_id );
+
+	if ( ! $user ) {
+		return '';
+	}
 
 	if ( function_exists( 'get_wp_user_avatar' ) ) {
 		$gravatar = get_wp_user_avatar( $user->user_email, $size );
@@ -1593,6 +1603,7 @@ function igd_should_filter_files( $filters ) {
 	       || ( isset( $filters['showFiles'] ) && empty( $filters['showFiles'] ) )
 	       || ( isset( $filters['showFolders'] ) && empty( $filters['showFolders'] ) )
 	       || ! empty( $filters['isGallery'] )
+	       || ! empty( $filters['onlyFolders'] )
 	       || ! empty( $filters['isMedia'] );
 }
 
@@ -2222,5 +2233,12 @@ function igd_get_grouped_parent_folders( $file, &$groupedFolders = [] ) {
 	}
 
 	return $groupedFolders;
+}
+
+function igd_delete_thumbnail_cache() {
+
+	if ( is_dir( IGD_CACHE_DIR ) ) {
+		array_map( 'unlink', glob( "IGD_CACHE_DIR/*.*" ) );
+	}
 }
 
