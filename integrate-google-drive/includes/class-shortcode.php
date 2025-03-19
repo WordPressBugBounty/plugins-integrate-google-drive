@@ -587,6 +587,9 @@ HTML;
         }
         $should_send_notification = !empty( $this->data['notifications'] ) && !empty( $this->data['notifications']['viewNotification'] ) && !empty( $this->data['notifications']['notificationEmail'] );
         $notification_data_html = ( $should_send_notification ? ' data-notification-email="' . esc_attr( $this->data['notifications']['notificationEmail'] ) . '" data-skip-current-user-notification="' . esc_attr( $this->data['notifications']['skipCurrentUserNotification'] ) . '"' : '' );
+        $open_in_new_tab = ( !empty( $this->data['openNewTab'] ) ? ' target="_blank"' : '' );
+        $list_style = $this->data['linkListStyle'] ?? '1';
+        $button_text = $this->data['linkButtonText'] ?? __( 'View', 'integrate-google-drive' );
         $is_folder_files = !empty( $this->data['folderFiles'] );
         $files = [];
         if ( $is_folder_files ) {
@@ -604,15 +607,43 @@ HTML;
         }
         foreach ( $files as $file ) {
             $name = $file['name'];
+            $icon = $file['iconLink'];
             $view_link = $file['webViewLink'];
             $file_data_html = ( !empty( $should_send_notification ) ? ' data-id="' . esc_attr( $file['id'] ) . '" data-account-id="' . esc_attr( $file['accountId'] ) . '"' : '' );
             $data_html = $notification_data_html . $file_data_html;
-            $html .= sprintf(
-                '<a href="%1$s" class="igd-view-link" target="_blank" %2$s>%3$s</a>',
-                $view_link,
-                $data_html,
-                $name
-            );
+            if ( in_array( $list_style, [1, 3] ) ) {
+                $item = sprintf(
+                    '<a class="igd-link igd-list-item" href="%1$s" target="%4$s" title="%5$s" aria-label="%5$s"><img class="item-icon" src="%2$s" >%3$s</a>',
+                    $view_link,
+                    $icon,
+                    $name,
+                    $open_in_new_tab,
+                    $button_text
+                );
+            } else {
+                if ( in_array( $list_style, [2, 4] ) ) {
+                    $item = sprintf(
+                        '<div class="igd-link igd-list-item"><img class="item-icon" src="%1$s" ><a class="item-name" href="%2$s" %4$s>%3$s</a> <a class="item-btn" href="%2$s" %4$s title="%5$s" aria-label="%5$s"><i class="dashicons dashicons-visibility" ></i> %5$s</a>  </div>',
+                        $icon,
+                        $view_link,
+                        $name,
+                        $open_in_new_tab,
+                        $button_text
+                    );
+                } else {
+                    $item = sprintf(
+                        '<a href="%1$s" class="igd-link" %2$s %3$s>%4$s</a>',
+                        $view_link,
+                        $open_in_new_tab,
+                        $data_html,
+                        $name
+                    );
+                }
+            }
+            $html .= $item;
+        }
+        if ( $list_style != 'default' ) {
+            $html = sprintf( '<div class="igd-list-wrap list-style-%1$s">' . $html . '</div>', $list_style );
         }
         return $html;
     }
@@ -642,19 +673,55 @@ HTML;
         }
         $shortcode_id = $this->data['id'];
         $nonce = ( is_user_logged_in() ? wp_create_nonce( 'igd' ) : $this->data['nonce'] );
+        $open_in_new_tab = ( !empty( $this->data['openNewTab'] ) ? ' target="_blank"' : '' );
+        $list_style = $this->data['linkListStyle'] ?? '1';
+        $button_text = $this->data['linkButtonText'] ?? __( 'View', 'integrate-google-drive' );
         foreach ( $files as $file ) {
             $id = $file['id'];
             $account_id = $file['accountId'];
             $name = $file['name'];
+            $icon = $file['iconLink'];
             $download_link = home_url( "?igd_download=1&" . (( igd_is_dir( $file ) ? "file_ids=" . base64_encode( json_encode( [$id] ) ) : "id={$id}&accountId={$account_id}&shortcodeId={$shortcode_id}&nonce={$nonce}" )) );
             $file_data_html = ( $should_send_notification ? ' data-id="' . esc_attr( $id ) . '" data-account-id="' . esc_attr( $account_id ) . '"' : '' );
             $data_html = $notification_data_html . $file_data_html;
-            $html .= sprintf(
-                '<a href="%1$s" class="igd-download-link" %2$s>%3$s</a>',
-                $download_link,
-                $data_html,
-                $name
-            );
+            if ( in_array( $list_style, [1, 3] ) ) {
+                $item = sprintf(
+                    '<a class="igd-link igd-list-item" href="%1$s" target="%4$s"><img class="item-icon" src="%2$s" >%3$s <i class="dashicons dashicons-download item-btn" title="%5$s" aria-label="%5$s"></i> </a>',
+                    $download_link,
+                    $icon,
+                    $name,
+                    $open_in_new_tab,
+                    $button_text
+                );
+            } else {
+                if ( in_array( $list_style, [2, 4] ) ) {
+                    $item = sprintf(
+                        '<div class="igd-link igd-list-item"><img class="item-icon" src="%1$s" ><a class="item-name" href="%2$s" %4$s>%3$s</a> <a class="item-btn" href="%2$s" %4$s title="%5$s" aria-label="%5$s"><i class="dashicons dashicons-download" ></i> %5$s</a>  </div>',
+                        $icon,
+                        $download_link,
+                        $name,
+                        $open_in_new_tab,
+                        $button_text
+                    );
+                } else {
+                    $item = sprintf(
+                        '<a href="%1$s" class="igd-link" %2$s %3$s>%4$s</a>',
+                        $download_link,
+                        $open_in_new_tab,
+                        $data_html,
+                        $name
+                    );
+                }
+            }
+            $html .= $item;
+        }
+        if ( in_array( $list_style, [
+            1,
+            2,
+            3,
+            4
+        ] ) ) {
+            $html = sprintf( '<div class="igd-list-wrap list-style-%1$s list-style-%1$s">' . $html . '</div>', $list_style );
         }
         return $html;
     }

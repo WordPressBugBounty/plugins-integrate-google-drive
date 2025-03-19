@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Integrate Google Drive 1.4.9\n"
+"Project-Id-Version: Integrate Google Drive 1.5.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integrate-google-drive\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-05T10:58:13+00:00\n"
+"POT-Creation-Date: 2025-03-19T08:26:12+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: integrate-google-drive\n"
@@ -87,13 +87,12 @@ msgid "Error creating ZIP file"
 msgstr ""
 
 #: includes/base.php:102
-#: includes/views/getting-started/help.php:88
-#: includes/views/getting-started/help.php:91
-#: includes/views/getting-started/help.php:97
-#: assets/js/admin.js:1
-#: assets/js/private-folders.js:1
-#: assets/js/settings.js:1
-msgid "Documentation"
+msgid "Docs"
+msgstr ""
+
+#: includes/base.php:103
+#: includes/views/getting-started/help.php:107
+msgid "Support"
 msgstr ""
 
 #: includes/class-admin.php:135
@@ -173,7 +172,7 @@ msgstr ""
 #: includes/integrations/class-gravityforms.php:284
 #: includes/integrations/class-tutor.php:83
 #: includes/integrations/class-tutor.php:350
-#: includes/integrations/class-wpforms.php:30
+#: includes/integrations/class-wpforms.php:35
 msgid "Google Drive"
 msgstr ""
 
@@ -278,10 +277,10 @@ msgstr ""
 #: includes/class-ajax__premium_only.php:611
 #: includes/class-ajax__premium_only.php:837
 #: includes/class-ajax__premium_only.php:858
-#: includes/class-ajax__premium_only.php:1223
+#: includes/class-ajax__premium_only.php:1224
 #: includes/class-statistics__premium_only.php:46
-#: includes/class-statistics__premium_only.php:191
-#: includes/class-statistics__premium_only.php:205
+#: includes/class-statistics__premium_only.php:596
+#: includes/class-statistics__premium_only.php:610
 msgid "You do not have permission to perform this action"
 msgstr ""
 
@@ -320,22 +319,22 @@ msgid "Please enter a keyword to search"
 msgstr ""
 
 #: includes/class-ajax.php:1058
-#: includes/class-ajax__premium_only.php:1202
+#: includes/class-ajax__premium_only.php:1203
 msgid "Something went wrong! Preview is not available"
 msgstr ""
 
 #: includes/class-ajax.php:1231
-#: includes/class-ajax__premium_only.php:1442
+#: includes/class-ajax__premium_only.php:1443
 msgid "File not found"
 msgstr ""
 
 #: includes/class-ajax.php:1309
-#: includes/class-ajax__premium_only.php:1513
-#: includes/class-statistics__premium_only.php:187
+#: includes/class-ajax__premium_only.php:1514
+#: includes/class-statistics__premium_only.php:592
 msgid "Invalid nonce"
 msgstr ""
 
-#: includes/class-ajax__premium_only.php:1260
+#: includes/class-ajax__premium_only.php:1261
 #: includes/views/photo-proof-email__premium_only.php:169
 msgid "Client Photo Proof Selection"
 msgstr ""
@@ -467,81 +466,160 @@ msgstr ""
 msgid "Usage Limit Reached"
 msgstr ""
 
-#: includes/class-shortcode.php:136
+#: includes/class-shortcode.php:135
 #: assets/js/admin.js:1
 msgid "Access Denied"
 msgstr ""
 
-#: includes/class-shortcode.php:137
+#: includes/class-shortcode.php:136
 #: assets/js/admin.js:1
 msgid "We're sorry, but your account does not currently have access to this content. To gain access, please contact the site administrator who can assist in linking your account to the appropriate content. Thank you."
 msgstr ""
 
-#: includes/class-shortcode.php:155
+#: includes/class-shortcode.php:154
 msgid "This content is password protected"
 msgstr ""
 
-#: includes/class-shortcode.php:156
+#: includes/class-shortcode.php:155
 msgid "To view it please enter your password below:"
 msgstr ""
 
-#: includes/class-shortcode.php:157
+#: includes/class-shortcode.php:156
 msgid "Enter Password"
 msgstr ""
 
-#: includes/class-shortcode.php:158
+#: includes/class-shortcode.php:157
 msgid "Unlock"
 msgstr ""
 
+#: includes/class-shortcode.php:859
+#: includes/class-shortcode.php:943
+#: includes/integrations/class-acf.php:138
+#: assets/js/admin.js:1
+msgid "View"
+msgstr ""
+
+#: includes/class-statistics__premium_only.php:64
+#: includes/class-statistics__premium_only.php:135
+#: includes/class-statistics__premium_only.php:205
+#: includes/class-statistics__premium_only.php:275
+#: includes/class-statistics__premium_only.php:416
+#: includes/class-statistics__premium_only.php:470
+#: includes/class-statistics__premium_only.php:504
+msgid "File Name"
+msgstr ""
+
+#: includes/class-statistics__premium_only.php:65
+#: includes/class-statistics__premium_only.php:136
+#: includes/class-statistics__premium_only.php:206
+#: includes/class-statistics__premium_only.php:276
+#: includes/class-statistics__premium_only.php:417
+#: includes/class-statistics__premium_only.php:471
+#: includes/class-statistics__premium_only.php:505
+#: includes/integrations/class-acf.php:123
+msgid "File ID"
+msgstr ""
+
 #: includes/class-statistics__premium_only.php:66
-#: includes/class-statistics__premium_only.php:86
+#: includes/class-statistics__premium_only.php:102
+msgid "Total Downloads"
+msgstr ""
+
 #: includes/class-statistics__premium_only.php:100
+#: includes/class-statistics__premium_only.php:170
+#: includes/class-statistics__premium_only.php:240
+#: includes/class-statistics__premium_only.php:310
+#: includes/class-statistics__premium_only.php:379
+#: includes/class-statistics__premium_only.php:419
+#: includes/class-statistics__premium_only.php:490
+#: includes/class-statistics__premium_only.php:507
+msgid "User Name"
+msgstr ""
+
+#: includes/class-statistics__premium_only.php:101
+#: includes/class-statistics__premium_only.php:171
+#: includes/class-statistics__premium_only.php:241
+#: includes/class-statistics__premium_only.php:311
+#: includes/class-statistics__premium_only.php:380
+#: includes/class-statistics__premium_only.php:420
+#: includes/class-statistics__premium_only.php:491
+#: includes/class-statistics__premium_only.php:508
+msgid "User ID"
+msgstr ""
+
+#: includes/class-statistics__premium_only.php:137
+#: includes/class-statistics__premium_only.php:172
+msgid "Total Uploads"
+msgstr ""
+
+#: includes/class-statistics__premium_only.php:207
+#: includes/class-statistics__premium_only.php:242
+msgid "Total Streams"
+msgstr ""
+
+#: includes/class-statistics__premium_only.php:277
+#: includes/class-statistics__premium_only.php:312
+msgid "Total Previews"
+msgstr ""
+
+#: includes/class-statistics__premium_only.php:345
+msgid "Search Keyword"
+msgstr ""
+
+#: includes/class-statistics__premium_only.php:346
+#: includes/class-statistics__premium_only.php:381
+msgid "Total Searches"
+msgstr ""
+
+#: includes/class-statistics__premium_only.php:415
+#: includes/class-statistics__premium_only.php:469
+#: includes/class-statistics__premium_only.php:489
+#: includes/class-statistics__premium_only.php:503
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
 msgid "Type"
 msgstr ""
 
-#: includes/class-statistics__premium_only.php:67
-#: includes/class-statistics__premium_only.php:101
-msgid "File Name"
+#: includes/class-statistics__premium_only.php:418
+msgid "FIle Type"
 msgstr ""
 
-#: includes/class-statistics__premium_only.php:68
-#: includes/class-statistics__premium_only.php:102
-#: includes/integrations/class-acf.php:123
-msgid "File ID"
+#: includes/class-statistics__premium_only.php:421
+#: includes/class-statistics__premium_only.php:509
+#: assets/js/statistics.js:1
+msgid "Page"
 msgstr ""
 
-#: includes/class-statistics__premium_only.php:69
-#: includes/class-statistics__premium_only.php:106
+#: includes/class-statistics__premium_only.php:422
+#: includes/class-statistics__premium_only.php:510
+msgid "Shortcode ID"
+msgstr ""
+
+#: includes/class-statistics__premium_only.php:423
+#: includes/class-statistics__premium_only.php:472
+#: includes/class-statistics__premium_only.php:511
 #: assets/js/statistics.js:1
 msgid "Date"
 msgstr ""
 
-#: includes/class-statistics__premium_only.php:87
-#: includes/class-statistics__premium_only.php:104
-msgid "User Name"
+#: includes/class-statistics__premium_only.php:451
+msgid "Invalid export type"
 msgstr ""
 
-#: includes/class-statistics__premium_only.php:88
-#: includes/class-statistics__premium_only.php:105
-msgid "User ID"
-msgstr ""
-
-#: includes/class-statistics__premium_only.php:89
+#: includes/class-statistics__premium_only.php:492
 msgid "Action Count"
 msgstr ""
 
-#: includes/class-statistics__premium_only.php:103
-msgid "FIle Type"
+#: includes/class-statistics__premium_only.php:506
+msgid "File Type"
 msgstr ""
 
-#: includes/class-statistics__premium_only.php:197
+#: includes/class-statistics__premium_only.php:602
 msgid "Statistics cleared successfully"
 msgstr ""
 
-#: includes/class-statistics__premium_only.php:310
-#: includes/class-statistics__premium_only.php:351
+#: includes/class-statistics__premium_only.php:721
+#: includes/class-statistics__premium_only.php:762
 msgid "Guest"
 msgstr ""
 
@@ -876,10 +954,6 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: includes/integrations/class-acf.php:138
-msgid "View"
-msgstr ""
-
 #: includes/integrations/class-acf.php:140
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
@@ -909,7 +983,7 @@ msgstr ""
 #: includes/integrations/class-cf7.php:238
 #: includes/integrations/class-fluentforms.php:368
 #: includes/integrations/class-gravityforms.php:418
-#: includes/integrations/class-wpforms.php:250
+#: includes/integrations/class-wpforms.php:255
 msgid "Please upload at least %d files."
 msgstr ""
 
@@ -925,7 +999,7 @@ msgstr ""
 #: includes/integrations/class-gravityforms.php:240
 #: includes/integrations/class-ninjaforms.php:263
 #: includes/integrations/class-ninjaforms.php:277
-#: includes/integrations/class-wpforms.php:327
+#: includes/integrations/class-wpforms.php:332
 msgid "Configure Uploader"
 msgstr ""
 
@@ -1201,7 +1275,7 @@ msgstr ""
 msgid "Upload Video Poster"
 msgstr ""
 
-#: includes/integrations/class-wpforms.php:340
+#: includes/integrations/class-wpforms.php:345
 msgid "Data"
 msgstr ""
 
@@ -2215,6 +2289,15 @@ msgstr ""
 msgid "Read our knowledge base documentation or you can contact us directly."
 msgstr ""
 
+#: includes/views/getting-started/help.php:88
+#: includes/views/getting-started/help.php:91
+#: includes/views/getting-started/help.php:97
+#: assets/js/admin.js:1
+#: assets/js/private-folders.js:1
+#: assets/js/settings.js:1
+msgid "Documentation"
+msgstr ""
+
 #: includes/views/getting-started/help.php:93
 msgid ""
 "Check out our detailed online documentation and video tutorials to find out more about what you can\n"
@@ -2223,10 +2306,6 @@ msgstr ""
 
 #: includes/views/getting-started/help.php:104
 msgid "Contact"
-msgstr ""
-
-#: includes/views/getting-started/help.php:107
-msgid "Support"
 msgstr ""
 
 #: includes/views/getting-started/help.php:108
@@ -2566,27 +2645,27 @@ msgstr ""
 msgid "Using this plugin, you can integrate your Google Drive with available popular plugins."
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:224
+#: includes/views/getting-started/what-new.php:241
 msgid "Exploring the Latest Updates"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:225
+#: includes/views/getting-started/what-new.php:242
 msgid "Dive Into the Recent Change Logs for Fresh Insights"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:243
+#: includes/views/getting-started/what-new.php:260
 msgid "New Features"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:252
+#: includes/views/getting-started/what-new.php:269
 msgid "Bug Fixes"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:260
+#: includes/views/getting-started/what-new.php:277
 msgid "Improvements"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:268
+#: includes/views/getting-started/what-new.php:285
 msgid "Removes"
 msgstr ""
 
@@ -2744,6 +2823,7 @@ msgid "Title"
 msgstr ""
 
 #: includes/views/photo-proof-email__premium_only.php:324
+#: assets/js/admin.js:1
 msgid "Link"
 msgstr ""
 
@@ -2880,6 +2960,10 @@ msgid "Let your users browse the selected specific Google Drive files and folder
 msgstr ""
 
 #: assets/js/admin.js:1
+msgid "Display images and videos in a masonry grid layout with lightbox preview."
+msgstr ""
+
+#: assets/js/admin.js:1
 msgid "Let your users upload files to the specific selected Google Drive folder."
 msgstr ""
 
@@ -2893,10 +2977,6 @@ msgstr ""
 
 #: assets/js/admin.js:1
 msgid "Display images, videos and documents in a slider carousel."
-msgstr ""
-
-#: assets/js/admin.js:1
-msgid "Display images and videos in a masonry grid layout with lightbox preview."
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -3803,6 +3883,10 @@ msgid "Save"
 msgstr ""
 
 #: assets/js/admin.js:1
+msgid "Saved"
+msgstr ""
+
+#: assets/js/admin.js:1
 #: assets/js/dokan.js:1
 #: assets/js/settings.js:1
 #: assets/js/tutor.js:1
@@ -3864,19 +3948,24 @@ msgid "You will not be able to recover this shortcode!"
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "Shortcode active/inactive status"
-msgstr ""
-
-#: assets/js/admin.js:1
 msgid "Status"
 msgstr ""
 
 #: assets/js/admin.js:1
+msgid "Shortcode active/inactive status"
+msgstr ""
+
+#: assets/js/admin.js:1
+#: assets/js/statistics.js:1
 msgid "Shortcode"
 msgstr ""
 
 #: assets/js/admin.js:1
 msgid "Locations"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "The locations where the shortcode is used"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -5074,6 +5163,38 @@ msgid "Enter the uploader label text."
 msgstr ""
 
 #: assets/js/admin.js:1
+msgid "List Style"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Upgrade to Pro to change the list style."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "List Button"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "List Alt"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "List Button Alt"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Select a style for the view links list."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Button Text"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Enter the button text for the view links."
+msgstr ""
+
+#: assets/js/admin.js:1
 msgid "Open in new tab"
 msgstr ""
 
@@ -5340,10 +5461,6 @@ msgstr ""
 
 #: assets/js/admin.js:1
 msgid "Allow users to select images and send them to the admin."
-msgstr ""
-
-#: assets/js/admin.js:1
-msgid "Button Text"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -5862,8 +5979,7 @@ msgid "Previous step"
 msgstr ""
 
 #: assets/js/admin.js:1
-#: assets/js/settings.js:1
-msgid "Save Changes"
+msgid "Save changes"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -7063,6 +7179,10 @@ msgstr ""
 msgid "Saving..."
 msgstr ""
 
+#: assets/js/settings.js:1
+msgid "Save Changes"
+msgstr ""
+
 #: assets/js/statistics.js:1
 msgid "Events Chart / Day"
 msgstr ""
@@ -7100,7 +7220,7 @@ msgid "Top Users with most Streams"
 msgstr ""
 
 #: assets/js/statistics.js:1
-msgid "All Event Logs"
+msgid "Event Logs"
 msgstr ""
 
 #: assets/js/statistics.js:1
@@ -7153,14 +7273,6 @@ msgstr ""
 
 #: assets/js/statistics.js:1
 msgid "previewed the file"
-msgstr ""
-
-#: assets/js/statistics.js:1
-msgid "From"
-msgstr ""
-
-#: assets/js/statistics.js:1
-msgid "To"
 msgstr ""
 
 #: assets/js/statistics.js:1

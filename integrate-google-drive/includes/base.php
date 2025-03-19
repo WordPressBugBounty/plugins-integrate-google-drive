@@ -73,7 +73,8 @@ final class Main {
 
     public function plugin_row_meta( $plugin_meta, $plugin_file ) {
         if ( $plugin_file == plugin_basename( IGD_FILE ) ) {
-            $plugin_meta[] = sprintf( '<a target="_blank" href="https://softlabbd.com/docs-category/integrate-google-drive-docs/">%s</a>', esc_html__( 'Documentation', 'integrate-google-drive' ) );
+            $plugin_meta[] = sprintf( '<a target="_blank" href="https://softlabbd.com/docs-category/integrate-google-drive-docs/" style="color:#2FB44B; font-weight: 600;">%s</a>', esc_html__( 'Docs', 'integrate-google-drive' ) );
+            $plugin_meta[] = sprintf( '<a target="_blank" href="https://softlabbd.com/support/" style="color:#2FB44B; font-weight: 600;">%s</a>', esc_html__( 'Support', 'integrate-google-drive' ) );
         }
         return $plugin_meta;
     }

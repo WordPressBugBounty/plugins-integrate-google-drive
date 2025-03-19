@@ -4,6 +4,23 @@ defined( 'ABSPATH' ) || exit();
 
 $logs = [
 
+	'v.1.5.0' => [
+		'date'        => '2025-03-17',
+		'new'         => [
+			'Added list style settings for file views and download links.',
+			'Added URL parameter support to refresh (?refresh=1) files in the shortcode module.',
+		],
+		'fix'         => [
+			'Fixed file refresh issue in the shortcode module.',
+			'Fixed file sorting issue in AJAX pagination.',
+			'Fixed scrolling issue in the Media Library folder list.',
+		],
+		'enhancement' => [
+			'Improved the statistics page.',
+			'Improved overall performance and stability.',
+		]
+	],
+
 	'v.1.4.9' => [
 		'date'        => '2025-02-05',
 		'fix'         => [

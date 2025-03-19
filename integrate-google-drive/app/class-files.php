@@ -13,7 +13,7 @@ class Files {
 		return $wpdb->prefix . 'integrate_google_drive_files';
 	}
 
-	public static function get( $parent_id, $account_id, $start_index, $limit = '', $filters = [] ) {
+	public static function get( $parent_id, $account_id, $start_index, $limit = '', $filters = [], $sort = [ 'sortBy' => 'name', 'sortDirection' => 'asc' ] ) {
 		global $wpdb;
 
 		$table = self::get_table();
@@ -149,9 +149,28 @@ class Files {
 			$count = false;
 		}
 
-		$order_by = "ORDER BY (type = 'application/vnd.google-apps.folder') DESC ";
+		// Determine SQL sorting
+		$sort_field_map = [
+			'name'    => 'name',
+			'size'    => 'CAST(size AS UNSIGNED)',
+			'created' => 'created',
+			'updated' => 'updated',
+			'random'  => 'RAND()',
+		];
 
-		// Create the final SQL
+		$sort_by_sql = $sort_field_map[ $sort['sortBy'] ] ?? 'name';
+		$sort_direction = strtoupper( $sort['sortDirection'] ) === 'DESC' ? 'DESC' : 'ASC';
+
+		// Ensure folders are always first
+		$order_by = "ORDER BY (type = 'application/vnd.google-apps.folder') DESC";
+
+		if ( 'random' === $sort['sortBy'] ) {
+			$order_by .= ", RAND()";
+		} else {
+			$order_by .= ", $sort_by_sql $sort_direction";
+		}
+
+		// Final SQL with sorting
 		$sql = $wpdb->prepare( "SELECT data FROM `$table` WHERE 1 $where_placeholders $order_by $limit_text", $where_values );
 
 		$items = $wpdb->get_results( $sql, ARRAY_A );

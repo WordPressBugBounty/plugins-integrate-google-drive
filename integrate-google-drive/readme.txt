@@ -1,10 +1,10 @@
 === File Manager for Google Drive - Integrate Google Drive with WordPress ===
-Contributors: softlab, princeahmed, freemius
+Contributors: softlab, princeahmed
 Tags: google drive, google, gallery, embed, media
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.4.9
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -333,24 +333,39 @@ Absolutely. By turning on the "Photo Proofing" option within the gallery module,
 
 == Changelog ==
 
+= 1.5.0 (2025-03-17) =
+
+**New Features**
+* New: Added list style settings for the file view and download links.
+* New: Added URL parameter supports to refresh the files for the shortcode module.
+
+**Fixes**
+* Fix: Fixed shortcode module files refresh issue.
+* Fix: Fixed files sorting issue on the ajax pagination.
+* Fix: Fixed Media library folder list not scrolling issue.
+
+**Enhancements**
+* Update: Improved statistics page.
+* Update: Improved overall performance and security.
+
 = 1.4.9 (2025-02-05) =
 
 **Fixes**
-* **Fix:** Resolved an issue where search results were not displaying.
-* **Fix:** Fixed a problem causing gallery images to not load properly.
-* **Fix:** Addressed an issue where the shortcode builder’s configure button was unresponsive in the Divi Builder.
-* **Fix:** Corrected an issue with invalid embed URLs.
-* **Fix:** Fixed the next/previous buttons not appearing in the media player.
-* **Fix:** Resolved extension filter malfunctions in the File Upload module.
-* **Fix:** Fixed the zooming issue in PDF lightbox previews.
-* **Fix:** Corrected an issue where files were downloading with the wrong extension.
-* **Fix:** Fixed an issue preventing large files from downloading properly.
-* **Fix:** Resolved a problem where files were not uploading correctly in shared drives.
-* **Fix:** Fixed an issue preventing files in shared drives from being deleted, moved, or renamed.
+*  Resolved an issue where search results were not displaying.
+*  Fixed a problem causing gallery images to not load properly.
+*  Addressed an issue where the shortcode builder’s configure button was unresponsive in the Divi Builder.
+*  Corrected an issue with invalid embed URLs.
+*  Fixed the next/previous buttons not appearing in the media player.
+*  Resolved extension filter malfunctions in the File Upload module.
+*  Fixed the zooming issue in PDF lightbox previews.
+*  Corrected an issue where files were downloading with the wrong extension.
+*  Fixed an issue preventing large files from downloading properly.
+*  Resolved a problem where files were not uploading correctly in shared drives.
+*  Fixed an issue preventing files in shared drives from being deleted, moved, or renamed.
 
 **Enhancements**
-* **Update:** Enhanced the file import process from Google Drive to the WordPress media library.
-* **Update:** Improved the overall performance of the plugin.
+* Enhanced the file import process from Google Drive to the WordPress media library.
+* Improved the overall performance of the plugin.
 
 = 1.4.8 (2024-12-03) =
 **Fixes**

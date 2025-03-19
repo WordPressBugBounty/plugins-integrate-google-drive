@@ -30,6 +30,15 @@ class Enqueue {
             [],
             '11.4.8'
         );
+        // Dashicons - if not registered, enqueue it with full path
+        if ( !wp_style_is( 'dashicons', 'registered' ) ) {
+            wp_enqueue_style(
+                'dashicons',
+                includes_url( 'css/dashicons.min.css' ),
+                [],
+                IGD_VERSION
+            );
+        }
         wp_register_style(
             'igd-frontend',
             IGD_ASSETS . '/css/frontend.css',

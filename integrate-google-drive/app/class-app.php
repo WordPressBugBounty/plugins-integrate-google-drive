@@ -160,10 +160,13 @@ class App {
 				}
 			}
 
+			$files = $this->sort_files( $files, $sort );
+
+
 		} else {
 
 			// Get files from cache
-			list( $files, $count ) = Files::get( $folder_id, $folder_account_id, $start_index, $limit, $filters );
+			list( $files, $count ) = Files::get( $folder_id, $folder_account_id, $start_index, $limit, $filters, $sort );
 
 			$data['count'] = $count;
 		}
@@ -188,8 +191,6 @@ class App {
 				$data['count'] = $files_number_to_show;
 			}
 		}
-
-		$files = $this->sort_files( $files, $sort );
 
 		$data['files'] = array_values( $files );
 
