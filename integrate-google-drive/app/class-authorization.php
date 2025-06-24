@@ -36,7 +36,9 @@ class Authorization {
 	}
 
 	/**
-	 * @return false|mixed
+	 * Get encrypted access token from options.
+	 *
+	 * @return string|false Encrypted access token or false if not found.
 	 */
 	public function get_access_token() {
 		$tokens = get_option( $this->token_key, [] );
@@ -45,9 +47,11 @@ class Authorization {
 	}
 
 	/**
-	 * @param $access_token
+	 * Set access token after encrypting it.
 	 *
-	 * @return mixed
+	 * @param string $access_token Access token to store.
+	 *
+	 * @return string Stored access token.
 	 */
 	public function set_access_token( $access_token ) {
 		$tokens = get_option( $this->token_key, [] );
@@ -56,7 +60,7 @@ class Authorization {
 
 		update_option( $this->token_key, $tokens );
 
-		return $access_token;
+		return $access_token; // Return the original access token if needed
 	}
 
 	/**

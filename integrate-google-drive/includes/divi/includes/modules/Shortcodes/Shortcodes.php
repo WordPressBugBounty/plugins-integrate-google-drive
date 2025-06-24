@@ -16,7 +16,7 @@ class Shortcodes extends \ET_Builder_Module {
 	);
 
 	public function init() {
-		$this->name = esc_html__( 'Google Drive Shortcodes', 'integrate-google-drive' );
+		$this->name = esc_html__( 'Google Drive Modules', 'integrate-google-drive' );
 
 
 		$this->settings_modal_toggles = [
@@ -45,35 +45,54 @@ class Shortcodes extends \ET_Builder_Module {
 	}
 
 	public function get_fields() {
+
 		$shortcodes = Shortcode::get_shortcodes();
 
 		if ( ! empty( $shortcodes ) ) {
 			$shortcodes = array_column( $shortcodes, 'title', 'id' );
 		}
 
-		$shortcodes = [ '0' => __( 'Select Shortcode', 'integrate-google-drive' ) ] + $shortcodes;
+		$options = [ '' => __( 'Select Shortcode', 'integrate-google-drive' ) ] + $shortcodes;
+
+		$current_post_id = \ET_Builder_Element::get_current_post_id();
 
 		return array(
-			'id' => array(
-				'label'           => esc_html__( 'Select Shortcode Module', 'integrate-google-drive' ),
-				'type'            => 'select',
+
+			'id'           => array(
+				'label'           => esc_html__( 'Google Drive Modules', 'integrate-google-drive' ),
+				'type'            => 'igd_configure',
 				'option_category' => 'configuration',
-				'description'     => esc_html__( 'Select a shortcode module', 'integrate-google-drive' ),
+				'description'     => esc_html__( 'Select an existing Google Drive module or crate a new one.', 'integrate-google-drive' ),
 				'toggle_slug'     => 'main_content',
-				'default'         => '0',
-				'options'         => $shortcodes,
+				'default'         => '',
+				'options'         => $options,
+				'post_id'         => $current_post_id ,
 			),
+
+			// add a toggle switch to show or hide the shortcode
+			'show_preview' => array(
+				'label'           => esc_html__( 'Show Preview', 'integrate-google-drive' ),
+				'type'            => 'yes_no_button',
+				'option_category' => 'configuration',
+				'description'     => esc_html__( 'Show/ hide the shortcode preview in the builder.', 'integrate-google-drive' ),
+				'toggle_slug'     => 'main_content',
+				'default'         => 'on',
+				'options'         => array(
+					'on'  => esc_html__( 'Yes', 'integrate-google-drive' ),
+					'off' => esc_html__( 'No', 'integrate-google-drive' ),
+				),
+			),
+
 		);
 	}
 
 	public function render( $attrs, $content = null, $render_slug = null ) {
-		$id = $this->props['id'];
 
+		$id = $this->props['id'];
 
 		if ( ! $id ) {
 			return;
 		}
-
 
 		return Shortcode::instance()->render_shortcode( [ 'id' => $id, ] );
 	}

@@ -3,17 +3,25 @@
   "apiVersion": 2,
   "name": "igd/shortcodes",
   "version": "1.0.0",
-  "title": "Module Shortcodes",
+  "title": "Google Drive Modules",
   "category": "igd-category",
   "icon": "shortcode",
-  "description": "Insert pre-built module's shortcode",
+  "description": "Insert an existing Google Drive module or create a new one.",
   "supports": {
     "html": false
   },
   "attributes": {
     "id": {
-      "type": "number",
-      "default": 0
+      "type": "number"
+    },
+    "isHidden": {
+      "type": "boolean"
+    }
+  },
+  "example": {
+    "attributes": {
+      "id": null,
+      "isHidden": false
     }
   },
   "keywords": [

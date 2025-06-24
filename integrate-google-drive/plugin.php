@@ -4,7 +4,7 @@
  * Plugin Name: Integrate Google Drive
  * Plugin URI:  https://softlabbd.com/integrate-google-drive
  * Description: Seamless Google Drive integration for WordPress, allowing you to embed, share, play, and download documents and media files directly from Google Drive to your WordPress site.
- * Version:     1.5.0
+ * Version:     1.5.1
  * Author:      SoftLab
  * Author URI:  https://softlabbd.com/
  * Text Domain: integrate-google-drive
@@ -15,7 +15,7 @@
  */
 // don't call the file directly
 if ( !defined( 'ABSPATH' ) ) {
-    wp_die( __( 'You can\'t access this page', 'integrate-google-drive' ) );
+    wp_die( 'You can\'t access this page' );
 }
 if ( function_exists( 'igd_fs' ) ) {
     igd_fs()->set_basename( false, __FILE__ );
@@ -39,7 +39,7 @@ if ( function_exists( 'igd_fs' ) ) {
                     'has_paid_plans' => true,
                     'trial'          => array(
                         'days'               => 3,
-                        'is_require_payment' => true,
+                        'is_require_payment' => false,
                     ),
                     'menu'           => array(
                         'slug'       => 'integrate-google-drive',
@@ -59,7 +59,7 @@ if ( function_exists( 'igd_fs' ) ) {
         do_action( 'igd_fs_loaded' );
     }
     /** define constants */
-    define( 'IGD_VERSION', '1.5.0' );
+    define( 'IGD_VERSION', '1.5.1' );
     define( 'IGD_DB_VERSION', '1.4.4' );
     define( 'IGD_FILE', __FILE__ );
     define( 'IGD_PATH', dirname( IGD_FILE ) );
@@ -81,5 +81,5 @@ if ( function_exists( 'igd_fs' ) ) {
         wp_die( $notice );
     }
     //Include the base plugin file.
-    include_once IGD_INCLUDES . '/base.php';
+    include_once IGD_INCLUDES . '/class-main.php';
 }

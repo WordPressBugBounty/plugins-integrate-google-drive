@@ -132,6 +132,7 @@ class Client {
 	public function create_access_token() {
 
 		try {
+
 			$code = sanitize_text_field( $_GET['code'] );
 
 			$access_token = $this->get_client()->authenticate( $code );

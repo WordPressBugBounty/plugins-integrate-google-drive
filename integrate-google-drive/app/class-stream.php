@@ -10,28 +10,22 @@ class Stream {
 	private $file;
 
 	public function __construct( $file_id, $account_id, $ignore_limit = false ) {
-
-		// Check download restrictions
 		if ( ! $ignore_limit && igd_fs()->can_use_premium_code__premium_only() && $limit_message = Restrictions::instance()->has_reached_download_limit( $file_id, 'stream' ) ) {
 			Restrictions::display_error( $limit_message );
 		}
 
-		$app = App::instance( $account_id );
+		$app       = App::instance( $account_id );
+		$file      = $app->get_file_by_id( $file_id );
 
-		$file = $app->get_file_by_id( $file_id );
-
-		// Check if shortcut file then get the original file
 		if ( igd_is_shortcut( $file['type'] ) ) {
 			$file = $app->get_file_by_id( $file['shortcutDetails']['targetId'] );
 		}
 
 		$this->file = $file;
-
 		wp_using_ext_object_cache( false );
 	}
 
 	public function stream_content() {
-
 		$referrer     = wp_get_raw_referer();
 		$is_tutor_lms = strpos( $referrer, '/courses/' ) !== false;
 
@@ -48,22 +42,21 @@ class Stream {
 		@ini_set( 'zlib.output_compression', 'Off' );
 		@session_write_close();
 
-		// Stop WP from buffering
 		wp_ob_end_flush_all();
 
 		$chunk_size = $this->get_chunk_size( $is_tutor_lms ? 'high' : '' );
+		$size       = $this->file['size'] ?? 0;
+		$length     = $size;
+		$start      = 0;
+		$end        = $size - 1;
 
-		$size = $this->file['size'] ?? 0; // Assuming you have the file size
-
-		$length = $size;           // Content length
-		$start  = 0;               // Start byte
-		$end    = $size - 1;       // End byte
 		header( 'Accept-Ranges: bytes' );
 		header( 'Content-Type: ' . $this->file['type'] );
+		header( 'X-Accel-Buffering: no' );
+		header( 'Content-Disposition: inline; filename="' . basename( $this->file['name'] ) . '"' );
 
 		$seconds_to_cache = 60 * 60 * 24;
-		$ts               = gmdate( 'D, d M Y H:i:s', time() + $seconds_to_cache ) . ' GMT';
-		header( "Expires: {$ts}" );
+		header( 'Expires: ' . gmdate( 'D, d M Y H:i:s', time() + $seconds_to_cache ) . ' GMT' );
 		header( 'Pragma: cache' );
 		header( "Cache-Control: max-age={$seconds_to_cache}" );
 
@@ -74,7 +67,6 @@ class Stream {
 			if ( false !== strpos( $range, ',' ) ) {
 				header( 'HTTP/1.1 416 Requested Range Not Satisfiable' );
 				header( "Content-Range: bytes {$start}-{$end}/{$size}" );
-
 				exit;
 			}
 
@@ -83,28 +75,19 @@ class Stream {
 			} else {
 				$range   = explode( '-', $range );
 				$c_start = (int) $range[0];
-
-				if ( isset( $range[1] ) && is_numeric( $range[1] ) ) {
-					$c_end = (int) $range[1];
-				} else {
-					$c_end = $size;
-				}
-
-				if ( $c_end - $c_start > $chunk_size ) {
-					$c_end = $c_start + $chunk_size;
-				}
+				$c_end   = isset( $range[1] ) && is_numeric( $range[1] ) ? (int) $range[1] : $size;
+				$c_end   = min( $c_start + $chunk_size, $c_end );
 			}
-			$c_end = ( $c_end > $end ) ? $end : $c_end;
+
+			$c_end = min( $c_end, $end );
 
 			if ( $c_start > $c_end || $c_start > $size - 1 || $c_end >= $size ) {
 				header( 'HTTP/1.1 416 Requested Range Not Satisfiable' );
 				header( "Content-Range: bytes {$start}-{$end}/{$size}" );
-
 				exit;
 			}
 
-			$start = $c_start;
-
+			$start  = $c_start;
 			$end    = $c_end;
 			$length = $end - $start + 1;
 			header( 'HTTP/1.1 206 Partial Content' );
@@ -113,15 +96,17 @@ class Stream {
 		header( "Content-Range: bytes {$start}-{$end}/{$size}" );
 		header( 'Content-Length: ' . $length );
 
-		$chunk_start = $start;
-
 		@ini_set( 'max_execution_time', 0 );
 
-		while ( $chunk_start <= $end ) {
-			// Output the chunk
-			$chunk_end = ( ( ( $chunk_start + $chunk_size ) > $end ) ? $end : $chunk_start + $chunk_size );
-			$this->stream_get_chunk( $chunk_start, $chunk_end );
+		$chunk_start = $start;
 
+		while ( $chunk_start <= $end ) {
+			if ( connection_aborted() ) {
+				break;
+			}
+
+			$chunk_end = min( $chunk_start + $chunk_size, $end );
+			$this->stream_get_chunk( $chunk_start, $chunk_end );
 			$chunk_start = $chunk_end + 1;
 
 			igd_server_throttle( $is_tutor_lms ? 'high' : '' );
@@ -129,12 +114,9 @@ class Stream {
 	}
 
 	private function stream_get_chunk( $start, $end, $chunked = true ) {
-		if ( $chunked ) {
-			$headers = [ 'Range' => 'bytes=' . $start . '-' . $end ];
-		}
+		$headers = $chunked ? [ 'Range' => 'bytes=' . $start . '-' . $end ] : [];
 
-		// Add Resources key to give permission to access the item
-		if ( $this->file['resourceKey'] ) {
+		if ( ! empty( $this->file['resourceKey'] ) ) {
 			$headers['X-Goog-Drive-Resource-Keys'] = $this->file['id'] . '/' . $this->file['resourceKey'];
 		}
 
@@ -142,37 +124,28 @@ class Stream {
 		$request->disableGzip();
 
 		$client = App::instance()->client;
+		$client->getIo()->setOptions([
+			CURLOPT_RETURNTRANSFER => false,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HEADER         => false,
+			CURLOPT_WRITEFUNCTION  => [ $this, 'stream_chunk_to_output' ],
+			CURLOPT_CONNECTTIMEOUT => 5,
+			CURLOPT_TIMEOUT        => 30,
+		]);
 
-		$client->getIo()->setOptions(
-			[
-				CURLOPT_RETURNTRANSFER => false,
-				CURLOPT_FOLLOWLOCATION => true,
-				CURLOPT_RANGE          => null,
-				CURLOPT_NOBODY         => null,
-				CURLOPT_HEADER         => false,
-				CURLOPT_WRITEFUNCTION  => [ $this, 'stream_chunk_to_output' ],
-				CURLOPT_CONNECTTIMEOUT => null,
-				CURLOPT_TIMEOUT        => null,
-			]
-		);
-
-		$client->getAuth()->authenticatedRequest( $request );
+		try {
+			$client->getAuth()->authenticatedRequest( $request );
+		} catch ( \Exception $e ) {
+			sleep(1);
+			$client->getAuth()->authenticatedRequest( $request );
+		}
 	}
 
-	/**
-	 * Callback function for CURLOPT_WRITEFUNCTION, This is what prints the chunk.
-	 *
-	 * @param \CurlHandle $ch
-	 * @param string $str
-	 *
-	 * @return int
-	 */
 	public function stream_chunk_to_output( $ch, $str ) {
 		echo $str;
-
+		flush();
 		return strlen( $str );
 	}
-
 
 	private function get_chunk_size( $value = '' ) {
 		$value = $value ?: igd_get_settings( 'serverThrottle', 'off' );
@@ -193,21 +166,14 @@ class Stream {
 				break;
 		}
 
-		return min( igd_get_free_memory_available() - ( 1024 * 1024 * 5 ), $chunk_size ); // Chunks size or less if memory isn't sufficient;
+		$free_mem = igd_get_free_memory_available();
+		return $free_mem > 0 ? min( $free_mem - (1024 * 1024 * 5), $chunk_size ) : $chunk_size;
 	}
 
 	public function get_api_url() {
 		return 'https://www.googleapis.com/drive/v3/files/' . $this->file['id'] . '?alt=media';
 	}
 
-	/**
-	 * Returns an instance of this class.
-	 *
-	 * @param $file_id int
-	 * @param  $account_id string
-	 *
-	 * @return Stream|null The instance of the class.
-	 */
 	public static function instance( $file_id, $account_id, $ignore_limit = false ) {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self( $file_id, $account_id, $ignore_limit );

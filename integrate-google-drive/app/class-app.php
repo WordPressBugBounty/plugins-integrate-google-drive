@@ -49,6 +49,7 @@ class App {
 			'from_server' => false,
 			'orderBy'     => "folder,name",
 			'filters'     => [],
+			'q'           => '',
 		];
 
 		$args = wp_parse_args( $args, $default_args );
@@ -160,11 +161,11 @@ class App {
 				}
 			}
 
-			$files = $this->sort_files( $files, $sort );
+			$files = igd_sort_files( $files, $sort );
 
 
 		} else {
-
+            
 			// Get files from cache
 			list( $files, $count ) = Files::get( $folder_id, $folder_account_id, $start_index, $limit, $filters, $sort );
 
@@ -214,50 +215,6 @@ class App {
 			Files::set( $files, $folder_id );
 
 			igd_update_cached_folders( $folder_id, $folder_account_id );
-		}
-
-		return $files;
-	}
-
-	public function sort_files( $files, $sort = [] ) {
-
-		if ( empty( $sort ) ) {
-			$sort = [ 'sortBy' => 'name', 'sortDirection' => 'asc' ];
-		}
-
-		$sort_by        = $sort['sortBy'];
-		$sort_direction = $sort['sortDirection'] === 'asc' ? SORT_ASC : SORT_DESC;
-
-		$is_random = 'random' == $sort_by;
-
-		// Initializing sorting arrays
-		$sort_array           = [];
-		$sort_array_secondary = [];
-
-		// Populating sorting arrays and adding isFolder attribute to files
-		foreach ( $files as $key => $file ) {
-
-			if ( empty( $file[ $sort_by ] ) ) {
-				$sort_array_secondary[ $key ] = 0;
-				$file[ $sort_by ]             = '';
-			}
-
-			$files[ $key ]['isFolder'] = igd_is_dir( $file );
-			$sort_array[ $key ]        = $files[ $key ]['isFolder'];
-
-			if ( ! $is_random ) {
-				// Convert date to timestamp if needed
-				$sort_array_secondary[ $key ] = in_array( $sort_by, [
-					'created',
-					'updated'
-				] ) ? strtotime( $file[ $sort_by ] ) : $file[ $sort_by ];
-			}
-		}
-
-		if ( $is_random ) {
-			shuffle( $files );
-		} else {
-			array_multisort( $sort_array, SORT_DESC, $sort_array_secondary, $sort_direction, SORT_NATURAL | SORT_FLAG_CASE, $files );
 		}
 
 		return $files;
@@ -892,7 +849,6 @@ class App {
 			return "An error occurred: " . $e->getMessage();
 		}
 	}
-
 
 	/**
 	 * Google Drive Service Instance

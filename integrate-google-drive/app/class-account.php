@@ -216,8 +216,10 @@ class Account {
 
 		try {
 			$about = $service->about->get( [ 'fields' => 'storageQuota' ] );
-			$usage = $about->getStorageQuota()->getUsage();
-			$limit = $about->getStorageQuota()->getLimit();
+			$quota = $about->getStorageQuota();
+
+			$usage = $quota->getUsage();
+			$limit = $quota->getLimit();
 
 			// Update active account data
 			$accounts                                    = $this->get_accounts();
@@ -232,7 +234,6 @@ class Account {
 		}
 
 		return false;
-
 	}
 
 	public function get_specific_folders( $account_id ) {

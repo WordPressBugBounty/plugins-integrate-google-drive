@@ -3,6 +3,7 @@
 namespace IGD;
 
 use Elementor\Controls_Manager;
+use Elementor\Plugin;
 use Elementor\Widget_Base;
 
 defined( 'ABSPATH' ) || exit();
@@ -14,7 +15,7 @@ class Shortcodes_Widget extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Module Shortcodes', 'integrate-google-drive' );
+		return __( 'Google Drive Modules', 'integrate-google-drive' );
 	}
 
 	public function get_icon() {
@@ -37,9 +38,7 @@ class Shortcodes_Widget extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		return [
-			'igd-frontend',
-		];
+		return [ 'igd-frontend' ];
 	}
 
 	public function get_style_depends() {
@@ -50,43 +49,81 @@ class Shortcodes_Widget extends Widget_Base {
 
 	public function register_controls() {
 
-		$this->start_controls_section( '_section_module_shortcodes',
+		$this->start_controls_section( $this->get_name(),
 			[
-				'label' => __( 'Module Shortcode', 'integrate-google-drive' ),
+				'label' => __( 'Google Drive Modules', 'integrate-google-drive' ),
 				'tab'   => Controls_Manager::TAB_CONTENT,
-			] );
+			]
+		);
 
+		$shortcodes = Shortcode::get_shortcodes();
 
-		$this->add_control( 'shortcode_id',
+		$options = [
+			'' => __( 'Select Module', 'integrate-google-drive' ),
+		];
+
+		if ( ! empty( $shortcodes ) ) {
+			foreach ( $shortcodes as $shortcode ) {
+				$options[ $shortcode['id'] ] = $shortcode['title'];
+			}
+		}
+
+		$this->add_control( 'module_id',
 			[
-				'label'       => __( 'Select Shortcode Module', 'integrate-google-drive' ),
-				'type'        => Controls_Manager::SELECT,
+				'label'       => __( 'Select Module', 'integrate-google-drive' ),
+				'type'        => Controls_Manager::SELECT2,
 				'label_block' => true,
-				'options'     => [ '' => __( 'Select Shortcode', 'integrate-google-drive' ) ] + igd_get_shortcodes_array(),
+				'options'     => $options,
+				'render_type' => 'template',
+				'description' => __( 'Select the module you want to display.', 'integrate-google-drive' ),
 			] );
 
+		$this->add_control( 'show_preview', [
+			'label'        => __( 'Show Preview', 'integrate-google-drive' ),
+			'type'         => Controls_Manager::SWITCHER,
+			'label_on'     => __( 'Show', 'integrate-google-drive' ),
+			'label_off'    => __( 'Hide', 'integrate-google-drive' ),
+			'return_value' => 'yes',
+			'default'      => 'yes',
+			'render_type'  => 'template',
+			'description'  => __( 'Show preview of the selected module in the editor.', 'integrate-google-drive' ),
+			'condition'    => [
+				'module_id!' => '', // Show only when a shortcode is selected
+			],
+		] );
+
+		// Edit button
+		$this->add_control( 'edit_module', [
+			'type'        => Controls_Manager::BUTTON,
+			'text'        => '<i class="eicon eicon-settings"></i>' . __( 'Configure Module', 'integrate-google-drive' ),
+			'event'       => 'igd:editor:edit_module',
+			'separator'   => 'before',
+			'classes'     => $this->get_name(),
+			'description' => __( 'Configure or create a new module', 'integrate-google-drive' ),
+		] );
 
 		$this->end_controls_section();
 	}
 
 	public function render() {
-		$settings     = $this->get_settings_for_display();
-		$shortcode_id = $settings['shortcode_id'];
+		$settings  = $this->get_settings_for_display();
+		$module_id = $settings['module_id'];
 
-		$is_editor         = \Elementor\Plugin::$instance->editor->is_edit_mode();
-		$shortcode_content = do_shortcode( '[integrate_google_drive id="' . $shortcode_id . '"]' );
+		$is_editor         = Plugin::$instance->editor->is_edit_mode();
+		$shortcode_content = do_shortcode( '[integrate_google_drive id="' . $module_id . '"]' );
 
-		if ( ! empty( $shortcode_id ) ) {
-			if ( $is_editor ) {
-				printf( '<div class="igd-shortcode-preview">%s</div>', $shortcode_content );
-			} else {
+		$show_preview = $settings['show_preview'];
+
+		if ( $is_editor ) {
+			if ( $module_id && $show_preview ) {
 				echo $shortcode_content;
+			} else {
+				Elementor::builder_empty_placeholder( $this->get_name(), $module_id );
 			}
 		} else {
-			if ( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
-				Elementor::builder_empty_placeholder( $this->get_name() );
-			}
+			echo $shortcode_content;
 		}
+
 	}
 
 }

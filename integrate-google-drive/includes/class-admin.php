@@ -15,8 +15,6 @@ class Admin {
 	public function __construct() {
 		add_action( 'admin_menu', [ $this, 'admin_menu' ] );
 
-		add_action( 'admin_notices', [ $this, 'lost_authorization_notice' ] );
-
 		add_action( 'admin_init', [ $this, 'init_update' ] );
 
 		// Remove admin notices from plugin pages
@@ -30,10 +28,105 @@ class Admin {
 
 		add_action( 'admin_notices', [ $this, 'display_notices' ] );
 
+		// Redirect URL after activation
+		igd_fs()->add_filter( 'connect_url', [ $this, 'redirect_after_activation' ] );
+
+	}
+
+	public function redirect_after_activation( $url ) {
+
+		if ( igd_fs()->is_premium() ) {
+			return $url;
+		}
+
+		// Parse the URL into its components
+		$url_parts = wp_parse_url( $url );
+
+		// Parse existing query parameters into an array, or initialize empty if none
+		$query_params = [];
+		if ( ! empty( $url_parts['query'] ) ) {
+			parse_str( $url_parts['query'], $query_params );
+		}
+
+		// Set or replace the 'page' parameter
+		$query_params['page'] = 'integrate-google-drive-getting-started';
+
+		// Rebuild the query string with updated parameters
+		$url_parts['query'] = http_build_query( $query_params );
+
+		// Rebuild the full URL safely
+		$new_url = $url_parts['scheme'] . '://' . $url_parts['host'];
+
+		if ( ! empty( $url_parts['path'] ) ) {
+			$new_url .= $url_parts['path'];
+		}
+
+		if ( ! empty( $url_parts['query'] ) ) {
+			$new_url .= '?' . $url_parts['query'];
+		}
+
+		if ( ! empty( $url_parts['fragment'] ) ) {
+			$new_url .= '#' . $url_parts['fragment'];
+		}
+
+
+		// Escape the URL before returning
+		return esc_url_raw( $new_url );
 	}
 
 	public function display_notices() {
 
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		// Needs migration notice
+		$migration_status = get_option( 'igd_migration_1_5_1_status' );
+
+		if ( 'run' === $migration_status || 'running' === $migration_status ) {
+			ob_start();
+			include IGD_INCLUDES . '/views/notice/migration-1.5.1.php';
+			$notice_html = ob_get_clean();
+
+			igd()->add_notice( 'warning igd-migration-notice warning', $notice_html );
+
+			return;
+		}
+
+		// Account authentication lost notice
+		$accounts = Account::instance()->get_accounts();
+		if ( ! empty( $accounts ) ) {
+
+			$icon_url       = esc_url( IGD_ASSETS . '/images/drive.png' );
+			$refresh_url    = esc_url( admin_url( 'admin.php?page=integrate-google-drive-settings&tab=accounts' ) );
+			$plugin_name    = esc_html__( 'Integrate Google Drive', 'integrate-google-drive' );
+			$refresh_text   = esc_html__( 'Refresh', 'integrate-google-drive' );
+			$alt_text       = esc_attr__( 'Google Drive icon', 'integrate-google-drive' );
+			$lost_auth_text = esc_html__( 'lost authorization for account', 'integrate-google-drive' );
+
+			foreach ( $accounts as $account ) {
+				if ( empty( $account['lost'] ) && empty( $account['is_lost'] ) ) {
+					continue; // skip accounts without lost auth
+				}
+
+				$email = esc_html( $account['email'] );
+
+				$msg = sprintf(
+					'<img src="%1$s" width="32" alt="%2$s" /> <strong>%3$s</strong> %4$s <strong>%5$s</strong>. <a class="button" href="%6$s">%7$s</a>',
+					$icon_url,
+					$alt_text,
+					$plugin_name,
+					$lost_auth_text,
+					$email,
+					$refresh_url,
+					$refresh_text
+				);
+
+				igd()->add_notice( 'error igd-lost-auth-notice', $msg );
+			}
+		}
+
+		// Account reconnection notice
 		if ( get_option( 'igd_account_notice' ) ) {
 			ob_start();
 			include IGD_INCLUDES . '/views/notice/account.php';
@@ -111,6 +204,7 @@ class Admin {
 	}
 
 	public function init_update() {
+
 		if ( current_user_can( 'manage_options' ) ) {
 
 			if ( ! class_exists( 'IGD\Update' ) ) {
@@ -137,8 +231,13 @@ class Admin {
 			],
 			'shortcode_builder' => [
 				'view'          => [ 'IGD\Shortcode', 'view' ],
-				'title'         => __( 'Shortcode Builder - Integrate Google Drive', 'integrate-google-drive' ),
-				'submenu_title' => __( 'Shortcode Builder', 'integrate-google-drive' )
+				'title'         => __( 'Module Builder - Integrate Google Drive', 'integrate-google-drive' ),
+				'submenu_title' => __( 'Module Builder', 'integrate-google-drive' )
+			],
+			'proof_selections'  => [
+				'view'          => [ 'IGD\Proof_Selections', 'view' ],
+				'title'         => __( 'Proof Selections - Integrate Google Drive', 'integrate-google-drive' ),
+				'submenu_title' => '',
 			],
 			'private_files'     => [
 				'view'          => [ 'IGD\Private_Folders', 'view' ],
@@ -167,10 +266,29 @@ class Admin {
 			unset( $access_rights['statistics'] );
 		}
 
+		$should_remove_menus = false;
+
+//		$should_remove_menus = igd_fs()->is_premium() && ! igd_fs()->has_any_license() && ! igd_fs()->is_registered();
+//
+//		if ( $should_remove_menus ) {
+//			$access_rights = [
+//				'getting_started' => [
+//					'view'          => [ $this, 'render_getting_started_page' ],
+//					'title'         => __( 'Getting Started - Integrate Google Drive', 'integrate-google-drive' ),
+//					'submenu_title' => __( 'Getting Started', 'integrate-google-drive' )
+//				]
+//			];
+//		}
 
 		foreach ( $access_rights as $access_right => $page_config ) {
 
-			if ( igd_user_can_access( $access_right ) ) {
+			$can_access = igd_user_can_access( $access_right );
+
+			if ( 'proof_selections' === $access_right ) {
+				$can_access = igd_user_can_access( 'shortcode_builder' );
+			}
+
+			if ( $can_access ) {
 				if ( ! $main_menu_added ) {
 					$this->pages[ $access_right . '_page' ] = $this->add_main_menu_page( $page_config['title'], $page_config['submenu_title'], $page_config['view'] );
 					$main_menu_added                        = true;
@@ -182,7 +300,7 @@ class Admin {
 		}
 
 		//Recommended plugins page
-		if ( empty( get_option( "igd_hide_recommended_plugins" ) ) ) {
+		if ( ! $should_remove_menus && empty( get_option( "igd_hide_recommended_plugins" ) ) ) {
 			add_submenu_page(
 				'integrate-google-drive',
 				esc_html__( 'Recommended Plugins', 'integrate-google-drive' ),
@@ -196,6 +314,7 @@ class Admin {
 	}
 
 	private function add_main_menu_page( $title, $submenu_title, $view ) {
+
 		$page = add_menu_page(
 			__( 'Integrate Google Drive', 'integrate-google-drive' ),
 			__( 'Google Drive', 'integrate-google-drive' ),
@@ -212,6 +331,7 @@ class Admin {
 	}
 
 	private function add_submenu_page( $title, $submenu_title, $view, $slug, $priority = 90 ) {
+
 		$slug = str_replace( '_', '-', $slug );
 
 		return add_submenu_page( 'integrate-google-drive', $title, $submenu_title, 'read', 'integrate-google-drive-' . $slug, $view, $priority );
@@ -221,33 +341,6 @@ class Admin {
 		include IGD_INCLUDES . '/views/recommended-plugins.php';
 	}
 
-	public function lost_authorization_notice() {
-
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
-
-		$accounts = Account::instance()->get_accounts();
-
-		if ( ! empty( $accounts ) ) {
-			foreach ( $accounts as $id => $account ) {
-
-				// remove is_lost in future updates
-				if ( ! empty( $account['lost'] ) || ! empty( $account['is_lost'] ) ) {
-
-					$msg = sprintf(
-						'<img src="%s" width="32" /> <strong>Integrate Google Drive</strong> lost authorization for account <strong>%s</strong>. <a class="button" href="%s">Refresh</a>',
-						IGD_ASSETS . '/images/drive.png',
-						$account['email'],
-						admin_url( 'admin.php?page=integrate-google-drive-settings' )
-					);
-
-					igd()->add_notice( 'error igd-lost-auth-notice', $msg );
-				}
-			}
-		}
-
-	}
 
 	public function render_getting_started_page() {
 		include_once IGD_INCLUDES . '/views/getting-started/index.php';

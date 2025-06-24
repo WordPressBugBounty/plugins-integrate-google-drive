@@ -1,91 +1,30 @@
 <?php
 
-$integrations = [
-	'media-library' => [
-		'title'       => __( 'Media Library', 'integrate-google-drive' ),
-		'description' => __( 'Use Google Drive files as WordPress media attachment and upload, import, and synchronize between WordPress and Google Drive.', 'integrate-google-drive' ),
-	],
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
-	'classic-editor' => [
-		'title'       => __( 'Classic Editor', 'integrate-google-drive' ),
-		'description' => __( 'Add Google Drive module, embed documents and insert file view links and download links using the Google Drive button on the classic editor.', 'integrate-google-drive' ),
-	],
-
-	'gutenberg-editor' => [
-		'title'       => __( 'Gutenberg Editor', 'integrate-google-drive' ),
-		'description' => __( 'Add Google Drive modules, embed documents and insert file view links and download links using the Google Drive Gutenberg editor blocks', 'integrate-google-drive' ),
-	],
-	'elementor' => [
-		'title'       => __( 'Elementor', 'integrate-google-drive' ),
-		'description' => __( 'Add Google Drive modules, embed documents and insert file view links and download links using the Google Drive Elementor widgets.', 'integrate-google-drive' ),
-	],
-	'divi' => [
-		'title'       => __( 'Divi', 'integrate-google-drive' ),
-		'description' => __( 'Add Google Drive modules, embed documents and insert file view links and download links using the Google Drive Divi Page Builder modules.', 'integrate-google-drive' ),
-	],
-	'acf' => [
-		'title'       => __( 'Advanced Custom Fields', 'integrate-google-drive' ),
-		'description' => __( 'Allows you to select Google Drive files and folders using ACF field and display in theme template file.', 'integrate-google-drive' ),
-	],
-	'woocommerce'     => [
-		'title'       => __( 'WooCommerce', 'integrate-google-drive' ),
-		'description' => __( 'You can serve your downloadable product\'s files directly from Google Drive, and also you can let your customers upload files to your Google Drive account when they purchase your products.', 'integrate-google-drive' ),
-	],
-	'dokan'           => [
-		'title'       => __( 'Dokan', 'integrate-google-drive' ),
-		'description' => __( 'Allows vendors to serve their Google Drive files as downloadable files and let customer upload files to Google Drive on checkout.', 'integrate-google-drive' ),
-	],
-	'edd'             => [
-		'title'       => __( 'Easy Digital Downloads', 'integrate-google-drive' ),
-		'description' => __( 'Allows you to serve your Easy Digital Downloads files directly from Google Drive.', 'integrate-google-drive' ),
-	],
-	'tutor'           => [
-		'title'       => __( 'Tutor LMS', 'integrate-google-drive' ),
-		'description' => __( 'Allows Instructors to link their Google accounts for efficient and independent course material management.', 'integrate-google-drive' ),
-	],
-	'cf7'             => [
-		'title'       => __( 'Contact Form 7', 'integrate-google-drive' ),
-		'description' => __( 'Allows you to upload your files directly to Google Drive from your Contact Form 7 upload field.', 'integrate-google-drive' ),
-	],
-	'wpforms'         => [
-		'title'       => __( 'WPForms', 'integrate-google-drive' ),
-		'description' => __( 'Allows you to upload your files directly to Google Drive from your WPForms upload field.', 'integrate-google-drive' ),
-	],
-	'gravityforms'    => [
-		'title'       => __( 'Gravity Forms', 'integrate-google-drive' ),
-		'description' => __( 'Allows you to upload your files directly to Google Drive from your Gravity Forms upload field.', 'integrate-google-drive' ),
-	],
-	'fluentforms'     => [
-		'title'       => __( 'Fluent Forms', 'integrate-google-drive' ),
-		'description' => __( 'Allows you to upload your files directly to Google Drive from your Fluent Forms upload field.', 'integrate-google-drive' ),
-	],
-	'formidableforms' => [
-		'title'       => __( 'Formidable Forms', 'integrate-google-drive' ),
-		'description' => __( 'Allows you to upload your files directly to Google Drive from your Formidable Forms upload field.', 'integrate-google-drive' ),
-	],
-	'ninjaforms'      => [
-		'title'       => __( 'Ninja Forms', 'integrate-google-drive' ),
-		'description' => __( 'Allows you to upload your files directly to Google Drive from your Ninja Forms upload field.', 'integrate-google-drive' ),
-	],
-
-	'elementor-form' => [
-		'title'       => __( 'Elementor Form', 'integrate-google-drive' ),
-		'description' => __( 'Allows effortless file uploads from Elementor PRO Form widget to Google Drive for quick and efficient storage.', 'integrate-google-drive' ),
-	],
-	'metform'        => [
-		'title'       => __( 'MetForm', 'integrate-google-drive' ),
-		'description' => __( "Allows effortless file uploads from MetForm to Google Drive for quick and efficient storage.", 'integrate-google-drive' ),
-	],
-
-];
+$setup_complete = ! get_option( 'igd_show_setup' );
 
 ?>
 
-<div id="introduction" class="getting-started-content content-introduction active">
+<div id="introduction"
+     class="getting-started-content content-introduction active <?php echo $setup_complete ? 'setup-complete' : ''; ?>">
+
+	<?php
+	if ( ! $setup_complete ) {
+		include_once IGD_INCLUDES . '/views/getting-started/get-started.php';
+	}
+
+	?>
+
+    <div class="content-heading heading-overview">
+        <h2><?php printf( __( 'Quick %s Overview %s', 'integrate-google-drive' ), '<mark>', '</mark>' ); ?></h2>
+        <p><?php esc_html_e( 'Get started with Integrate Google Drive', 'integrate-google-drive' ); ?></p>
+    </div>
 
     <section class="section-introduction section-full">
         <div class="col-description">
-            <h2><?php esc_html_e( 'Quick Overview', 'integrate-google-drive' ); ?></h2>
             <p>
 				<?php
 				esc_html_e( 'Integrate Google Drive is the best and easy to use Google Drive integration plugin for
@@ -102,7 +41,6 @@ $integrations = [
         </div>
 
         <div class="col-image">
-
             <iframe src="https://www.youtube.com/embed/6DrYur4KGLA?rel=0"
                     title="Integrate Google Drive - Video Overview" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -111,87 +49,148 @@ $integrations = [
 
     </section>
 
-    <div class="content-heading">
-        <h2><?php esc_html_e( 'Never miss a valuable features', 'integrate-google-drive' ); ?></h2>
+    <div class="content-heading never-miss-feature">
+        <h2>
+            <h2><?php echo sprintf( __( 'Never miss a %s Valuable Feature %s', 'integrate-google-drive' ), '<mark>', '</mark>' ); ?></h2>
+        </h2>
         <p><?php esc_html_e( 'Let\'s explore the awesome features of the plugin', 'integrate-google-drive' ); ?></p>
     </div>
 
-    <!-- Specific Folders Accessibility -->
+    <!-- Review and Approve Module -->
     <section class="section-media-library section-full">
         <div class="col-description">
-            <h2><?php esc_html_e( 'Specific Folders Accessibility', 'integrate-google-drive' ); ?>
-            <span class="badge"><?php esc_html_e( 'New ⚡', 'integrate-google-drive' ); ?></span>
+            <h2><?php esc_html_e( 'Review & Approve Module', 'integrate-google-drive' ); ?>
+                <span class="badge"><?php esc_html_e( 'New ⚡', 'integrate-google-drive' ); ?></span>
             </h2>
             <p>
-				<?php esc_html_e( 'Restrict access to specific folders within the plugin. This feature enhances security and control over your Google Drive files and ensures that only the designated folders are available for use and management within the app.', 'integrate-google-drive' ); ?>
+				<?php esc_html_e( 'The Review and Approve module offers a collaborative workflow where users can review, select, and approve Google Drive files submitted for feedback or confirmation. Ideal for use cases like photo proofing, document approvals, or asset selection, this module includes selection checkboxes, approval status indicators, and comment support.', 'integrate-google-drive' ); ?>
             </p>
         </div>
 
         <div class="col-image">
-            <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/specific-folders-accessibility.png' ); ?>"/>
+            <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/review-module.png' ); ?>"/>
         </div>
     </section>
 
-    <!-- Media Library Integration -->
+    <!-- List Files -->
     <section class="section-media-library section-full">
-        <div class="col-description">
-            <h2><?php esc_html_e( 'Media Library Integration', 'integrate-google-drive' ); ?>
-            <span class="badge"><?php esc_html_e( 'New ⚡', 'integrate-google-drive' ); ?></span>
-            </h2>
-            <p>
-				<?php esc_html_e( 'Integrating Google Drive with WordPress Media Library, allows you to use Google Drive files as media attachments directly in WordPress. This integration facilitates easy uploading, importing, and synchronizing of media content between WordPress and Google Drive, streamlining your digital asset management and enhancing your website\'s media capabilities.', 'integrate-google-drive' ); ?>
-            </p>
-        </div>
 
         <div class="col-image">
-            <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/media-library.png' ); ?>"/>
+            <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/review-module.png' ); ?>"/>
+        </div>
+
+        <div class="col-description">
+            <h2><?php esc_html_e( 'List Files', 'integrate-google-drive' ); ?>
+                <span class="badge"><?php esc_html_e( 'New ⚡', 'integrate-google-drive' ); ?></span>
+            </h2>
+            <p>
+				<?php esc_html_e( 'The List Files module offers a clean, organized interface to display your Google Drive files, allowing users to preview and download files directly from the list.', 'integrate-google-drive' ); ?>
+            </p>
         </div>
     </section>
 
-    <div class="section-wrap">
 
-        <!-- File Browser -->
-        <section class="section-file-browser section-half">
-            <div class="col-description">
-                <h2><?php esc_html_e( 'File Browser', 'integrate-google-drive' ); ?></h2>
+    <!-- File Browser -->
+    <section class="section-file-browser section-full">
+        <div class="col-description">
+            <h2><?php esc_html_e( 'File Browser', 'integrate-google-drive' ); ?></h2>
 
-                <p>
-					<?php
-					esc_html_e( 'You can manage your cloud files from your website using the full-featured file browser of the
+            <p>
+				<?php
+				esc_html_e( 'You can manage your cloud files from your website using the full-featured file browser of the
                     plugin. Manage preview, download, upload, rename, move, delete, permissions per user using
                     the file browser. Users can also browse your cloud files using the File Browser.', 'integrate-google-drive' );
-					?>
-                </p>
-            </div>
+				?>
+            </p>
+        </div>
 
-            <div class="col-image">
-                <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/file-browser.png' ); ?>"
-                     alt="<?php esc_attr_e( 'File Browser', 'integrate-google-drive' ); ?>">
-            </div>
-        </section>
+        <div class="col-image">
+            <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/file-browser.png' ); ?>"
+                 alt="<?php esc_attr_e( 'File Browser', 'integrate-google-drive' ); ?>">
+        </div>
+    </section>
 
-        <!-- File Uploader -->
-        <section class="section-file-uploader section-half">
-            <div class="col-description">
-                <h2><?php esc_html_e( 'File Uploader', 'integrate-google-drive' ); ?></h2>
+    <!-- File Uploader -->
+    <section class="section-file-uploader section-full">
+        <div class="col-image">
+            <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/file-uploader.png' ); ?>"
+                 alt="<?php esc_attr_e( 'File Uploader', 'integrate-google-drive' ); ?>">
+        </div>
 
-                <p>
-					<?php
-					esc_attr_e( 'You and also your users can upload files directly to your Google Drive account from your
+        <div class="col-description">
+            <h2><?php esc_html_e( 'File Uploader', 'integrate-google-drive' ); ?></h2>
+
+            <p>
+				<?php
+				esc_attr_e( 'You and also your users can upload files directly to your Google Drive account from your
                     site. You can upload unlimited size of files.', 'integrate-google-drive' );
-					?>
-                </p>
-            </div>
+				?>
+            </p>
+        </div>
+    </section>
 
-            <div class="col-image">
-                <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/file-uploader.png' ); ?>"
-                     alt="<?php esc_attr_e( 'File Uploader', 'integrate-google-drive' ); ?>">
-            </div>
-        </section>
+    <!-- Gallery -->
+    <section class="section-photo-gallery section-full">
+        <div class="col-description">
+            <h2><?php esc_html_e( 'Gallery', 'integrate-google-drive' ); ?></h2>
+            <p>
+				<?php esc_html_e( 'You can add a grid lightbox popup gallery of photos and videos in your page/ post using the gallery
+                    module of the plugin. The gallery will be generated based on the folders, photos and images that you select.', 'integrate-google-drive' ); ?>
+            </p>
+        </div>
 
-    </div>
+        <div class="col-image">
+            <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/photo-gallery.png' ); ?>"/>
+        </div>
+    </section>
 
-    <section class="section-media-player section-full">
+    <!-- Slider Carousel -->
+    <section class="section-slider-carousel section-full">
+        <div class="col-image">
+            <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/slider-carousel.png' ); ?>"/>
+        </div>
+
+        <div class="col-description">
+            <h2><?php esc_html_e( 'Slider Carousel', 'integrate-google-drive' ); ?></h2>
+            <p>
+				<?php esc_html_e( 'With the Slider Carousel module, you can create a beautiful and interactive slider carousel to showcase your Google Drive images, videos, and documents. Simply use the shortcode to embed the slider anywhere on your site.', 'integrate-google-drive' ); ?>
+            </p>
+        </div>
+
+
+    </section>
+
+    <section class="section-file-search section-full">
+        <div class="col-description">
+            <h2><?php esc_html_e( 'File Search', 'integrate-google-drive' ); ?></h2>
+            <p><?php esc_html_e( 'You can search any of your cloud files from your site and also let the users to search the
+                    cloud files to view and download.', 'integrate-google-drive' ); ?></p>
+        </div>
+
+        <div class="col-image">
+            <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/file-search.png' ); ?>"/>
+        </div>
+    </section>
+
+    <!-- Embed Documents -->
+    <section class="section-embed section-full">
+        <div class="col-image">
+            <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/embed.png' ); ?>"/>
+        </div>
+
+        <div class="col-description">
+            <h2><?php esc_html_e( 'Embed Documents', 'integrate-google-drive' ); ?></h2>
+            <p>
+				<?php
+				esc_html_e( 'You can easily embed any Google Drive Cloud files in any post/ page of your WordPress website
+                directly using this plugin.', 'integrate-google-drive' );
+				?>
+            </p>
+        </div>
+    </section>
+
+    <!-- Media Player -->
+    <section class="section-links section-full">
         <div class="col-description">
             <h2><?php esc_html_e( 'Media Player', 'integrate-google-drive' ); ?></h2>
             <p>
@@ -205,95 +204,21 @@ $integrations = [
         </div>
     </section>
 
-    <div class="section-wrap">
+    <!-- Specific Folders Accessibility -->
+    <section class="section-media-library section-full">
+        <div class="col-image">
+            <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/specific-folders-accessibility.png' ); ?>"/>
+        </div>
 
-        <section class="section-photo-gallery section-half">
-            <div class="col-description">
-                <h2><?php esc_html_e( 'Gallery', 'integrate-google-drive' ); ?></h2>
-                <p>
-					<?php esc_html_e( 'You can add a grid lightbox popup gallery of photos and videos in your page/ post using the gallery
-                    module of the plugin. The gallery will be generated based on the folders, photos and images that you select.', 'integrate-google-drive' ); ?>
-                </p>
-            </div>
-
-            <div class="col-image">
-                <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/photo-gallery.png' ); ?>"/>
-            </div>
-        </section>
-
-        <section class="section-slider-carousel section-half">
-            <div class="col-description">
-                <h2><?php esc_html_e( 'Slider Carousel', 'integrate-google-drive' ); ?></h2>
-                <p>
-					<?php esc_html_e( 'With the Slider Carousel module, you can create a beautiful and interactive slider carousel to showcase your Google Drive images, videos, and documents. Simply use the shortcode to embed the slider anywhere on your site.', 'integrate-google-drive' ); ?>
-                </p>
-            </div>
-
-            <div class="col-image">
-                <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/slider-carousel.png' ); ?>"/>
-            </div>
-        </section>
-
-    </div>
-
-    <div class="section-wrap">
-        <section class="section-file-search section-half">
-            <div class="col-description">
-                <h2><?php esc_html_e( 'File Search', 'integrate-google-drive' ); ?></h2>
-                <p><?php esc_html_e( 'You can search any of your cloud files from your site and also let the users to search the
-                    cloud files to view and download.', 'integrate-google-drive' ); ?></p>
-            </div>
-
-            <div class="col-image">
-                <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/file-search.png' ); ?>"/>
-            </div>
-        </section>
-
-        <section class="section-embed section-half">
-            <div class="col-description">
-                <h2><?php esc_html_e( 'Embed Documents', 'integrate-google-drive' ); ?></h2>
-                <p>
-					<?php
-					esc_html_e( 'You can easily embed any Google Drive Cloud files in any post/ page of your WordPress website
-                directly using this plugin.', 'integrate-google-drive' );
-					?>
-                </p>
-            </div>
-
-            <div class="col-image">
-                <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/embed.png' ); ?>"/>
-            </div>
-
-        </section>
-    </div>
-
-    <div class="section-wrap">
-        <section class="section-file-importer section-half">
-            <div class="col-description">
-                <h2><?php esc_html_e( 'File Importer', 'integrate-google-drive' ); ?></h2>
-                <p>
-					<?php esc_html_e( 'Import any Google Drive document and media files to your media library by one click and use
-                    them on any post/ page.', 'integrate-google-drive' ); ?>
-                </p>
-            </div>
-
-            <div class="col-image">
-                <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/file-importer.png' ); ?>"/>
-            </div>
-        </section>
-
-        <section class="section-links section-half">
-            <div class="col-description">
-                <h2><?php esc_html_e( 'File View & Download Links', 'integrate-google-drive' ); ?></h2>
-                <p><?php esc_html_e( 'You can insert direct links to your post/ page to download/ view your Google Drive cloud
-                    files.', 'integrate-google-drive' ); ?></p>
-            </div>
-
-            <div class="col-image">
-                <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/links.png' ); ?>"/>
-            </div>
-        </section>
-    </div>
+        <div class="col-description">
+            <h2><?php esc_html_e( 'Specific Folders Accessibility', 'integrate-google-drive' ); ?>
+                <span class="badge"><?php esc_html_e( 'New ⚡', 'integrate-google-drive' ); ?></span>
+            </h2>
+            <p>
+				<?php esc_html_e( 'Restrict access to specific folders within the plugin. This feature enhances security and control over your Google Drive files and ensures that only the designated folders are available for use and management within the app.', 'integrate-google-drive' ); ?>
+            </p>
+        </div>
+    </section>
 
     <div class="section-wrap">
         <section class="section-private-folders section-half">
@@ -321,24 +246,70 @@ $integrations = [
         </section>
     </div>
 
-    <div class="content-heading">
-        <h2><?php esc_html_e( 'Powerful Integrations with Popular Plugins', 'integrate-google-drive' ); ?></h2>
+    <div class="section-wrap">
+
+        <!-- Media Library Integration -->
+        <section class="section-media-library section-half">
+            <div class="col-description">
+                <h2><?php esc_html_e( 'Media Library Integration', 'integrate-google-drive' ); ?></h2>
+                <p>
+					<?php esc_html_e( 'Integrate Google Drive with WordPress Media Library to use Drive files as media attachments directly. This streamlines uploading, importing, and syncing media between WordPress and Google Drive.', 'integrate-google-drive' ); ?>
+                </p>
+            </div>
+
+            <div class="col-image">
+                <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/media-library.png' ); ?>"/>
+            </div>
+        </section>
+
+        <!--        Media Library Import -->
+        <section class="section-file-importer section-half">
+            <div class="col-description">
+                <h2><?php esc_html_e( 'Media Library Import', 'integrate-google-drive' ); ?></h2>
+                <p>
+					<?php esc_html_e( 'Import any Google Drive document and media files to your media library by one click and use
+                    them on any post/ page.', 'integrate-google-drive' ); ?>
+                </p>
+            </div>
+
+            <div class="col-image">
+                <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/file-importer.png' ); ?>"/>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="content-heading heading-integrations">
+        <h2><?php echo sprintf( __( '%s Powerful Integrations %s with Popular Plugins', 'integrate-google-drive' ), '<mark>', '</mark>' ); ?></h2>
         <p><?php esc_html_e( 'Using this plugin, you can integrate your Google Drive with available popular plugins.', 'integrate-google-drive' ); ?> </p>
     </div>
 
+    <!--  Page Builder Integrations -->
+    <section class="section-page-builders section-full">
+        <div class="col-description">
+            <h2><?php esc_html_e( 'Popular Page Builder Supports', 'integrate-google-drive' ); ?></h2>
+            <p>
+				<?php esc_html_e( 'The plugin supports all major page builders worldwide, ensuring 100% compatibility with your favorite tools. With Integrate Google Drive, you’re ready to work seamlessly with whichever page builder you choose.', 'integrate-google-drive' ); ?>
+            </p>
+        </div>
 
-    <section class="integrations">
-		<?php foreach ( $integrations as $key => $integration ) { ?>
-            <div class="integration">
-                <div class="integration-logo">
-                    <img src="<?php echo esc_url( IGD_ASSETS . '/images/settings/' . $key . '.png' ); ?>"
-                         alt="<?php echo esc_attr( $integration['title'] ); ?>">
-                </div>
-                <h3 class="integration-title"><?php echo esc_html( $integration['title'] ); ?></h3>
-                <p><?php echo esc_html( $integration['description'] ); ?></p>
-            </div>
-		<?php } ?>
+        <div class="col-image">
+            <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/page-builders.png' ); ?>"/>
+        </div>
     </section>
 
+    <!--  Form Integrations -->
+    <section class="section-form-integrations section-full">
+        <div class="col-image">
+            <img src="<?php echo esc_url( IGD_ASSETS . '/images/getting-started/form-integrations.png' ); ?>"/>
+        </div>
+
+        <div class="col-description">
+            <h2><?php esc_html_e( 'Popular Form Plugin Supports', 'integrate-google-drive' ); ?></h2>
+            <p>
+				<?php esc_html_e( 'Upload files directly to Google Drive through your website’s integration with popular form plugins. Build a powerful module for your favorite forms using the Integrate Google Drive plugin.', 'integrate-google-drive' ); ?>
+            </p>
+        </div>
+    </section>
 
 </div>

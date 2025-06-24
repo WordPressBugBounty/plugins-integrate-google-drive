@@ -34,22 +34,24 @@ class Shortcode {
         if ( !$this->check_status() ) {
             return;
         }
-        // Enqueue frontend styles
-        wp_enqueue_style( 'igd-frontend' );
-        // Access denied message
-        if ( !$this->check_should_show() || !$this->check_use_private_files() ) {
-            return $this->get_access_denied_message();
-        }
         // Enqueue frontend scripts
         $this->enqueue_scripts();
-        $this->set_permissions();
-        $this->get_initial_search_term();
-        $this->set_filters();
-        $this->set_notifications();
-        $this->process_files();
-        $this->set_account();
-        // Set shortcode id, nonce and transient
-        $this->set_shortcode_transient();
+        // Add nonce for non-logged in users
+        if ( !is_user_logged_in() ) {
+            $this->data['nonce'] = wp_create_nonce( 'igd-shortcode-nonce' );
+        }
+        // Check if the module should be shown based on the users
+        if ( !$this->check_should_show() || !$this->check_use_private_files() ) {
+            // Login screen
+            if ( !is_user_logged_in() && (!isset( $this->data['displayLogin'] ) || !empty( $this->data['displayLogin'] )) ) {
+                return $this->get_login_screen();
+            } elseif ( !isset( $this->data['showAccessDeniedMessage'] ) || !empty( $this->data['showAccessDeniedMessage'] ) ) {
+                return $this->get_access_denied_message();
+            } else {
+                return;
+            }
+        }
+        $this->apply_module_configuration();
         return $this->generate_html();
     }
 
@@ -63,7 +65,7 @@ class Shortcode {
                 if ( $id ) {
                     $shortcode = $this->get_shortcode( $id );
                     if ( !empty( $shortcode ) ) {
-                        $data = unserialize( $shortcode->config );
+                        $data = $shortcode['config'];
                     }
                 }
             }
@@ -72,14 +74,23 @@ class Shortcode {
         $this->data = $data;
     }
 
+    private function apply_module_configuration() {
+        $this->set_permissions();
+        $this->get_initial_search_term();
+        $this->set_filters();
+        $this->set_notifications();
+        $this->process_files();
+        // Filter files if necessary.
+        $this->check_filters();
+        $this->set_account();
+        // Set shortcode id, nonce and transient
+        $this->set_shortcode_transient();
+    }
+
     private function set_shortcode_transient() {
         // Set ID
         if ( empty( $this->data['id'] ) ) {
             $this->data['id'] = $this->data['uniqueId'] ?? 'igd_' . md5( maybe_serialize( $this->data ) );
-        }
-        // Add nonce for non-logged in users
-        if ( !is_user_logged_in() ) {
-            $this->data['nonce'] = wp_create_nonce( 'igd-shortcode-nonce' );
         }
         // Set transient
         $transient_key = 'shortcode_' . $this->data['id'];
@@ -99,19 +110,14 @@ class Shortcode {
 
     private function get_access_denied_message() {
         // Define the default message parts with proper escaping
-        $image_url = esc_url( IGD_ASSETS . '/images/access-denied.png' );
         $title = esc_html__( 'Access Denied', 'integrate-google-drive' );
         $description = esc_html__( "We're sorry, but your account does not currently have access to this content. To gain access, please contact the site administrator who can assist in linking your account to the appropriate content. Thank you.", 'integrate-google-drive' );
         // Construct the default message using a heredoc for readability
-        $default_message = <<<HTML
-<img width="100" src="{$image_url}" alt="Access Denied">
-<h3 class="placeholder-title">{$title}</h3>
-<p class="placeholder-description">{$description}</p>
-HTML;
+        $default_message = "<h3>{$title}</h3><p>{$description}</p>";
         // Use custom access denied message if available, otherwise default
-        $access_denied_message = ( !empty( $this->data['accessDeniedMessage'] ) ? $this->data['accessDeniedMessage'] : $default_message );
+        $access_denied_message = igd_get_settings( 'accessDeniedMessage', $default_message );
         // Return the complete access denied message if it should be shown
-        return ( !empty( $this->data['showAccessDeniedMessage'] ) ? sprintf( '<div class="igd-access-denied-placeholder">%s</div>', $access_denied_message ) : false );
+        return sprintf( '<div class="igd-access-denied-placeholder">%s</div>', $access_denied_message );
     }
 
     private function get_password_protected_screen() {
@@ -121,21 +127,83 @@ HTML;
         $placeholder = esc_attr__( "Enter Password", "integrate-google-drive" );
         $button_text = esc_html__( "Unlock", "integrate-google-drive" );
         $spinner_url = includes_url( 'images/wpspin.gif' );
+        $default_message = "<h3>{$title}</h3><p>{$description}</p>";
+        $password_protected_message = igd_get_settings( 'passwordProtectedMessage', $default_message );
         // Use heredoc syntax for cleaner HTML structure
         return <<<HTML
         <div class="igd-password-protected">
-            <h3>{$title}</h3>
-            <p>{$description}</p>
+           
+            {$password_protected_message}
     
             <form id="igd-password-form" class="igd-password-form" method="post">
                 <input type="hidden" name="shortcode_id" value="{$this->data['id']}">
-                <input type="password" name="password" placeholder="{$placeholder}" />
+                <input type="password" required name="password" placeholder="{$placeholder}" />
                 
                 <button type="submit"><img src="{$spinner_url}" width="20" height="20" class="" />{$button_text}</button>
             </form>
             
-            <p class="igd-password-error"></p>
+            <p class="igd-form-error"></p>
         </div>
+HTML;
+    }
+
+    private function get_email_required_screen() {
+        // Localize text strings for translation and escape them for security
+        $title = esc_html__( "Email Required", "integrate-google-drive" );
+        $description = esc_html__( "Please enter your email address below to proceed:", "integrate-google-drive" );
+        $placeholder = esc_attr__( "Enter Email", "integrate-google-drive" );
+        $button_text = esc_html__( "Continue", "integrate-google-drive" );
+        $spinner_url = includes_url( 'images/wpspin.gif' );
+        // Use heredoc syntax for a cleaner HTML structure
+        return <<<HTML
+        <div class="igd-email-required">
+            <h3>{$title}</h3>
+            <p>{$description}</p>
+    
+            <form id="igd-require-email-form" class="igd-require-email-form" method="post">
+                <input type="hidden" name="shortcode_id" value="{$this->data['id']}">
+                <input type="hidden" name="nonce" value="{$this->data['nonce']}">
+                <input type="email" name="email" placeholder="{$placeholder}" />
+                
+                <button type="submit"><img src="{$spinner_url}" width="20" height="20" class="" />{$button_text}</button>
+            </form>
+            
+            <p class="igd-form-error"></p>
+        </div>
+HTML;
+    }
+
+    public function get_login_screen() {
+        $login_form = wp_login_form( [
+            'echo'           => false,
+            'label_username' => esc_html__( 'Username or Email', 'integrate-google-drive' ),
+            'label_password' => esc_html__( 'Password', 'integrate-google-drive' ),
+            'label_remember' => esc_html__( 'Remember Me', 'integrate-google-drive' ),
+            'label_log_in'   => esc_html__( 'Log In', 'integrate-google-drive' ),
+            'form_id'        => 'igd-login-form',
+            'id_username'    => 'igd-user-login',
+            'id_password'    => 'igd-user-pass',
+            'id_remember'    => 'igd-remember-me',
+            'id_submit'      => 'igd-login-submit',
+        ] );
+        $title = esc_html__( 'Login Required!', 'integrate-google-drive' );
+        $description = esc_html__( 'Please log in to access this module.', 'integrate-google-drive' );
+        $default_message = "<h3>{$title}</h3><p>{$description}</p>";
+        $login_type = igd_get_settings( 'loginType', 'form' );
+        $login_url = igd_get_settings( 'loginUrl', wp_login_url( $_SERVER['REQUEST_URI'] ) );
+        $login_message = igd_get_settings( 'loginMessage', $default_message );
+        if ( 'redirect' === $login_type ) {
+            $login_form = "<a href='{$login_url}' class='igd-btn btn-primary igd-login-link'>" . esc_html__( 'Login', 'integrate-google-drive' ) . "</a>";
+        }
+        return <<<HTML
+    <div class="igd-login-screen" data-shortcode_id="{$this->data['id']}">
+        {$login_message}
+        
+        {$login_form}
+        
+        <p class="igd-form-error"></p>
+        
+    </div>
 HTML;
     }
 
@@ -151,13 +219,13 @@ HTML;
             // Preview
             $this->data['preview'] = !isset( $this->data['preview'] ) || !empty( $this->data['preview'] ) && $this->check_permission( 'preview' );
             // Download
-            $this->data['download'] = !empty( $this->data['download'] ) && $this->check_permission( 'download' );
+            $this->data['download'] = !isset( $this->data['download'] ) || !empty( $this->data['download'] ) && $this->check_permission( 'download' );
             // Delete
             $this->data['canDelete'] = !empty( $this->data['canDelete'] ) && $this->check_permission( 'canDelete' );
             // Rename
             $this->data['rename'] = !empty( $this->data['rename'] ) && $this->check_permission( 'rename' );
             // Upload
-            $this->data['upload'] = !empty( $this->data['upload'] ) && $this->check_permission( 'upload' );
+            $this->data['upload'] = (!empty( $this->data['upload'] ) || !isset( $this->data['upload'] ) && !empty( $this->data['isFormUploader'] )) && $this->check_permission( 'upload' );
             // New Folder
             $this->data['newFolder'] = !empty( $this->data['newFolder'] ) && $this->check_permission( 'newFolder' );
             // moveCopy
@@ -283,10 +351,6 @@ HTML;
         if ( $this->type == 'slider' ) {
             $this->get_slider_files();
         }
-        // Filter files if necessary.
-        if ( igd_should_filter_files( $this->data['filters'] ) ) {
-            $this->check_filters();
-        }
     }
 
     private function get_acf_dynamic_field_files( $field_key ) {
@@ -337,10 +401,12 @@ HTML;
             $folder_id = $folder['id'];
             $args = [
                 'folder'      => $folder,
-                'sort'        => ( !empty( $this->data['sort'] ) ? $this->data['sort'] : [] ),
                 'fileNumbers' => ( !empty( $this->data['fileNumbers'] ) ? $this->data['fileNumbers'] : -1 ),
                 'filters'     => ( !empty( $this->data['filters'] ) ? $this->data['filters'] : [] ),
             ];
+            if ( !empty( $this->data['sort'] ) ) {
+                $args['sort'] = $this->data['sort'];
+            }
             // lazy load items
             if ( in_array( $this->type, ['browser', 'gallery'] ) ) {
                 if ( !isset( $this->data['lazyLoad'] ) || !empty( $this->data['lazyLoad'] ) ) {
@@ -422,7 +488,7 @@ HTML;
                 } else {
                     $file = igd_file_map( $file, $account_id );
                 }
-                Files::add_file( $file );
+                \IGD\Files::add_file( $file );
                 $this->data['folders'][$index] = $file;
             }
         } else {
@@ -441,6 +507,10 @@ HTML;
         // Check max file number
         if ( isset( $this->data['fileNumbers'] ) && $this->data['fileNumbers'] > 0 && count( $this->data['folders'] ) > $this->data['fileNumbers'] ) {
             $this->data['folders'] = array_values( array_slice( $this->data['folders'], 0, $this->data['fileNumbers'] ) );
+        }
+        // Sort files
+        if ( !empty( $this->data['sort'] ) ) {
+            $this->data['folders'] = igd_sort_files( $this->data['folders'], $this->data['sort'] );
         }
     }
 
@@ -465,30 +535,18 @@ HTML;
         $this->data['filters'] = $filters;
     }
 
-    private function set_notifications() {
-        if ( empty( $this->data['enableNotification'] ) ) {
+    private function check_filters() {
+        if ( !igd_should_filter_files( $this->data['filters'] ) ) {
             return;
         }
-        $notifications = [
-            'downloadNotification'        => $this->data['downloadNotification'] ?? true,
-            'uploadNotification'          => $this->data['uploadNotification'] ?? true,
-            'deleteNotification'          => $this->data['deleteNotification'] ?? true,
-            'playNotification'            => $this->data['playNotification'] ?? 'media' == $this->type,
-            'searchNotification'          => $this->data['searchNotification'] ?? 'search' == $this->type,
-            'viewNotification'            => $this->data['viewNotification'] ?? true,
-            'notificationEmail'           => $this->data['notificationEmail'] ?? '%admin_email%',
-            'skipCurrentUserNotification' => $this->data['skipCurrentUserNotification'] ?? true,
-        ];
-        $this->data['notifications'] = $notifications;
-    }
-
-    private function check_filters() {
         if ( in_array( $this->type, [
             'browser',
             'gallery',
             'media',
             'search',
             'slider',
+            'review',
+            'list',
             'embed'
         ] ) && !empty( $this->data['folders'] ) ) {
             $filters = $this->data['filters'];
@@ -498,11 +556,34 @@ HTML;
         }
     }
 
+    private function set_notifications() {
+        $type = $this->type;
+        $data = $this->data;
+        // Determine if default notifications should be enabled
+        $enable_default = ($type === 'review' || $type === 'gallery' && !empty( $data['photoProof'] )) && !isset( $data['enableNotification'] );
+        // Exit early if notifications are disabled
+        if ( !$enable_default && empty( $data['enableNotification'] ) ) {
+            return;
+        }
+        // Assign default or provided notification values
+        $this->data['notifications'] = [
+            'downloadNotification'        => $data['downloadNotification'] ?? true,
+            'proofNotification'           => $data['proofNotification'] ?? true,
+            'uploadNotification'          => $data['uploadNotification'] ?? true,
+            'deleteNotification'          => $data['deleteNotification'] ?? true,
+            'playNotification'            => $data['playNotification'] ?? $type === 'media',
+            'searchNotification'          => $data['searchNotification'] ?? $type === 'search',
+            'viewNotification'            => $data['viewNotification'] ?? true,
+            'notificationEmail'           => $data['notificationEmail'] ?? '%admin_email%',
+            'skipCurrentUserNotification' => $data['skipCurrentUserNotification'] ?? true,
+        ];
+    }
+
+    // Set active account
     protected function set_account() {
-        // Set active account
         if ( !empty( $this->data['folders'] ) ) {
             $folder = reset( $this->data['folders'] );
-            $this->data['account'] = Account::instance()->get_accounts( $folder['accountId'] );
+            $this->data['account'] = \IGD\Account::instance()->get_accounts( $folder['accountId'] );
         }
     }
 
@@ -511,13 +592,7 @@ HTML;
         $height = ( !empty( $this->data['moduleHeight'] ) ? $this->data['moduleHeight'] : '' );
         switch ( $this->type ) {
             case 'embed':
-                $html = igd_get_embed_content( $this->data );
-                break;
-            case 'download':
-                $html = $this->get_download_links_html();
-                break;
-            case 'view':
-                $html = $this->get_view_links_html();
+                $html = sprintf( '<div class="igd igd-shortcode-wrap igd-shortcode-embed">%s</div>', igd_get_embed_content( $this->data ) );
                 break;
             default:
                 ob_start();
@@ -548,6 +623,9 @@ HTML;
      */
     public function check_should_show() {
         $display_for = $this->data['displayFor'] ?? 'everyone';
+        if ( !empty( $this->data['privateFolders'] ) ) {
+            $display_for = 'loggedIn';
+        }
         if ( $display_for === 'everyone' ) {
             return true;
         }
@@ -576,154 +654,8 @@ HTML;
     }
 
     public function enqueue_scripts() {
+        wp_enqueue_style( 'igd-frontend' );
         wp_enqueue_script( 'igd-frontend' );
-    }
-
-    private function get_view_links_html() {
-        $items = $this->data['folders'] ?? [];
-        $html = '';
-        if ( empty( $items ) ) {
-            return $html;
-        }
-        $should_send_notification = !empty( $this->data['notifications'] ) && !empty( $this->data['notifications']['viewNotification'] ) && !empty( $this->data['notifications']['notificationEmail'] );
-        $notification_data_html = ( $should_send_notification ? ' data-notification-email="' . esc_attr( $this->data['notifications']['notificationEmail'] ) . '" data-skip-current-user-notification="' . esc_attr( $this->data['notifications']['skipCurrentUserNotification'] ) . '"' : '' );
-        $open_in_new_tab = ( !empty( $this->data['openNewTab'] ) ? ' target="_blank"' : '' );
-        $list_style = $this->data['linkListStyle'] ?? '1';
-        $button_text = $this->data['linkButtonText'] ?? __( 'View', 'integrate-google-drive' );
-        $is_folder_files = !empty( $this->data['folderFiles'] );
-        $files = [];
-        if ( $is_folder_files ) {
-            foreach ( $items as $item ) {
-                if ( igd_is_dir( $item ) ) {
-                    // Merge files from folder into $files array if it's a directory.
-                    $files = array_merge( $files, igd_get_child_items( $item ) );
-                } else {
-                    // Otherwise, just add the single file.
-                    $files[] = $item;
-                }
-            }
-        } else {
-            $files = $items;
-        }
-        foreach ( $files as $file ) {
-            $name = $file['name'];
-            $icon = $file['iconLink'];
-            $view_link = $file['webViewLink'];
-            $file_data_html = ( !empty( $should_send_notification ) ? ' data-id="' . esc_attr( $file['id'] ) . '" data-account-id="' . esc_attr( $file['accountId'] ) . '"' : '' );
-            $data_html = $notification_data_html . $file_data_html;
-            if ( in_array( $list_style, [1, 3] ) ) {
-                $item = sprintf(
-                    '<a class="igd-link igd-list-item" href="%1$s" target="%4$s" title="%5$s" aria-label="%5$s"><img class="item-icon" src="%2$s" >%3$s</a>',
-                    $view_link,
-                    $icon,
-                    $name,
-                    $open_in_new_tab,
-                    $button_text
-                );
-            } else {
-                if ( in_array( $list_style, [2, 4] ) ) {
-                    $item = sprintf(
-                        '<div class="igd-link igd-list-item"><img class="item-icon" src="%1$s" ><a class="item-name" href="%2$s" %4$s>%3$s</a> <a class="item-btn" href="%2$s" %4$s title="%5$s" aria-label="%5$s"><i class="dashicons dashicons-visibility" ></i> %5$s</a>  </div>',
-                        $icon,
-                        $view_link,
-                        $name,
-                        $open_in_new_tab,
-                        $button_text
-                    );
-                } else {
-                    $item = sprintf(
-                        '<a href="%1$s" class="igd-link" %2$s %3$s>%4$s</a>',
-                        $view_link,
-                        $open_in_new_tab,
-                        $data_html,
-                        $name
-                    );
-                }
-            }
-            $html .= $item;
-        }
-        if ( $list_style != 'default' ) {
-            $html = sprintf( '<div class="igd-list-wrap list-style-%1$s">' . $html . '</div>', $list_style );
-        }
-        return $html;
-    }
-
-    private function get_download_links_html() {
-        $items = $this->data['folders'] ?? [];
-        $html = '';
-        if ( empty( $items ) ) {
-            return $html;
-        }
-        $should_send_notification = !empty( $this->data['notifications']['viewNotification'] ) && !empty( $this->data['notifications']['notificationEmail'] );
-        $notification_data_html = ( $should_send_notification ? ' data-notification-email="' . esc_attr( $this->data['notifications']['notificationEmail'] ) . '" data-skip-current-user-notification="' . esc_attr( $this->data['notifications']['skipCurrentUserNotification'] ) . '"' : '' );
-        $is_folder_files = !empty( $this->data['folderFiles'] );
-        $files = [];
-        if ( $is_folder_files ) {
-            foreach ( $items as $item ) {
-                if ( igd_is_dir( $item ) ) {
-                    // Merge files from folder into $files array if it's a directory.
-                    $files = array_merge( $files, igd_get_child_items( $item ) );
-                } else {
-                    // Otherwise, just add the single file.
-                    $files[] = $item;
-                }
-            }
-        } else {
-            $files = $items;
-        }
-        $shortcode_id = $this->data['id'];
-        $nonce = ( is_user_logged_in() ? wp_create_nonce( 'igd' ) : $this->data['nonce'] );
-        $open_in_new_tab = ( !empty( $this->data['openNewTab'] ) ? ' target="_blank"' : '' );
-        $list_style = $this->data['linkListStyle'] ?? '1';
-        $button_text = $this->data['linkButtonText'] ?? __( 'View', 'integrate-google-drive' );
-        foreach ( $files as $file ) {
-            $id = $file['id'];
-            $account_id = $file['accountId'];
-            $name = $file['name'];
-            $icon = $file['iconLink'];
-            $download_link = home_url( "?igd_download=1&" . (( igd_is_dir( $file ) ? "file_ids=" . base64_encode( json_encode( [$id] ) ) : "id={$id}&accountId={$account_id}&shortcodeId={$shortcode_id}&nonce={$nonce}" )) );
-            $file_data_html = ( $should_send_notification ? ' data-id="' . esc_attr( $id ) . '" data-account-id="' . esc_attr( $account_id ) . '"' : '' );
-            $data_html = $notification_data_html . $file_data_html;
-            if ( in_array( $list_style, [1, 3] ) ) {
-                $item = sprintf(
-                    '<a class="igd-link igd-list-item" href="%1$s" target="%4$s"><img class="item-icon" src="%2$s" >%3$s <i class="dashicons dashicons-download item-btn" title="%5$s" aria-label="%5$s"></i> </a>',
-                    $download_link,
-                    $icon,
-                    $name,
-                    $open_in_new_tab,
-                    $button_text
-                );
-            } else {
-                if ( in_array( $list_style, [2, 4] ) ) {
-                    $item = sprintf(
-                        '<div class="igd-link igd-list-item"><img class="item-icon" src="%1$s" ><a class="item-name" href="%2$s" %4$s>%3$s</a> <a class="item-btn" href="%2$s" %4$s title="%5$s" aria-label="%5$s"><i class="dashicons dashicons-download" ></i> %5$s</a>  </div>',
-                        $icon,
-                        $download_link,
-                        $name,
-                        $open_in_new_tab,
-                        $button_text
-                    );
-                } else {
-                    $item = sprintf(
-                        '<a href="%1$s" class="igd-link" %2$s %3$s>%4$s</a>',
-                        $download_link,
-                        $open_in_new_tab,
-                        $data_html,
-                        $name
-                    );
-                }
-            }
-            $html .= $item;
-        }
-        if ( in_array( $list_style, [
-            1,
-            2,
-            3,
-            4
-        ] ) ) {
-            $html = sprintf( '<div class="igd-list-wrap list-style-%1$s list-style-%1$s">' . $html . '</div>', $list_style );
-        }
-        return $html;
     }
 
     /**
@@ -736,21 +668,29 @@ HTML;
         return self::$instance;
     }
 
-    /***---- Shortcode Builder Methods ----***/
+    /***---- Module Builder Methods ----***/
     public static function get_shortcode( $id ) {
         global $wpdb;
         $table = $wpdb->prefix . 'integrate_google_drive_shortcodes';
-        return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id=%d", $id ) );
+        $result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id=%d", $id ), ARRAY_A );
+        if ( !empty( $result ) ) {
+            $result['config'] = maybe_unserialize( $result['config'] );
+            $result['locations'] = maybe_unserialize( $result['locations'] );
+        }
+        return $result;
     }
 
-    public static function get_shortcodes( $args = [] ) {
-        $offset = ( !empty( $args['offset'] ) ? intval( $args['offset'] ) : 0 );
-        $limit = ( !empty( $args['limit'] ) ? intval( $args['limit'] ) : 999 );
-        $order_by = ( !empty( $args['order_by'] ) ? sanitize_key( $args['order_by'] ) : 'created_at' );
-        $order = ( !empty( $args['order'] ) ? sanitize_key( $args['order'] ) : 'DESC' );
+    public static function get_shortcodes() {
         global $wpdb;
         $table = $wpdb->prefix . 'integrate_google_drive_shortcodes';
-        return $wpdb->get_results( "SELECT * FROM {$table} ORDER BY {$order_by} {$order} LIMIT {$offset}, {$limit}" );
+        $shortcodes = $wpdb->get_results( "SELECT * FROM {$table} ORDER BY id DESC", ARRAY_A );
+        if ( !empty( $shortcodes ) ) {
+            foreach ( $shortcodes as &$shortcode ) {
+                $shortcode['config'] = maybe_unserialize( $shortcode['config'] );
+                $shortcode['locations'] = maybe_unserialize( $shortcode['locations'] );
+            }
+        }
+        return $shortcodes;
     }
 
     public static function get_shortcodes_count() {
@@ -762,40 +702,51 @@ HTML;
     public static function update_shortcode( $posted, $force_insert = false ) {
         global $wpdb;
         $table = $wpdb->prefix . 'integrate_google_drive_shortcodes';
-        $id = ( !empty( $posted['id'] ) ? intval( $posted['id'] ) : '' );
+        $id = ( !empty( $posted['id'] ) ? intval( $posted['id'] ) : 0 );
+        // Sanitize & prepare fields
         $status = ( !empty( $posted['status'] ) ? sanitize_key( $posted['status'] ) : 'on' );
+        $type = ( !empty( $posted['type'] ) ? sanitize_key( $posted['type'] ) : 'embed' );
         $title = ( !empty( $posted['title'] ) ? sanitize_text_field( $posted['title'] ) : '' );
+        // fallback added after insert
+        $config = ( !empty( $posted['config'] ) ? maybe_serialize( $posted['config'] ) : maybe_serialize( $posted ) );
         $data = [
-            'title'  => $title,
-            'status' => $status,
-            'config' => ( !empty( $posted['config'] ) ? $posted['config'] : serialize( $posted ) ),
+            'title'   => $title,
+            'status'  => $status,
+            'type'    => $type,
+            'user_id' => get_current_user_id(),
+            'config'  => $config,
         ];
-        $data_format = ['%s', '%s', '%s'];
+        $data_format = [
+            '%s',
+            '%s',
+            '%s',
+            '%d',
+            '%s'
+        ];
         if ( !empty( $posted['created_at'] ) ) {
-            $data['created_at'] = $posted['created_at'];
+            $data['created_at'] = sanitize_text_field( $posted['created_at'] );
             $data_format[] = '%s';
         }
         if ( !empty( $posted['updated_at'] ) ) {
-            $data['updated_at'] = $posted['updated_at'];
+            $data['updated_at'] = sanitize_text_field( $posted['updated_at'] );
             $data_format[] = '%s';
         }
-        if ( !$id || $force_insert ) {
+        // Insert or update
+        if ( $force_insert || !$id ) {
             $wpdb->insert( $table, $data, $data_format );
             return $wpdb->insert_id;
-        } else {
-            $wpdb->update(
-                $table,
-                $data,
-                [
-                    'id' => $id,
-                ],
-                $data_format,
-                ['%d']
-            );
-            // Reset shortcode data transient
-            self::reset_shortcode_transients( $data );
-            return $id;
         }
+        // Update
+        $wpdb->update(
+            $table,
+            $data,
+            [
+                'id' => $id,
+            ],
+            $data_format,
+            ['%d']
+        );
+        return $id;
     }
 
     public static function duplicate_shortcode( $id ) {
@@ -812,7 +763,7 @@ HTML;
             $insert_id = self::update_shortcode( $shortcode, true );
             $data = array_merge( $shortcode, [
                 'id'        => $insert_id,
-                'config'    => unserialize( $shortcode['config'] ),
+                'config'    => $shortcode['config'],
                 'locations' => [],
             ] );
             return $data;
@@ -840,16 +791,20 @@ HTML;
 
     /***---- Shortcode Data Methods ----***/
     public static function get_shortcode_data( $shortcode_id ) {
-        $data = false;
+        $data = null;
         if ( strpos( $shortcode_id, 'igd_' ) !== false ) {
             $data = get_transient( 'shortcode_' . $shortcode_id );
         } else {
             $shortcode = Shortcode::get_shortcode( $shortcode_id );
             if ( !empty( $shortcode ) ) {
-                $data = maybe_unserialize( $shortcode->config );
+                $data = $shortcode['config'];
             }
         }
-        return $data;
+        $instance = new self();
+        $instance->data = $data;
+        $instance->type = $data['type'] ?? '';
+        $instance->apply_module_configuration();
+        return $instance->data;
     }
 
     public static function set_current_shortcode( $shortcode_id ) {
@@ -935,19 +890,6 @@ HTML;
         }
         // Action provided does not result in a clear decision
         return false;
-    }
-
-    /**
-     * Reset shortcode related any transients
-     *
-     * @param $shortcode_id
-     *
-     * @return void
-     */
-    public static function reset_shortcode_transients( $data ) {
-        $shortcode_id = $data['id'] ?? $data['uniqueId'] ?? 'igd_' . md5( maybe_serialize( $data ) );
-        $data['id'] = $shortcode_id;
-        set_transient( 'shortcode_' . $shortcode_id, $data, 7 * DAY_IN_SECONDS );
     }
 
 }

@@ -440,10 +440,8 @@ function igd_get_embed_content( $data ) {
 	$direct_image   = ! empty( $data['directImage'] );
 	$allow_popout   = ! empty( $data['allowEmbedPopout'] );
 
-
 	$files = [];
 	foreach ( $items as $item ) {
-
 
 		// skip root folders
 		if ( ! is_array( $item ) ) {
@@ -457,7 +455,6 @@ function igd_get_embed_content( $data ) {
 			$args = [
 				'folder' => $item,
 			];
-
 
 			$data = App::instance( $item['accountId'] )->get_files( $args );
 
@@ -483,7 +480,6 @@ function igd_get_embed_content( $data ) {
 			$is_video = strpos( $type, 'video/' ) === 0;
 			$is_audio = strpos( $type, 'audio/' ) === 0;
 
-
 			if ( $show_file_name ) { ?>
                 <h4 class="igd-embed-name"><?php echo esc_html( $name ); ?></h4>
 			<?php }
@@ -500,9 +496,14 @@ function igd_get_embed_content( $data ) {
 
 			if ( $direct_image && ( $is_image || $is_audio || $is_video ) ) {
 				if ( $is_image ) {
-					printf( '<img class="igd-embed-image" src="%s" alt="%s" width="%s" height="%s" />', esc_url( $url ), esc_attr( $name ), $embed_width, $embed_height );
+					printf( '<img src="%s" alt="%s" width="%s" height="%s" />', esc_url( $url ), esc_attr( $name ), $embed_width, $embed_height );
 				} elseif ( $is_video ) {
-					echo wp_video_shortcode( [ 'src' => $url ] );
+					$poster = $file['thumbnailLink'] ?? '';
+
+					echo wp_video_shortcode( [
+						'src'    => $url,
+						'poster' => $poster,
+					] );
 				} elseif ( $is_audio ) {
 					echo wp_audio_shortcode( [ 'src' => $url ] );
 				}
@@ -521,7 +522,7 @@ function igd_get_embed_content( $data ) {
 
 	$content = ob_get_clean();
 
-	return $content;
+	return sprintf( '<div class="igd-embed-wrap">%s</div>', $content );
 
 }
 
@@ -835,21 +836,6 @@ function igd_get_scheduled_interval( $hook ) {
 	return ! empty( $schedules[ $schedule ] ) ? $schedules[ $schedule ]['interval'] : false;
 }
 
-function igd_get_shortcodes_array() {
-	$shortcodes = Shortcode::get_shortcodes();
-
-	$formatted = [];
-
-	if ( ! empty( $shortcodes ) ) {
-		foreach ( $shortcodes as $shortcode ) {
-
-			$formatted[ $shortcode->id ] = $shortcode->title;
-		}
-	}
-
-	return $formatted;
-}
-
 function igd_download_zip( $file_ids, $request_id = '', $account_id = '' ) {
 
 	$files = [];
@@ -1021,7 +1007,7 @@ function igd_get_embed_url( $file, $embed_type = 'readOnly', $direct_image = fal
 					$url = igd_get_thumbnail_url( $file, 'full' );
 				} elseif ( preg_match( '/^(audio|video)\//', $type ) ) {
 					$ext = strpos( $type, 'audio/' ) === 0 ? '.mp3' : '.mp4';
-					$url = admin_url( "admin-ajax.php?action=igd_stream&id={$id}&account_id={$account_id}&ext={$ext}" );
+					$url = home_url( "?igd_stream=1&id={$id}&account_id={$account_id}&ext={$ext}" );
 				}
 			} else {
 				$arguments = $is_editable ? $editable_arguments : 'preview?rm=minimal';
@@ -1056,8 +1042,8 @@ function igd_get_thumbnail_url( $file, $size, $custom_size = [] ) {
 	$thumbnailLink = $file['thumbnailLink'] ?? '';
 	$account_id    = $file['accountId'] ?? '';
 
-	$w = ! empty( $custom_size['w'] ) ? $custom_size['w'] : 256;
-	$h = ! empty( $custom_size['h'] ) ? $custom_size['h'] : 256;
+	$w = ! empty( $custom_size['width'] ) ? $custom_size['width'] : 256;
+	$h = ! empty( $custom_size['height'] ) ? $custom_size['height'] : 256;
 
 	$thumb = str_replace( '/16/', "/$w/", $iconLink );
 
@@ -1093,8 +1079,8 @@ function igd_get_thumbnail_url( $file, $size, $custom_size = [] ) {
 				];
 
 				if ( ! empty( $custom_size ) ) {
-					$thumb_data['w'] = $w;
-					$thumb_data['h'] = $h;
+					$thumb_data['width']  = $w;
+					$thumb_data['height'] = $h;
 				}
 
 				$thumb = add_query_arg( $thumb_data, home_url() );
@@ -1819,8 +1805,8 @@ function igd_replace_template_tags( $data, $extra_tag_values = [] ) {
 
 	$name_template = ! empty( $data['name'] ) ? $data['name'] : '%user_login% (%user_email%)';
 
-	$date      = date( 'Y-m-d' );
-	$time      = date( 'H:i' );
+	$date      = current_time( 'Y-m-d' );
+	$time      = current_time( 'H:i:s' );
 	$unique_id = uniqid();
 
 	$search = [
@@ -2204,6 +2190,11 @@ function igd_delete_transients_with_prefix( $prefix ) {
 }
 
 function igd_get_grouped_parent_folders( $file, &$groupedFolders = [] ) {
+
+    if(empty($file)){
+        return $groupedFolders;
+    }
+
 	$app = App::instance( $file['accountId'] );
 
 	// Check if file has parents
@@ -2241,4 +2232,125 @@ function igd_delete_thumbnail_cache() {
 		array_map( 'unlink', glob( "IGD_CACHE_DIR/*.*" ) );
 	}
 }
+
+function igd_sort_files( $files, $sort = [] ) {
+
+	if ( empty( $sort ) ) {
+		$sort = [ 'sortBy' => 'name', 'sortDirection' => 'asc' ];
+	}
+
+	$sort_by        = $sort['sortBy'];
+	$sort_direction = $sort['sortDirection'] === 'asc' ? SORT_ASC : SORT_DESC;
+
+	$is_random = 'random' == $sort_by;
+
+	// Initializing sorting arrays
+	$sort_array           = [];
+	$sort_array_secondary = [];
+
+	// Populating sorting arrays and adding isFolder attribute to files
+	foreach ( $files as $key => $file ) {
+
+		if ( empty( $file[ $sort_by ] ) ) {
+			$sort_array_secondary[ $key ] = 0;
+			$file[ $sort_by ]             = '';
+		}
+
+		$files[ $key ]['isFolder'] = igd_is_dir( $file );
+		$sort_array[ $key ]        = $files[ $key ]['isFolder'];
+
+		if ( ! $is_random ) {
+			// Convert date to timestamp if needed
+			$sort_array_secondary[ $key ] = in_array( $sort_by, [
+				'created',
+				'updated'
+			] ) ? strtotime( $file[ $sort_by ] ) : $file[ $sort_by ];
+		}
+	}
+
+	if ( $is_random ) {
+		shuffle( $files );
+	} else {
+		array_multisort( $sort_array, SORT_DESC, $sort_array_secondary, $sort_direction, SORT_NATURAL | SORT_FLAG_CASE, $files );
+	}
+
+	return $files;
+}
+
+function igd_get_referrer() {
+	$url = '';
+
+	if ( isset( $_REQUEST['page_url'] ) ) {
+		$url = filter_var( $_REQUEST['page_url'], FILTER_SANITIZE_URL );
+	} elseif ( isset( $_SERVER['HTTP_REFERER'] ) ) {
+		$url = $_SERVER['HTTP_REFERER'];
+	}
+
+	$sanitizedUrl = preg_replace( '/[^\P{C}\n\t ]+/u', '', $url ); // Remove non-printable chars
+	$sanitizedUrl = str_replace( [ "\r", "\n" ], [ '\r', '\n' ], $sanitizedUrl ); // Escape newlines
+
+	return esc_url( $sanitizedUrl, null, 'db' );
+}
+
+function igd_get_module_types( $type = '' ) {
+	$types = [
+		'browser' => [
+			'title'       => __( 'File Browser', 'integrate-google-drive' ),
+			'description' => __( 'Allow users to browse selected Google Drive files and folders directly on your site.', 'integrate-google-drive' ),
+			'isPro'       => true,
+		],
+
+		'gallery' => [
+			'title'       => __( 'Gallery', 'integrate-google-drive' ),
+			'description' => __( 'Showcase images and videos in a responsive masonry grid with lightbox previews.', 'integrate-google-drive' ),
+		],
+
+		'review' => [
+			'title'       => __( 'Review & Approve', 'integrate-google-drive' ),
+			'description' => __( 'Allow users to review, select, and confirm their Google Drive file choices.', 'integrate-google-drive' ),
+			'isPro'       => true,
+		],
+
+		'uploader' => [
+			'title'       => __( 'File Uploader', 'integrate-google-drive' ),
+			'description' => __( 'Let users upload files directly to a specific Google Drive folder.', 'integrate-google-drive' ),
+			'isPro'       => true,
+		],
+
+		'media' => [
+			'title'       => __( 'Media Player', 'integrate-google-drive' ),
+			'description' => __( 'Stream audio and video files from Google Drive using a built-in media player.', 'integrate-google-drive' ),
+			'isPro'       => true,
+		],
+
+		'search' => [
+			'title'       => __( 'Search Box', 'integrate-google-drive' ),
+			'description' => __( 'Enable users to quickly search files and folders within your connected Google Drive.', 'integrate-google-drive' ),
+			'isPro'       => true,
+		],
+
+		'embed' => [
+			'title'       => __( 'Embed Documents', 'integrate-google-drive' ),
+			'description' => __( 'Easily embed Google Drive documents into your content.', 'integrate-google-drive' ),
+		],
+
+		'list' => [
+			'title'       => __( 'List', 'integrate-google-drive' ),
+			'description' => __( 'List the Google Drive files with view and download options', 'integrate-google-drive' ),
+		],
+
+		'slider' => [
+			'title'       => __( 'Slider', 'integrate-google-drive' ),
+			'description' => __( 'Display images, videos, and documents in a smooth, touch-friendly carousel slider.', 'integrate-google-drive' ),
+			'isPro'       => true,
+		],
+	];
+
+	if ( $type ) {
+		return isset( $types[ $type ] ) ? $types[ $type ] : [];
+	}
+
+	return $types;
+}
+
 

@@ -64,6 +64,11 @@ class Zip {
 	public function start() {
 		ignore_user_abort( false );
 
+		// Check download restrictions - get the first file to check the download limit
+		if ( $limit_message = Restrictions::instance()->has_reached_download_limit( $this->files[0]['id'], 'download_zip' ) ) {
+			Restrictions::display_error( $limit_message );
+		}
+
 		$this->file_name = "drive-download-" . time() . ".zip";
 
 		$this->status = esc_html__( 'Preparing Files...', 'integrate-google-drive' );

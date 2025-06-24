@@ -40,6 +40,7 @@ class DiviExtension extends \DiviExtension {
 	 * @param array $args
 	 */
 	public function __construct( $name = 'igd-divi-extension', $args = array() ) {
+
 		$this->plugin_dir     = plugin_dir_path( __FILE__ );
 		$this->plugin_dir_url = plugin_dir_url( $this->plugin_dir );
 
@@ -50,12 +51,12 @@ class DiviExtension extends \DiviExtension {
 
 		// Load scripts in admin editor
 		add_action( 'admin_enqueue_scripts', function ( $hook ) {
+
 			if ( ! in_array( $hook, [ 'post.php', 'post-new.php' ] ) ) {
 				return;
 			}
 
 			Enqueue::instance()->admin_scripts( '', false );
-			wp_enqueue_script( 'igd-divi', IGD_ASSETS . '/js/divi.js', [ 'igd-admin' ], IGD_VERSION, true );
 		} );
 
 		// Fix RankMath Conflict
@@ -79,13 +80,11 @@ class DiviExtension extends \DiviExtension {
 			wp_enqueue_script( 'rm-react-dom' );
 		}
 
-
 		Enqueue::instance()->admin_scripts( '', false );
-		wp_enqueue_script( 'igd-divi', IGD_ASSETS . '/js/divi.js', [ 'igd-admin' ], IGD_VERSION, true );
-
 	}
 
 	public function modify_script_loader_tag( $tag, $handle, $src ) {
+
 		// Modify script tag if certain class is found
 		if ( strpos( $tag, 'et_fb_ignore_iframe' ) !== false ) {
 			$tag = str_replace( 'et_fb_ignore_iframe', '', $tag );

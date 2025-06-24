@@ -15,6 +15,8 @@ class Enqueue {
     }
 
     public function frontend_scripts() {
+        $load_on_all_pages = igd_get_settings( 'loadScriptsOnAllPages' );
+        $css_deps = ['wp-components'];
         // LightGallery CSS
         wp_register_style(
             'igd-lightgallery',
@@ -23,6 +25,7 @@ class Enqueue {
             IGD_VERSION
         );
         wp_style_add_data( 'igd-lightgallery', 'rtl', 'replace' );
+        $css_deps[] = 'igd-lightgallery';
         // SweetAlert2 CSS
         wp_register_style(
             'igd-sweetalert2',
@@ -30,24 +33,18 @@ class Enqueue {
             [],
             '11.4.8'
         );
-        // Dashicons - if not registered, enqueue it with full path
-        if ( !wp_style_is( 'dashicons', 'registered' ) ) {
-            wp_enqueue_style(
-                'dashicons',
-                includes_url( 'css/dashicons.min.css' ),
-                [],
-                IGD_VERSION
-            );
-        }
+        $css_deps[] = 'igd-sweetalert2';
+        wp_enqueue_style(
+            'igd-dashicons',
+            includes_url( 'css/dashicons.min.css' ),
+            [],
+            IGD_VERSION
+        );
+        $css_deps[] = 'igd-dashicons';
         wp_register_style(
             'igd-frontend',
             IGD_ASSETS . '/css/frontend.css',
-            [
-                'dashicons',
-                'wp-components',
-                'igd-sweetalert2',
-                'igd-lightgallery'
-            ],
+            $css_deps,
             IGD_VERSION
         );
         wp_style_add_data( 'igd-frontend', 'rtl', 'replace' );
@@ -64,7 +61,7 @@ class Enqueue {
         // Light Gallery JS
         wp_register_script(
             'igd-lightgallery',
-            IGD_ASSETS . '/vendor/lightgallery/lightgallery.js',
+            IGD_ASSETS . '/vendor/lightgallery/lightgallery.min.js',
             [],
             IGD_VERSION,
             true
@@ -90,6 +87,11 @@ class Enqueue {
         // Localize data
         wp_localize_script( 'igd-frontend', 'igd', $this->get_localize_data( false, 'frontend' ) );
         wp_set_script_translations( 'igd-frontend', 'integrate-google-drive', plugin_dir_path( IGD_FILE ) . 'languages' );
+        // Enqueue all scripts and styles on all pages if the setting is enabled
+        if ( $load_on_all_pages ) {
+            wp_enqueue_style( 'igd-frontend' );
+            wp_enqueue_script( 'igd-frontend' );
+        }
     }
 
     public function admin_scripts( $hook = '', $should_check = true ) {
@@ -125,14 +127,20 @@ class Enqueue {
             [],
             '3.7.8'
         );
+        wp_enqueue_style(
+            'igd-dashicons',
+            includes_url( 'css/dashicons.min.css' ),
+            [],
+            IGD_VERSION
+        );
         wp_register_style(
             'igd-admin',
             IGD_ASSETS . '/css/admin.css',
             [
-                'dashicons',
                 'wp-components',
                 'igd-sweetalert2',
-                'igd-lightgallery'
+                'igd-lightgallery',
+                'igd-dashicons'
             ],
             IGD_VERSION
         );
@@ -150,7 +158,7 @@ class Enqueue {
         // lightGallery
         wp_register_script(
             'igd-lightgallery',
-            IGD_ASSETS . '/vendor/lightgallery/lightgallery.js',
+            IGD_ASSETS . '/vendor/lightgallery/lightgallery.min.js',
             [],
             IGD_VERSION,
             true
@@ -160,13 +168,6 @@ class Enqueue {
             IGD_ASSETS . '/vendor/sweetalert2/sweetalert2.min.js',
             [],
             '11.4.8',
-            true
-        );
-        wp_register_script(
-            'igd-react-select',
-            IGD_ASSETS . '/vendor/react-select.js',
-            [],
-            IGD_VERSION,
             true
         );
         // Drag-select
@@ -190,7 +191,6 @@ class Enqueue {
                 "wp-plupload",
                 "igd-lightgallery",
                 "igd-sweetalert2",
-                "igd-react-select",
                 "igd-drag-select"
             ),
             IGD_VERSION,
@@ -241,6 +241,7 @@ class Enqueue {
      * @return array
      */
     public function get_localize_data( $hook = false, $script = 'admin' ) {
+        $accounts = Account::instance()->get_accounts();
         $localize_data = array(
             'isAdmin'       => is_admin(),
             'pluginUrl'     => IGD_URL,
@@ -251,26 +252,27 @@ class Enqueue {
             'nonce'         => wp_create_nonce( 'igd' ),
             'isPro'         => igd_fs()->can_use_premium_code__premium_only(),
             'upgradeUrl'    => igd_fs()->get_upgrade_url(),
-            'accounts'      => base64_encode( json_encode( Account::instance()->get_accounts() ) ),
+            'accounts'      => base64_encode( json_encode( $accounts ) ),
             'activeAccount' => base64_encode( json_encode( Account::instance()->get_active_account() ) ),
             'settings'      => igd_get_settings(),
         );
-        // Admin Localize Data
         if ( is_admin() ) {
-            // Check if dokan vendor dashboard page
             $admin_pages = Admin::instance()->get_pages();
             $is_settings_page = !empty( $admin_pages['settings_page'] ) && $admin_pages['settings_page'] === $hook;
             if ( !$is_settings_page && isset( $_GET['page'] ) && $_GET['page'] == 'integrate-google-drive-settings' ) {
                 $is_settings_page = true;
             }
             $is_file_browser_page = !empty( $admin_pages['file_browser_page'] ) && $admin_pages['file_browser_page'] === $hook;
+            // Localize the Google Drive API auth URL only on settings or file browser pages
             if ( $is_settings_page || $is_file_browser_page ) {
                 $localize_data['authUrl'] = Client::instance()->get_auth_url();
             }
         }
-        // User access folder data
         if ( is_admin() || $this->is_divi_builder() || $this->is_elementor_editor() ) {
+            // User access folder data
             $localize_data['userAccessData'] = igd_get_user_access_data();
+            // Shortcodes data
+            $localize_data['shortcodes'] = Shortcode::instance()->get_shortcodes();
         }
         return apply_filters( 'igd_localize_data', $localize_data, $script );
     }
@@ -340,6 +342,11 @@ class Enqueue {
         $integration = Integration::instance();
         if ( $integration->is_active( 'gutenberg-editor' ) ) {
             if ( $this->is_block_editor() ) {
+                return true;
+            }
+        }
+        if ( $integration->is_active( 'elementor' ) ) {
+            if ( $this->is_elementor_editor() ) {
                 return true;
             }
         }

@@ -22,7 +22,13 @@ class Install {
             self::add_default_settings();
             self::create_tables();
             self::create_thumbnails_folder();
+            self::flush_rewrite_rules();
         }
+    }
+
+    public static function flush_rewrite_rules() {
+        add_rewrite_rule( '^igd-modules/([0-9]+)/?$', 'index.php?igd-modules=$matches[1]', 'top' );
+        flush_rewrite_rules();
     }
 
     private static function create_thumbnails_folder() {
@@ -113,13 +119,16 @@ class Install {
      */
     private static function get_table_definitions() {
         global $wpdb;
+        $charset_collate = $wpdb->get_charset_collate();
         return [
             // Files table
-            "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}integrate_google_drive_files (\n                id VARCHAR(60) NOT NULL,\n                name TEXT NULL,\n                size BIGINT NULL,\n                parent_id TEXT,\n                account_id TEXT NOT NULL,\n                type VARCHAR(255) NOT NULL,\n                extension VARCHAR(10) NOT NULL,\n                data LONGTEXT,\n                is_computers TINYINT(1) DEFAULT 0,\n                is_shared_with_me TINYINT(1) DEFAULT 0,\n                is_starred TINYINT(1) DEFAULT 0,\n                is_shared_drive TINYINT(1) DEFAULT 0,\n                created TEXT NULL,\n                updated TEXT NULL,\n                PRIMARY KEY (id)\n            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
+            "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}integrate_google_drive_files (\n                id VARCHAR(60) NOT NULL,\n                name TEXT NULL,\n                size BIGINT NULL,\n                parent_id TEXT,\n                account_id TEXT NOT NULL,\n                type VARCHAR(255) NOT NULL,\n                extension VARCHAR(10) NOT NULL,\n                data LONGTEXT,\n                is_computers TINYINT(1) DEFAULT 0,\n                is_shared_with_me TINYINT(1) DEFAULT 0,\n                is_starred TINYINT(1) DEFAULT 0,\n                is_shared_drive TINYINT(1) DEFAULT 0,\n                created TEXT NULL,\n                updated TEXT NULL,\n                PRIMARY KEY (id)\n            ) {$charset_collate};",
             // Shortcodes table
-            "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}integrate_google_drive_shortcodes (\n                id BIGINT(20) NOT NULL AUTO_INCREMENT,\n                title VARCHAR(255) NULL,\n                status VARCHAR(6) NULL DEFAULT 'on',\n                config LONGTEXT NULL,\n                locations LONGTEXT NULL,\n                created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n                updated_at TIMESTAMP NULL,\n                PRIMARY KEY (id)\n            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
+            "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}integrate_google_drive_shortcodes (\n                id BIGINT(20) NOT NULL AUTO_INCREMENT,\n                title VARCHAR(255) NULL,\n                status VARCHAR(6) NULL DEFAULT 'on',\n    \t\t\ttype VARCHAR(255) NULL,\n    \t\t\tuser_id BIGINT(20) NULL,\n                config LONGTEXT NULL,\n                locations LONGTEXT NULL,\n                created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n                updated_at TIMESTAMP NULL,\n                PRIMARY KEY (id)\n            ) {$charset_collate};",
             // Logs table
-            "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}integrate_google_drive_logs (\n                id INT NOT NULL AUTO_INCREMENT,\n                type VARCHAR(255) NULL,\n                user_id INT NULL,\n                file_id TEXT NOT NULL,\n                file_type TEXT NULL,\n                file_name TEXT NULL,\n                account_id TEXT NOT NULL,\n                created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n                PRIMARY KEY (id)\n            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
+            "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}integrate_google_drive_logs (\n                id INT NOT NULL AUTO_INCREMENT,\n\t\t\t    shortcode_id INT UNSIGNED DEFAULT NULL,\n                `type` VARCHAR(255) NULL,\n                user_id INT NULL,\n                file_id TEXT NOT NULL,\n                file_type TEXT NULL,\n                file_name TEXT NULL,\n    \t\t    page TEXT NULL,\n                account_id TEXT NOT NULL,\n                created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n                PRIMARY KEY (id)\n            ) {$charset_collate};",
+            // Selections table
+            "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}integrate_google_drive_selections (\n\t\t\t    id INT UNSIGNED NOT NULL AUTO_INCREMENT,\n\t\t\t    shortcode_id INT UNSIGNED DEFAULT NULL,\n\t\t\t    user_id INT UNSIGNED DEFAULT NULL,\n\t\t\t    email VARCHAR(255) NOT NULL,\n\t\t\t    files TEXT DEFAULT NULL,\n\t\t\t    message MEDIUMTEXT DEFAULT NULL,\n    \t\t    page TEXT NULL,\n\t\t\t    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n\t\t\t    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n\t\t\t    PRIMARY KEY (id)\n\t\t\t) {$charset_collate};",
         ];
     }
 
@@ -135,6 +144,9 @@ class Install {
         }
         if ( !get_option( 'igd_install_time' ) ) {
             update_option( 'igd_install_time', current_time( 'mysql' ) );
+        }
+        if ( !get_option( 'igd_show_setup' ) ) {
+            update_option( 'igd_show_setup', 1 );
         }
         set_transient( 'igd_rating_notice_interval', 'off', 10 * DAY_IN_SECONDS );
     }

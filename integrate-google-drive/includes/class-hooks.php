@@ -36,6 +36,8 @@ class Hooks {
         );
         // Handle oAuth authorization
         add_action( 'admin_init', [$this, 'handle_authorization'] );
+        // Add modules rewrite rules
+        add_action( 'init', [$this, 'add_rewrite_rules'] );
         // Register query var
         add_filter( 'query_vars', [$this, 'add_query_vars'] );
         // Get preview thumbnail
@@ -48,6 +50,90 @@ class Hooks {
         add_action( 'template_redirect', [$this, 'direct_stream'] );
         // Update lost account
         add_action( 'igd_lost_authorization_notice', [$this, 'update_lost_account'] );
+        // render modules view
+        add_action( 'template_redirect', [$this, 'render_module_view'] );
+        // Handle migration
+        add_action( 'igd_migration_background_process', [$this, 'run_migration'] );
+    }
+
+    public function run_migration() {
+        if ( !class_exists( '\\IGD\\Migration_1_5_1' ) ) {
+            include_once IGD_INCLUDES . '/updates/class-migration-1.5.1.php';
+        }
+        $instance = Migration_1_5_1::instance();
+        while ( true ) {
+            $result = $instance->run_batch();
+            if ( !empty( $result['completed'] ) ) {
+                delete_option( 'igd_migration_1_5_1_status' );
+                break;
+            }
+            // Optional: sleep to avoid timeouts on large migrations
+            usleep( 200000 );
+            // 200ms
+        }
+    }
+
+    public function add_rewrite_rules() {
+        add_rewrite_rule( '^igd-modules/([0-9]+)/?$', 'index.php?igd-modules=$matches[1]', 'top' );
+    }
+
+    public function render_module_view() {
+        $module_id = get_query_var( 'igd-modules' );
+        if ( !$module_id ) {
+            return;
+        }
+        $id = esc_attr( $module_id );
+        $module = Shortcode::get_shortcode( $id );
+        if ( !$module ) {
+            wp_die( esc_html__( 'Invalid module ID.', 'integrate-google-drive' ), 400 );
+        }
+        $title = $module['title'] ?? 'IGD Modules';
+        // Capture the shortcode output
+        ob_start();
+        echo do_shortcode( '[integrate_google_drive id="' . $id . '"]' );
+        $post_content = ob_get_clean();
+        global $wp_query, $post;
+        // Create the fake post object
+        $fake_post_data = [
+            'ID'                => 0,
+            'post_author'       => 0,
+            'post_date'         => current_time( 'mysql' ),
+            'post_date_gmt'     => current_time( 'mysql', 1 ),
+            'post_modified'     => current_time( 'mysql' ),
+            'post_modified_gmt' => current_time( 'mysql', 1 ),
+            'post_content'      => $post_content,
+            'post_title'        => $title,
+            'post_excerpt'      => '',
+            'post_status'       => 'publish',
+            'post_type'         => 'page',
+            'post_name'         => 'igd-modules',
+            'post_parent'       => 0,
+            'guid'              => home_url( '/?igd-modules=' . $id ),
+            'menu_order'        => 0,
+            'ping_status'       => 'closed',
+            'comment_status'    => 'closed',
+            'comment_count'     => 0,
+            'filter'            => 'raw',
+        ];
+        $post = new \WP_Post((object) $fake_post_data);
+        // Set global WP_Query properties
+        $wp_query->post = $post;
+        $wp_query->posts = [$post];
+        $wp_query->queried_object = $post;
+        $wp_query->queried_object_id = $post->ID;
+        $wp_query->post_count = 1;
+        $wp_query->is_page = true;
+        $wp_query->is_single = true;
+        $wp_query->is_singular = true;
+        $wp_query->is_home = false;
+        $wp_query->is_404 = false;
+        $wp_query->max_num_pages = 1;
+        // Set up postdata
+        setup_postdata( $post );
+        // Optionally remove conflicting filters (if necessary)
+        remove_all_filters( 'the_content' );
+        remove_all_filters( 'the_excerpt' );
+        remove_all_filters( 'the_title' );
     }
 
     public function update_lost_account( $account_id = null ) {
@@ -100,110 +186,99 @@ class Hooks {
         $vars[] = 'igd_stream';
         $vars[] = 'direct_file';
         $vars[] = 'secure_embed';
+        $vars[] = 'igd-modules';
         return $vars;
     }
 
     public function preview_image() {
-        // Check if the query variable exists
-        if ( !get_query_var( 'igd_preview_image' ) ) {
+        // Avoid any output before headers
+        if ( headers_sent() || !get_query_var( 'igd_preview_image' ) ) {
             return;
         }
-        // Sanitize and validate input
-        $id = sanitize_text_field( ( isset( $_GET['id'] ) ? $_GET['id'] : '' ) );
-        $account_id = sanitize_text_field( ( isset( $_GET['accountId'] ) ? $_GET['accountId'] : '' ) );
-        $size = sanitize_key( ( isset( $_GET['size'] ) ? $_GET['size'] : 'medium' ) );
-        $w = ( isset( $_GET['w'] ) ? intval( $_GET['w'] ) : 300 );
-        $h = ( isset( $_GET['h'] ) ? intval( $_GET['h'] ) : 300 );
+        ob_start();
+        // Input sanitization
+        $id = sanitize_text_field( $_GET['id'] ?? '' );
+        $account_id = sanitize_text_field( $_GET['accountId'] ?? '' );
+        $size = sanitize_key( $_GET['size'] ?? 'medium' );
+        $w = ( isset( $_GET['width'] ) ? max( 1, intval( $_GET['width'] ) ) : 300 );
+        $h = ( isset( $_GET['height'] ) ? max( 1, intval( $_GET['height'] ) ) : 300 );
         if ( empty( $id ) ) {
-            header( "HTTP/1.1 400 Bad Request" );
+            status_header( 400 );
             echo "File ID is required.";
             exit;
         }
-        // Create app instance and fetch file
         $app = App::instance( $account_id );
         $file = $app->get_file_by_id( $id );
         if ( !$file ) {
-            header( "HTTP/1.1 404 Not Found" );
+            status_header( 404 );
             echo "File not found.";
             exit;
         }
-        // Caching headers: Last-Modified and ETag
-        $lastModified = strtotime( $file['updated'] );
-        $etagFile = md5( $lastModified );
-        $ifModifiedSince = ( isset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) ? $_SERVER['HTTP_IF_MODIFIED_SINCE'] : false );
-        $etagHeader = ( isset( $_SERVER['HTTP_IF_NONE_MATCH'] ) ? trim( $_SERVER['HTTP_IF_NONE_MATCH'] ) : '' );
-        if ( $ifModifiedSince && strtotime( $ifModifiedSince ) === $lastModified || $etagHeader === $etagFile ) {
-            header( 'HTTP/1.1 304 Not Modified' );
+        $last_modified = strtotime( $file['updated'] );
+        $etag = md5( $last_modified );
+        // Check for browser caching
+        if ( isset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) && strtotime( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) === $last_modified || isset( $_SERVER['HTTP_IF_NONE_MATCH'] ) && trim( $_SERVER['HTTP_IF_NONE_MATCH'] ) === $etag ) {
+            status_header( 304 );
             exit;
         }
-        header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', $lastModified ) . ' GMT' );
-        header( "Etag: {$etagFile}" );
+        // Set caching headers
+        header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', $last_modified ) . ' GMT' );
+        header( 'Etag: ' . $etag );
         header( 'Expires: ' . gmdate( 'D, d M Y H:i:s', time() + 300 ) . ' GMT' );
         header( 'Cache-Control: must-revalidate' );
-        // Determine thumbnail attributes
-        switch ( $size ) {
-            case 'custom':
-                $thumbnail_attributes = "=w{$w}-h{$h}";
-                break;
-            case 'small':
-                $thumbnail_attributes = '=w300-h300';
-                break;
-            case 'medium':
-                $thumbnail_attributes = '=h600-nu';
-                break;
-            case 'large':
-                $thumbnail_attributes = '=w1024-h768-p-k-nu';
-                break;
-            case 'full':
-                $thumbnail_attributes = '=s0';
-                break;
-            default:
-                $thumbnail_attributes = '=w200-h190-p-k-nu-iv1';
-                break;
-        }
-        $thumbnail_file = $id . $thumbnail_attributes . '.png';
+        // Determine thumbnail size suffix
+        $suffix_map = [
+            'custom'  => "=w{$w}-h{$h}",
+            'small'   => '=w300-h300',
+            'medium'  => '=h600-nu',
+            'large'   => '=w1024-h768-p-k-nu',
+            'full'    => '=s0',
+            'default' => '=w200-h190-p-k-nu-iv1',
+        ];
+        $attributes = $suffix_map[$size] ?? $suffix_map['default'];
+        $thumbnail_file = $id . $attributes . '.png';
         $thumbnail_path = IGD_CACHE_DIR . '/' . $thumbnail_file;
-        // Serve cached thumbnail if available
-        if ( file_exists( $thumbnail_path ) && filemtime( $thumbnail_path ) === $lastModified ) {
-            $img_info = getimagesize( $thumbnail_path );
-            if ( $img_info ) {
-                header( "Content-Type: {$img_info['mime']}" );
+        // Serve cached image if exists
+        if ( file_exists( $thumbnail_path ) && filemtime( $thumbnail_path ) === $last_modified ) {
+            $info = getimagesize( $thumbnail_path );
+            if ( $info ) {
+                header( "Content-Type: {$info['mime']}" );
                 readfile( $thumbnail_path );
                 exit;
             }
         }
-        // Fetch thumbnail from external source
-        $download_link = "https://lh3.google.com/u/0/d/{$id}{$thumbnail_attributes}";
+        // Download thumbnail from Google
+        $download_url = "https://lh3.google.com/u/0/d/{$id}{$attributes}";
         try {
             $client = $app->client;
-            $request = new \IGDGoogle_Http_Request($download_link, 'GET');
+            $request = new \IGDGoogle_Http_Request($download_url, 'GET');
             $client->getIo()->setOptions( [
                 CURLOPT_SSL_VERIFYPEER => false,
                 CURLOPT_FOLLOWLOCATION => true,
             ] );
-            $httpRequest = $client->getAuth()->authenticatedRequest( $request );
-            $headers = $httpRequest->getResponseHeaders();
-            // Validate response content type
-            $content_type = ( isset( $headers['content-type'] ) ? $headers['content-type'] : '' );
+            $response = $client->getAuth()->authenticatedRequest( $request );
+            $headers = $response->getResponseHeaders();
+            $body = $response->getResponseBody();
+            $content_type = $headers['content-type'] ?? '';
             if ( strpos( $content_type, 'image' ) === false ) {
-                header( "HTTP/1.1 400 Bad Request" );
+                status_header( 400 );
                 echo "Invalid response type.";
                 exit;
             }
-            // Save and serve the thumbnail
-            file_put_contents( $thumbnail_path, $httpRequest->getResponseBody() );
-            touch( $thumbnail_path, $lastModified );
-            $img_info = getimagesize( $thumbnail_path );
-            if ( $img_info ) {
-                header( "Content-Type: {$img_info['mime']}" );
+            // Cache and serve
+            file_put_contents( $thumbnail_path, $body );
+            touch( $thumbnail_path, $last_modified );
+            $info = getimagesize( $thumbnail_path );
+            if ( $info ) {
+                header( "Content-Type: {$info['mime']}" );
                 readfile( $thumbnail_path );
                 exit;
             }
-            header( "HTTP/1.1 500 Internal Server Error" );
+            status_header( 500 );
             echo "Failed to process the thumbnail.";
             exit;
         } catch ( \Exception $e ) {
-            header( "HTTP/1.1 500 Internal Server Error" );
+            status_header( 500 );
             echo "Error: " . esc_html( $e->getMessage() );
             exit;
         }
@@ -269,9 +344,7 @@ class Hooks {
             remove_all_actions( 'wp_enqueue_scripts' );
             // Also remove all scripts hooked into after_wp_tiny_mce.
             remove_all_actions( 'after_wp_tiny_mce' );
-            if ( $is_dir ) {
-                Enqueue::instance()->frontend_scripts();
-            }
+            Enqueue::instance()->frontend_scripts();
             $type = ( $is_dir ? 'browser' : 'embed' );
             ?>
 

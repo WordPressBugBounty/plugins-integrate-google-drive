@@ -4,6 +4,38 @@ defined( 'ABSPATH' ) || exit();
 
 $logs = [
 
+	'v.1.5.1' => [
+		'date'        => '2025-06-24',
+		'new'         => [
+			'Added Review & Approve module.',
+			'Added List module.',
+			'Added bulk import support to enable importing multiple files from Google Drive into the Media Library',
+			'Added Google Drive Upload field support for the FluentForms Conversational Forms.',
+			'Added File Browser module supports for form integrations.',
+			'Added the rotate option in the image lightbox preview.',
+			'Added login screen support for the modules when user needs to login.',
+			'Added private folder share option with user email on private folder creation.',
+			'Added new Performance settings.',
+		],
+		'fix'         => [
+			'Fixed media not playing on the track change issue for the Media Player module.',
+			'Fixed Elementor PRO compatibility issues.',
+			'Fix %time% placeholder time zone mismatch issue.',
+		],
+		'enhancement' => [
+			'Improved photo proofing for the Gallery module.',
+			'Improved the Media Player module to resume playback from the last played position.',
+			'Improved the Module Builder compatibility and integration with page builders (Elementor, Divi, Gutenberg and Classic Editor).',
+			'Improved the Module Builder compatibility and integrations with the forms.',
+			'Improved overall plugin performance, security, and user experience.',
+		],
+		'remove'      => [
+			'Deprecated the View links and Download links modules and merged them into the new List module.',
+		],
+		'video'       => 'https://youtu.be/sBRPDDV2A1E',
+		'article'     => 'https://softlabbd.com/integrate-google-drive-v1-5-1/',
+	],
+
 	'v.1.5.0' => [
 		'date'        => '2025-03-17',
 		'new'         => [
@@ -95,142 +127,6 @@ $logs = [
 		],
 	],
 
-	'v.1.4.4' => [
-		'date' => '2024-10-09',
-		'new'  => [
-			'Added upload folder selection and file renaming settings in WooCommerce uploads.',
-		],
-		'fix'  => [
-			'Fixed database tables not created.',
-			'Fixed file, folder not renaming properly in WooCommerce uploads.',
-			'Fixed remember last folder not working issue.',
-		],
-	],
-
-
-	'v.1.4.3' => [
-		'date'        => '2024-10-03',
-		'fix'         => [
-			'Fixed module notifications not reaching to the correct recipients.',
-		],
-		'enhancement' => [
-			'Improve Accounts connection UI/UX.',
-		],
-	],
-
-
-	'v.1.4.2' => [
-		'date'        => '2024-09-29',
-		'new'         => [
-			'Added option for specific folders accessibility in the app.',
-			'Added folder selection options in the uploader.',
-			'Added a "None" preloader setting option to disable the preloader during file loading.',
-		],
-		'enhancement' => [
-			'Improved overall performance and stability.',
-		],
-	],
-
-	'v.1.4.1' => [
-		'date'        => '2024-09-14',
-		'enhancement' => [
-			'Upgraded plugin\'s integrated Google App.',
-		],
-	],
-
-	'v.1.4.0' => [
-		'date' => '2024-08-26',
-		'new'  => [
-			'Added woocommerce upload box checkout location setting.',
-		],
-		'fix'  => [
-			'Fixed MetForm Google Drive upload filed not saving the configuration data.',
-			'Fixed remove file button not working for Google Drive uploader forms field.',
-			'Fixed WPForms Google Drive upload filed smart tag output issue.',
-		],
-	],
-
-	'v.1.3.99' => [
-		'date' => '2024-08-14',
-		'fix'  => [
-			'Fixed Invalid nonce error.',
-			'Fixed permission check issue.',
-			'Fixed conflict with the Real Media Library plugin.',
-		],
-	],
-	'v.1.3.98' => [
-		'date' => '2024-08-09',
-		'fix'  => [
-			'Fixed Preview not working issue.',
-			'Fixed Gutenberg editor Google Drive blocks not working properly.',
-			'Fixed Divi Builder reload issue.',
-		],
-	],
-
-	'v.1.3.97' => [
-		'date'        => '2024-08-07',
-		'new'         => [
-			'Added file description in the notification email.',
-			'Added dynamic option to use ACF field value as module source files.',
-			'Added usage limits options to control download and bandwidth usage.',
-		],
-		'fix'         => [
-			'Fixed direct media embed not working.',
-			'Fixed search results not showing proper pagination issue.',
-			'Fixed Google account not switching in the media library integration.',
-			'Fixed Elementor form multiple Google Drive upload field configuration issue.',
-		],
-		'enhancement' => [
-			'Revert the Gallery Shortcode Module and Contact Form 7 Integration to the free version.',
-			'Added support up to WordPress 6.6.1',
-			'Improved overall performance and stability.',
-		],
-	],
-
-	'v.1.3.96' => [
-		'date' => '2024-06-11',
-		'fix'  => [
-			'Fixed PHP fatal error.',
-		],
-	],
-
-	'v.1.3.95' => [
-		'date'        => '2024-06-10',
-		'new'         => [
-			'Added thumbnail preview for selected items for the uploader module.',
-			'Added server throttle setting to prevent resource issues during downloading/streaming on budget hosts.',
-			'Added secure video playback setting to prevent direct access to Google Drive video files.',
-		],
-		'fix'         => [
-			'Fixed Shared drives folder navigation not working properly.',
-			'Fixed Formidable Forms file and folder naming template issue.',
-			'Fixed NinjaForms file not uploading issue.',
-			'Fixed Google Drive files selection from media library in mobile view.',
-		],
-		'enhancement' => [
-			'Improved video playback speed.',
-			'Improved overall performance and stability.',
-		],
-	],
-
-	'v.1.3.94' => [
-		'date' => '2024-04-21',
-		'new'  => [
-			'Added video playback thumbnail for video items in the gallery.',
-			'Added option to display selected folder files for download/view links module.',
-		],
-
-		'enhancement' => [
-			'Improved overall performance and security.',
-		],
-
-		'remove' => [
-			'Removed Gallery module from the free version.',
-			'Removed Contact Form 7 integration from the free version.',
-		],
-	],
-
-
 ];
 
 
@@ -238,7 +134,7 @@ $logs = [
 
 <div id="what-new" class="getting-started-content content-what-new">
     <div class="content-heading">
-        <h2><?php esc_html_e( 'Exploring the Latest Updates', 'integrate-google-drive' ); ?></h2>
+        <h2><?php printf( __( 'Exploring the %s Latest Updates %s', 'integrate-google-drive' ), '<mark>', '</mark>' ); ?></h2>
         <p><?php esc_html_e( 'Dive Into the Recent Change Logs for Fresh Insights', 'integrate-google-drive' ); ?></p>
     </div>
 
@@ -254,6 +150,40 @@ $logs = [
             </div>
 
             <div class="log-body">
+
+				<?php if ( ! empty( $log['video'] ) || ! empty( $log['article'] ) ) : ?>
+                    <div class="log-links">
+						<?php
+						$links = [
+							'article' => [
+								'icon'  => 'dashicons-text-page',
+								'label' => __( 'Read Log Article', 'integrate-google-drive' ),
+							],
+							'video'   => [
+								'icon'  => 'dashicons-video-alt3',
+								'label' => __( 'Watch Video', 'integrate-google-drive' ),
+							],
+						];
+
+						foreach ( $links as $key => $data ) :
+							if ( ! empty( $log[ $key ] ) ) :
+								?>
+                                <div class="log-<?php echo esc_attr( $key ); ?>">
+                                    <a href="<?php echo esc_url( $log[ $key ] ); ?>" class="igd-btn btn-info"
+                                       target="_blank" rel="noopener noreferrer">
+                                        <i class="dashicons <?php echo esc_attr( $data['icon'] ); ?>"></i>
+										<?php echo esc_html( $data['label'] ); ?>
+                                    </a>
+                                </div>
+							<?php
+							endif;
+						endforeach;
+						?>
+                    </div>
+				<?php endif; ?>
+
+
+
 				<?php
 
 				if ( ! empty( $log['new'] ) ) {
@@ -263,7 +193,6 @@ $logs = [
 					}
 					echo '</div>';
 				}
-
 
 				if ( ! empty( $log['fix'] ) ) {
 					printf( '<div class="log-section fix"><h3>%s</h3>', __( 'Bug Fixes', 'integrate-google-drive' ) );
@@ -282,13 +211,12 @@ $logs = [
 				}
 
 				if ( ! empty( $log['remove'] ) ) {
-					printf( '<div class="log-section remove"><h3>%s</h3>', __( 'Removes', 'integrate-google-drive' ) );
+					printf( '<div class="log-section remove"><h3>%s</h3>', __( 'Deprecations', 'integrate-google-drive' ) );
 					foreach ( $log['remove'] as $item ) {
 						echo '<div class="log-item log-item-remove"><i class="dashicons dashicons-trash"></i> <span>' . $item . '</span></div>';
 					}
 					echo '</div>';
 				}
-
 
 				?>
             </div>

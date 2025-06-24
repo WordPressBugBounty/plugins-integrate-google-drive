@@ -22,7 +22,7 @@ class Download {
 	public function __construct( $id, $account_id, $mimetype = 'default', $proxy = false, $ignore_limit = false ) {
 
 		// Check download restrictions
-		if ( ! $ignore_limit && igd_fs()->can_use_premium_code__premium_only() && $limit_message = Restrictions::instance()->has_reached_download_limit( $id ) ) {
+		if ( ! $ignore_limit && $limit_message = Restrictions::instance()->has_reached_download_limit( $id ) ) {
 			Restrictions::display_error( $limit_message );
 		}
 
@@ -41,7 +41,6 @@ class Download {
 		if ( igd_is_shortcut( $file['type'] ) ) {
 			$file = App::instance( $this->account_id )->get_file_by_id( $this->file['shortcutDetails']['targetId'] );
 		}
-
 
 		$this->file       = $file;
 		$this->file_id    = $id;

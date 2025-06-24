@@ -31,7 +31,6 @@ class Private_Folders {
 		$template_folder = ! empty( $data['templateFolder'] ) ? $data['templateFolder'] : igd_get_settings( 'templateFolder' );
 		$merge_folders   = $data['mergePrivateFolders'] ?? igd_get_settings( 'mergeFolders', true );
 
-
 		if ( empty( $parent_folder ) ) {
 			$parent_folder = [
 				'id'        => 'root',
@@ -52,6 +51,21 @@ class Private_Folders {
 		}
 
 		$user_folder = $this->create_folder( $args );
+
+		if ( ! empty( $user_folder ) ) {
+			$share_folder = igd_get_settings( 'sharePrivateFolder' );
+
+			if ( $share_folder ) {
+				$user_data = [
+					'id'    => $user_id,
+					'name'  => $user->display_name ?? $user->user_login,
+					'email' => $user->user_email,
+				];
+
+				Permissions::instance( $share_folder['accountId'] )->share_file( $user_folder, $user_data );
+			}
+
+		}
 
 		update_user_meta( $user_id, 'igd_folders', [ $user_folder ] );
 

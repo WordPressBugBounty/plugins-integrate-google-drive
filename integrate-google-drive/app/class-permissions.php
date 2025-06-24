@@ -124,7 +124,6 @@ class Permissions {
 		return false;
 	}
 
-
 	public function set_permission( $file = [], $permission_role = 'reader' ) {
 		list( $permission_domain, $permission_type ) = $this->get_domain_and_type();
 		list( $file_permissions, $users ) = $this->get_permissions_from_file( $file );
@@ -168,6 +167,43 @@ class Permissions {
 		return false;
 	}
 
+	public function share_file( $file, $user_data ) {
+		if ( empty( $file['account_id'] ) || empty( $file['id'] ) || empty( $file['name'] ) || empty( $user_data['email'] ) || empty( $user_data['name'] ) ) {
+			return false;
+		}
+
+		$account_id = $file['account_id'];
+		$service    = App::instance( $account_id )->getService();
+
+		$permission = new \IGDGoogle_Service_Drive_Permission();
+		$permission->setEmailAddress( sanitize_email( $user_data['email'] ) );
+		$permission->setType( 'user' );
+		$permission->setRole( 'reader' );
+
+		// Prepare email message
+		$email_message = sprintf(
+			esc_html__(
+				'Hello %s, you have been granted access to the file "%s". You can now view and download the contents of this file. If you have any questions or need further assistance, please do not hesitate to contact us.',
+				'integrate-google-drive'
+			),
+			esc_html( $user_data['name'] ),
+			esc_html( $file['name'] )
+		);
+
+		$params = [
+			'supportsAllDrives'     => true,
+			'sendNotificationEmail' => true,
+			'emailMessage'          => $email_message,
+		];
+
+		try {
+			$service->permissions->create( $file['id'], $permission, $params );
+			return true;
+		} catch ( \Exception $e ) {
+			error_log( 'IGD Share file error: ' . $e->getMessage() );
+			return false;
+		}
+	}
 
 	public static function instance( $account_id = null ) {
 		if ( null === self::$instance ) {

@@ -11,6 +11,7 @@ class CF7 {
 	protected static $instance = null;
 
 	public function __construct() {
+
 		add_action( 'wpcf7_admin_init', [ $this, 'add_tag_generator' ], 99 );
 		add_action( 'wpcf7_init', [ $this, 'add_data_handler' ] );
 
@@ -68,9 +69,10 @@ class CF7 {
 						continue;
 					}
 
-					$options = $contact_form->scan_form_tags( [ 'name' => $key ] )[0]['options'][0];
+					$option = $contact_form->scan_form_tags( [ 'name' => $key ] )[0]['options'][0];
 
-					$igd_data = json_decode( base64_decode( str_replace( 'data:', '', $options ) ), true );
+					$module_id   = str_replace( 'module_id:', '', $option );
+					$module_data = Shortcode::instance()->get_shortcode( $module_id )['config'] ?? [];
 
 					$tag_data = [
 						'form' => [
@@ -79,14 +81,14 @@ class CF7 {
 						]
 					];
 
-					$upload_folder = ! empty( $igd_data['folders'] ) && is_array( $igd_data['folders'] ) ? reset( $igd_data['folders'] )
+					$upload_folder = ! empty( $module_data['folders'] ) && is_array( $module_data['folders'] ) ? reset( $module_data['folders'] )
 						: [
 							'id'        => 'root',
 							'accountId' => '',
 						];
 
 					// Rename files
-					$file_name_template = ! empty( $igd_data['uploadFileName'] ) ? $igd_data['uploadFileName'] : '%file_name%%file_extension%';
+					$file_name_template = ! empty( $module_data['uploadFileName'] ) ? $module_data['uploadFileName'] : '%file_name%%file_extension%';
 
 					// Check if the file name template contains dynamic tags
 					if ( igd_contains_tags( 'field', $file_name_template ) ) {
@@ -114,14 +116,14 @@ class CF7 {
 					}
 
 					// Create Entry Folder
-					$create_entry_folder   = ! empty( $igd_data['createEntryFolders'] );
-					$create_private_folder = ! empty( $igd_data['createPrivateFolder'] );
+					$create_entry_folder   = ! empty( $module_data['createEntryFolders'] );
+					$create_private_folder = ! empty( $module_data['createPrivateFolder'] );
 
 					if ( ! $create_entry_folder && ! $create_private_folder ) {
 						continue;
 					}
 
-					$entry_folder_name_template = ! empty( $igd_data['entryFolderNameTemplate'] ) ? $igd_data['entryFolderNameTemplate'] : 'Form Entry - %form_title%';
+					$entry_folder_name_template = ! empty( $module_data['entryFolderNameTemplate'] ) ? $module_data['entryFolderNameTemplate'] : 'Form Entry - %form_title%';
 
 					$user_id = ! empty( $_POST['_user_id'] ) ? intval( $_POST['_user_id'] ) : null;
 					if ( igd_contains_tags( 'user', $entry_folder_name_template ) ) {
@@ -155,7 +157,7 @@ class CF7 {
 					$folder_name      = igd_replace_template_tags( $tag_data, $extra_tags );
 
 					// Check Private Folders
-					$private_folders = ! empty( $igd_data['privateFolders'] );
+					$private_folders = ! empty( $module_data['privateFolders'] );
 					if ( $private_folders && $user_id ) {
 						$folders = get_user_meta( $user_id, 'igd_folders', true );
 
@@ -164,16 +166,16 @@ class CF7 {
 								return igd_is_dir( $item );
 							} ) );
 						} elseif ( $create_private_folder ) {
-							$folders = Private_Folders::instance()->create_user_folder( $user_id, $igd_data );
+							$folders = Private_Folders::instance()->create_user_folder( $user_id, $module_data );
 						}
 
 						if ( ! empty( $folders ) ) {
-							$igd_data['folders'] = $folders;
+							$module_data['folders'] = $folders;
 						}
 
 					}
 
-					$merge_folders = isset( $igd_data['mergeFolders'] ) ? filter_var( $igd_data['mergeFolders'], FILTER_VALIDATE_BOOLEAN ) : false;
+					$merge_folders = isset( $module_data['mergeFolders'] ) ? filter_var( $module_data['mergeFolders'], FILTER_VALIDATE_BOOLEAN ) : false;
 
 					Uploader::instance( $upload_folder['accountId'] )->create_entry_folder_and_move( $files, $folder_name, $upload_folder, $merge_folders, $create_entry_folder );
 				}
@@ -226,9 +228,12 @@ class CF7 {
 			}
 
 			// Min File Uploads
-			$options          = $tag->options[0];
-			$igd_data         = json_decode( base64_decode( str_replace( 'data:', '', $options ) ), true );
-			$min_file_uploads = ! empty( $igd_data['minFiles'] ) ? $igd_data['minFiles'] : 0;
+			$option = $tag->options[0];
+
+			$module_id   = str_replace( 'module_id:', '', $option );
+			$module_data = Shortcode::instance()->get_shortcode( $module_id )['config'] ?? [];
+
+			$min_file_uploads = ! empty( $module_data['minFiles'] ) ? $module_data['minFiles'] : 0;
 
 			if ( $min_file_uploads > 0 ) {
 				$files = explode( ' ),', $value );
@@ -274,14 +279,18 @@ class CF7 {
 		}
 
 		// Data
-		$data                   = $tag->get_option( 'data', '', true );
-		$data                   = json_decode( base64_decode( $data ), 1 );
-		$data['isFormUploader'] = 'cf7';
 
-		$required = ( '*' == substr( $tag->type, - 1 ) );
-		if ( $required ) {
-			$data['isRequired'] = true;
-		}
+		$default_data = [
+			'type'           => 'uploader',
+			'isFormUploader' => 'cf7',
+			'isRequired'     => $tag->is_required(),
+		];
+
+		$module_id = $tag->get_option( 'module_id', '', true );
+
+		$module_data = Shortcode::instance()->get_shortcode( $module_id )['config'] ?? [];
+
+		$data = wp_parse_args( $module_data, $default_data );
 
 		$atts = [
 			'name'          => $tag->name,
@@ -362,18 +371,18 @@ class CF7 {
 			?>
 
             <fieldset>
-                <legend><?php echo esc_html__( 'Configure Uploader', 'integrate-google-drive' ); ?></legend>
+                <legend><?php echo esc_html__( 'Select Module', 'integrate-google-drive' ); ?></legend>
 
-                <input type="hidden"
-                       data-tag-part="option"
-                       data-tag-option="data:"
-                       id="<?php echo esc_attr( $options['content'] . '-data' ); ?>"/>
+				<?php echo $this->get_select_field( $options['content'] . '-data' ); ?>
+
+                <p class="description"><?php esc_html_e( 'Select an existing module or create a new one.', 'integrate-google-drive' ); ?></p>
 
                 <button id="igd-form-uploader-config-cf7" type="button"
                         class="igd-form-uploader-trigger igd-form-uploader-trigger-cf7 igd-btn btn-primary">
                     <i class="dashicons dashicons-admin-generic"></i>
-                    <span><?php esc_html_e( 'Configure Uploader', 'integrate-google-drive' ); ?></span>
+                    <span><?php esc_html_e( 'Configure', 'integrate-google-drive' ); ?></span>
                 </button>
+
             </fieldset>
 
 			<?php
@@ -433,17 +442,17 @@ class CF7 {
                     <tr>
                         <th scope="row">
                             <label for="<?php echo esc_attr( $args['content'] . '-data' ); ?>">
-								<?php echo esc_html__( 'Configure', 'integrate-google-drive' ); ?>
+								<?php echo esc_html__( 'Module ID', 'integrate-google-drive' ); ?>
                             </label>
                         </th>
                         <td>
-                            <input type="hidden" name="data" class="option oneline"
-                                   id="<?php echo esc_attr( $args['content'] . '-data' ); ?>"/>
+
+							<?php echo $this->get_select_field( $args['content'] . '-data' ); ?>
 
                             <button id="igd-form-uploader-config-cf7" type="button"
                                     class="igd-form-uploader-trigger igd-form-uploader-trigger-cf7 igd-btn btn-primary">
                                 <i class="dashicons dashicons-admin-generic"></i>
-                                <span><?php esc_html_e( 'Configure Uploader', 'integrate-google-drive' ); ?></span>
+                                <span><?php esc_html_e( 'Configure', 'integrate-google-drive' ); ?></span>
                             </button>
                         </td>
                     </tr>
@@ -473,6 +482,33 @@ class CF7 {
             </p>
         </div>
 		<?php
+	}
+
+	public function get_select_field( $id ) {
+		$shortcodes = Shortcode::get_shortcodes();
+
+		$shortcodes = array_filter( $shortcodes, function ( $shortcode ) {
+			return 'browser' === $shortcode['type'] || 'uploader' === $shortcode['type'];
+		} );
+
+		$options = "<option value=''>" . esc_html__( 'Select Module', 'integrate-google-drive' ) . "</option>";
+
+		if ( ! empty( $shortcodes ) ) {
+			foreach ( $shortcodes as $shortcode ) {
+				$options .= sprintf(
+					"<option value='%s'>%s</option>",
+					esc_attr( $shortcode['id'] ),
+					esc_html( $shortcode['title'] )
+				);
+			}
+		}
+
+		return sprintf(
+			'<select data-tag-part="option" data-tag-option="module_id:" name="module_id" class="option oneline" id="%s">%s</select>',
+			$id,
+			$options
+		);
+
 	}
 
 	/**

@@ -22,7 +22,6 @@ class Elementor {
                 add_action( 'elementor/widgets/widgets_registered', array($this, 'register_widgets') );
             }
         }
-        add_filter( 'elementor/editor/localize_settings', [$this, 'promote_pro_elements'] );
     }
 
     public function elementor_form_may_create_entry_folder( $record ) {
@@ -65,13 +64,14 @@ class Elementor {
                     // Exit early if no files
                 }
                 $field_data = $form_fields[$field_data_key];
-                $igd_data = json_decode( $field_data['module_data'], true );
+                $module_data = Shortcode::get_shortcode( $field_data['module_id'] )['config'] ?? [];
                 $tag_data = [
                     'form' => [
                         'form_title' => $record->get_form_settings( 'form_name' ),
+                        'form_id'    => get_the_ID(),
                     ],
                 ];
-                $upload_folder = ( !empty( $igd_data['folders'] ) && is_array( $igd_data['folders'] ) ? reset( $igd_data['folders'] ) : [
+                $upload_folder = ( !empty( $module_data['folders'] ) && is_array( $module_data['folders'] ) ? reset( $module_data['folders'] ) : [
                     'id'        => 'root',
                     'accountId' => '',
                 ] );
@@ -91,12 +91,12 @@ class Elementor {
                     App::instance( $upload_folder['accountId'] )->rename_files( $rename_files );
                 }
                 // Create Entry Folder
-                $create_entry_folder = !empty( $igd_data['createEntryFolders'] );
-                $create_private_folder = !empty( $igd_data['createPrivateFolder'] );
+                $create_entry_folder = !empty( $module_data['createEntryFolders'] );
+                $create_private_folder = !empty( $module_data['createPrivateFolder'] );
                 if ( !$create_entry_folder && !$create_private_folder ) {
                     continue;
                 }
-                $entry_folder_name_template = ( isset( $igd_data['entryFolderNameTemplate'] ) ? $igd_data['entryFolderNameTemplate'] : 'Entry (%entry_id%) - %form_title% ' );
+                $entry_folder_name_template = $module_data['entryFolderNameTemplate'] ?? 'Entry (%entry_id%) - %form_title% ';
                 if ( false !== strpos( $entry_folder_name_template, '%entry_id%' ) ) {
                     $submit_actions = $record->get_form_settings( 'submit_actions' );
                     if ( in_array( 'save-to-database', $submit_actions ) ) {
@@ -123,11 +123,10 @@ class Elementor {
                         }
                     }
                 }
-                $extra_tags = $this->handle_elementor_form_field_tags( $fields );
                 $tag_data['name'] = $entry_folder_name_template;
                 $folder_name = igd_replace_template_tags( $tag_data, $extra_tags );
                 // Check Private Folders
-                $private_folders = !empty( $igd_data['privateFolders'] );
+                $private_folders = !empty( $module_data['privateFolders'] );
                 if ( $private_folders && is_user_logged_in() ) {
                     $folders = get_user_meta( get_current_user_id(), 'igd_folders', true );
                     if ( !empty( $folders ) ) {
@@ -135,13 +134,13 @@ class Elementor {
                             return igd_is_dir( $item );
                         } ) );
                     } elseif ( $create_private_folder ) {
-                        $folders = Private_Folders::instance()->create_user_folder( get_current_user_id(), $igd_data );
+                        $folders = Private_Folders::instance()->create_user_folder( get_current_user_id(), $module_data );
                     }
                     if ( !empty( $folders ) ) {
-                        $igd_data['folders'] = $folders;
+                        $module_data['folders'] = $folders;
                     }
                 }
-                $merge_folders = ( isset( $igd_data['mergeFolders'] ) ? filter_var( $igd_data['mergeFolders'], FILTER_VALIDATE_BOOLEAN ) : false );
+                $merge_folders = ( isset( $module_data['mergeFolders'] ) ? filter_var( $module_data['mergeFolders'], FILTER_VALIDATE_BOOLEAN ) : false );
                 Uploader::instance( $upload_folder['accountId'] )->create_entry_folder_and_move(
                     $files,
                     $folder_name,
@@ -214,14 +213,14 @@ class Elementor {
             foreach ( $file_ids as $file_id ) {
                 $files[] = App::instance()->get_file_by_id( $file_id );
             }
-            $igd_data = json_decode( $widget->module_data, true );
+            $module_data = Shortcode::get_shortcode( $widget->module_id )['config'] ?? [];
             $tag_data = [
                 'form' => [
                     'form_title' => $form_settings['form_title'],
                     'form_id'    => $form_id,
                 ],
             ];
-            $upload_folder = ( !empty( $igd_data['folders'][0] ) ? $igd_data['folders'][0] : [
+            $upload_folder = ( !empty( $module_data['folders'][0] ) ? $module_data['folders'][0] : [
                 'id'        => 'root',
                 'accountId' => '',
             ] );
@@ -241,12 +240,12 @@ class Elementor {
                 App::instance( $upload_folder['accountId'] )->rename_files( $rename_files );
             }
             // Create Entry Folder
-            $create_entry_folder = !empty( $igd_data['createEntryFolders'] );
-            $create_private_folder = !empty( $igd_data['createPrivateFolder'] );
+            $create_entry_folder = !empty( $module_data['createEntryFolders'] );
+            $create_private_folder = !empty( $module_data['createPrivateFolder'] );
             if ( !$create_entry_folder && !$create_private_folder ) {
                 continue;
             }
-            $entry_folder_name_template = ( !empty( $igd_data['entryFolderNameTemplate'] ) ? $igd_data['entryFolderNameTemplate'] : 'Entry (%entry_id%) - %form_title%' );
+            $entry_folder_name_template = $module_data['entryFolderNameTemplate'] ?? 'Entry (%entry_id%) - %form_title%';
             if ( false !== strpos( $entry_folder_name_template, '%entry_id%' ) ) {
                 if ( $form_settings['store_entries'] ) {
                     global $wpdb;
@@ -271,10 +270,10 @@ class Elementor {
                     }
                 }
             }
-            $extra_tags = $this->handle_met_form_field_tags( $widgets, $form_data );
+            $tag_data['name'] = $entry_folder_name_template;
             $folder_name = igd_replace_template_tags( $tag_data, $extra_tags );
             // Check Private Folders
-            $private_folders = !empty( $igd_data['privateFolders'] );
+            $private_folders = !empty( $module_data['privateFolders'] );
             if ( $private_folders && is_user_logged_in() ) {
                 $folders = get_user_meta( get_current_user_id(), 'igd_folders', true );
                 if ( !empty( $folders ) ) {
@@ -282,13 +281,13 @@ class Elementor {
                         return igd_is_dir( $item );
                     } ) );
                 } elseif ( $create_private_folder ) {
-                    $folders = Private_Folders::instance()->create_user_folder( get_current_user_id(), $igd_data );
+                    $folders = Private_Folders::instance()->create_user_folder( get_current_user_id(), $module_data );
                 }
                 if ( !empty( $folders ) ) {
-                    $igd_data['folders'] = $folders;
+                    $module_data['folders'] = $folders;
                 }
             }
-            $merge_folders = ( isset( $igd_data['mergeFolders'] ) ? filter_var( $igd_data['mergeFolders'], FILTER_VALIDATE_BOOLEAN ) : false );
+            $merge_folders = ( isset( $module_data['mergeFolders'] ) ? filter_var( $module_data['mergeFolders'], FILTER_VALIDATE_BOOLEAN ) : false );
             Uploader::instance( $upload_folder['accountId'] )->create_entry_folder_and_move(
                 $files,
                 $folder_name,
@@ -327,47 +326,6 @@ class Elementor {
         $fields_manager->register( new Google_Drive_Upload() );
     }
 
-    public function promote_pro_elements( $config ) {
-        $promotion_widgets = [];
-        if ( isset( $config['promotionWidgets'] ) ) {
-            $promotion_widgets = $config['promotionWidgets'];
-        }
-        $combine_array = array_merge( $promotion_widgets, [
-            [
-                'name'       => 'igd_browser',
-                'title'      => __( 'File Browser', 'integrate-google-drive' ),
-                'icon'       => 'igd-browser',
-                'categories' => '["integrate_google_drive"]',
-            ],
-            [
-                'name'       => 'igd_uploader',
-                'title'      => __( 'File Uploader', 'integrate-google-drive' ),
-                'icon'       => 'igd-uploader',
-                'categories' => '["integrate_google_drive"]',
-            ],
-            [
-                'name'       => 'igd_media',
-                'title'      => __( 'Media Player', 'integrate-google-drive' ),
-                'icon'       => 'igd-media',
-                'categories' => '["integrate_google_drive"]',
-            ],
-            [
-                'name'       => 'igd_search',
-                'title'      => __( 'Search Box', 'integrate-google-drive' ),
-                'icon'       => 'igd-search',
-                'categories' => '["integrate_google_drive"]',
-            ],
-            [
-                'name'       => 'igd_slider',
-                'title'      => __( 'Slider Carousel', 'integrate-google-drive' ),
-                'icon'       => 'igd-slider',
-                'categories' => '["integrate_google_drive"]',
-            ]
-        ] );
-        $config['promotionWidgets'] = $combine_array;
-        return $config;
-    }
-
     public function editor_scripts() {
         wp_enqueue_style(
             'igd-elementor-editor',
@@ -379,6 +337,25 @@ class Elementor {
     }
 
     public function frontend_scripts() {
+        Enqueue::instance()->frontend_scripts();
+    }
+
+    public function preview_scripts() {
+        // Check if select2 is already registered
+        wp_enqueue_style(
+            'igd-select2',
+            IGD_ASSETS . '/vendor/select2/css/select2.min.css',
+            [],
+            '4.0.13'
+        );
+        wp_enqueue_script(
+            'igd-select2',
+            IGD_ASSETS . '/vendor/select2/js/select2.full.min.js',
+            ['jquery'],
+            '4.0.13',
+            true
+        );
+        Enqueue::instance()->admin_scripts();
         wp_enqueue_script(
             'igd-elementor',
             IGD_ASSETS . '/js/elementor.js',
@@ -391,11 +368,6 @@ class Elementor {
             IGD_VERSION,
             true
         );
-        Enqueue::instance()->frontend_scripts();
-    }
-
-    public function preview_scripts() {
-        Enqueue::instance()->admin_scripts( '', false );
     }
 
     public function register_widgets( $widgets_manager ) {
@@ -404,21 +376,6 @@ class Elementor {
             $widgets_manager->register( new Shortcodes_Widget() );
         } else {
             $widgets_manager->register_widget_type( new Shortcodes_Widget() );
-        }
-        include_once IGD_INCLUDES . '/elementor/class-elementor-gallery-widget.php';
-        include_once IGD_INCLUDES . '/elementor/class-elementor-embed-widget.php';
-        include_once IGD_INCLUDES . '/elementor/class-elementor-download-widget.php';
-        include_once IGD_INCLUDES . '/elementor/class-elementor-view-widget.php';
-        if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
-            $widgets_manager->register( new Gallery_Widget() );
-            $widgets_manager->register( new Embed_Widget() );
-            $widgets_manager->register( new Download_Widget() );
-            $widgets_manager->register( new View_Widget() );
-        } else {
-            $widgets_manager->register_widget_type( new Gallery_Widget() );
-            $widgets_manager->register_widget_type( new Embed_Widget() );
-            $widgets_manager->register_widget_type( new Download_Widget() );
-            $widgets_manager->register_widget_type( new View_Widget() );
         }
     }
 
@@ -429,66 +386,104 @@ class Elementor {
         ] );
     }
 
-    public static function builder_empty_placeholder( $type ) {
-        if ( 'igd_browser' == $type ) {
-            $img = 'browser';
-            $title = __( 'File Browser', 'integrate-google-drive' );
-        } elseif ( 'igd_gallery' == $type ) {
-            $img = 'gallery';
-            $title = __( 'Gallery', 'integrate-google-drive' );
-        } elseif ( 'igd_download' == $type ) {
-            $img = 'download';
-            $title = __( 'Insert Download Links', 'integrate-google-drive' );
-        } elseif ( 'igd_embed' == $type ) {
-            $img = 'embed';
-            $title = __( 'Embed Documents', 'integrate-google-drive' );
-        } elseif ( 'igd_media' == $type ) {
-            $img = 'media';
-            $title = __( 'Media Player', 'integrate-google-drive' );
-        } elseif ( 'igd_search' == $type ) {
-            $img = 'search';
-            $title = __( 'Search Box', 'integrate-google-drive' );
-        } elseif ( 'igd_slider' == $type ) {
-            $img = 'slider';
-            $title = __( 'Carousel Slider', 'integrate-google-drive' );
-        } elseif ( 'igd_uploader' == $type ) {
-            $img = 'uploader';
-            $title = __( 'File Uploader', 'integrate-google-drive' );
-        } elseif ( 'igd_view' == $type ) {
-            $img = 'view';
-            $title = __( 'Insert View Links', 'integrate-google-drive' );
-        } elseif ( 'igd_shortcodes' == $type ) {
-            $img = 'shortcodes';
-            $title = __( 'Insert Pre-built Shortcode', 'integrate-google-drive' );
-        }
+    public static function builder_empty_placeholder( $type, $module_id = null ) {
+        $key = str_replace( 'igd_', '', $type );
+        $titles = [
+            'igd_shortcodes' => __( 'Google Drive Modules', 'integrate-google-drive' ),
+        ];
+        $title = $titles[$type] ?? __( 'Google Drive Module', 'integrate-google-drive' );
+        $shortcodes = Shortcode::get_shortcodes();
+        $description = ( 'shortcodes' == $key ? __( 'Choose a saved module to insert.', 'integrate-google-drive' ) : sprintf( __( 'Choose a saved %s module to insert.', 'integrate-google-drive' ), $title ) );
+        $description2 = ( 'shortcodes' == $key ? __( 'Build a new Google Drive module from scratch.', 'integrate-google-drive' ) : sprintf( __( 'Build a new %s module from scratch.', 'integrate-google-drive' ), $title ) );
         ?>
-        <div class="module-builder-placeholder">
 
-            <img src="<?php 
-        echo IGD_ASSETS . '/images/shortcode-builder/types/' . $img . '.svg';
+        <div class="igd-module-placeholder">
+
+            <div class="module-icon icon-<?php 
+        echo esc_attr( $key );
         ?>">
-            <h3><?php 
-        echo $title;
+                <img src="<?php 
+        echo esc_url( IGD_ASSETS . '/images/shortcode-builder/types/' . $key . '.svg' );
+        ?>">
+            </div>
+
+            <h2 class="title"><?php 
+        echo esc_html( $title );
+        ?></h2>
+
+            <h3 class="subtitle"><?php 
+        esc_html_e( 'Insert Existing Module', 'integrate-google-drive' );
         ?></h3>
-            <p><?php 
-        esc_html_e( 'Please, configure the module first to display the content', 'integrate-google-drive' );
+
+            <p class="description"><?php 
+        echo esc_html( $description );
         ?></p>
 
-			<?php 
-        if ( 'igd_shortcodes' != $type ) {
+            <select class="form-control module_id" name="module_id">
+
+                <option><?php 
+        esc_html_e( 'Select Shortcode', 'integrate-google-drive' );
+        ?></option>
+
+				<?php 
+        foreach ( $shortcodes as $shortcode ) {
             ?>
-                <button type="button" class="igd-btn btn-primary"
-                        onclick="setTimeout(() => {window.parent.jQuery(`[data-event='igd:editor:edit_module']`).trigger('click')}, 100)">
+                    <option
+                            value="<?php 
+            echo esc_attr( $shortcode['id'] );
+            ?>" <?php 
+            selected( $module_id, $shortcode['id'] );
+            ?>
+                            data-image="<?php 
+            echo esc_url( IGD_ASSETS . '/images/shortcode-builder/types/' . $shortcode['type'] . '.svg' );
+            ?>"
+                    >
+						<?php 
+            echo esc_html( $shortcode['title'] );
+            ?>
+                    </option>
+				<?php 
+        }
+        ?>
+            </select>
+
+			<?php 
+        if ( $module_id ) {
+            ?>
+                <button type="button" class="igd-btn btn-primary btn-configure"
+                        onclick="setTimeout(() => { window.parent.jQuery(`[data-event='igd:editor:edit_module']`).trigger('click') }, 100)">
                     <i class="dashicons dashicons-admin-generic"></i>
                     <span><?php 
             esc_html_e( 'Configure Module', 'integrate-google-drive' );
             ?></span>
                 </button>
 			<?php 
+        } else {
+            ?>
+                <div class="divider"><?php 
+            esc_html_e( 'OR', 'integrate-google-drive' );
+            ?></div>
+                <h3 class="subtitle"><?php 
+            esc_html_e( 'Create New Module', 'integrate-google-drive' );
+            ?></h3>
+
+                <p class="description"><?php 
+            echo esc_html( $description2 );
+            ?></p>
+
+                <button type="button" class="igd-btn btn-primary"
+                        onclick="setTimeout(() => { window.parent.elementor.channels.editor.trigger('igd:editor:add_module') }, 100)">
+                    <i class="dashicons dashicons-plus"></i>
+                    <span><?php 
+            esc_html_e( 'Add New Module', 'integrate-google-drive' );
+            ?></span>
+                </button>
+			<?php 
         }
         ?>
+
         </div>
-	<?php 
+		<?php 
     }
 
     /**
