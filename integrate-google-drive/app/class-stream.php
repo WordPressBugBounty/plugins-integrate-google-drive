@@ -10,7 +10,7 @@ class Stream {
 	private $file;
 
 	public function __construct( $file_id, $account_id, $ignore_limit = false ) {
-		if ( ! $ignore_limit && igd_fs()->can_use_premium_code__premium_only() && $limit_message = Restrictions::instance()->has_reached_download_limit( $file_id, 'stream' ) ) {
+		if (igd_fs()->can_use_premium_code__premium_only() && ! $ignore_limit && igd_fs()->can_use_premium_code__premium_only() && $limit_message = Restrictions::instance()->has_reached_download_limit( $file_id, 'stream' ) ) {
 			Restrictions::display_error( $limit_message );
 		}
 

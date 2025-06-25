@@ -509,10 +509,10 @@ function igd_get_embed_content( $data ) {
 				}
 
 			} else {
-				$sandbox_attrs = '';
+				$sandbox_attrs = 'sandbox="allow-same-origin allow-scripts allow-popups allow-forms"';
 
 				if ( ! $allow_popout && $embed_type = 'readOnly' ) {
-					$sandbox_attrs = 'sandbox="allow-same-origin allow-scripts"';
+					$sandbox_attrs = 'sandbox="allow-same-origin allow-scripts allow-forms"';
 				}
 
 				printf( '<iframe class="igd-embed" src="%1$s" frameborder="0" scrolling="no" width="%2$s" height="%3$s" referrerpolicy="no-referrer" allow="autoplay" allowfullscreen="allowfullscreen" %4$s></iframe>', $url, $embed_width, $embed_height, $sandbox_attrs );
@@ -2191,9 +2191,9 @@ function igd_delete_transients_with_prefix( $prefix ) {
 
 function igd_get_grouped_parent_folders( $file, &$groupedFolders = [] ) {
 
-    if(empty($file)){
-        return $groupedFolders;
-    }
+	if ( empty( $file ) ) {
+		return $groupedFolders;
+	}
 
 	$app = App::instance( $file['accountId'] );
 

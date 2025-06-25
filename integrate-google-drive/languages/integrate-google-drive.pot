@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Integrate Google Drive 1.5.1\n"
+"Project-Id-Version: Integrate Google Drive 1.5.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integrate-google-drive\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-06-24T03:00:07+00:00\n"
+"POT-Creation-Date: 2025-06-25T16:17:42+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: integrate-google-drive\n"
@@ -127,7 +127,6 @@ msgstr ""
 
 #: includes/class-admin.php:235
 #: includes/views/getting-started/get-pro.php:17
-#: includes/views/getting-started/get-started.php:80
 #: assets/js/admin.js:1
 msgid "Module Builder"
 msgstr ""
@@ -188,76 +187,81 @@ msgstr ""
 msgid "Google Drive"
 msgstr ""
 
-#: includes/class-ajax.php:193
-msgid "Setup hidden successfully."
-msgstr ""
-
-#: includes/class-ajax.php:201
+#: includes/class-ajax.php:196
+#: includes/class-ajax.php:219
 msgid "Permission denied"
 msgstr ""
 
-#: includes/class-ajax.php:230
+#: includes/class-ajax.php:205
+msgid "Migration status cleared successfully."
+msgstr ""
+
+#: includes/class-ajax.php:211
+msgid "Setup hidden successfully."
+msgstr ""
+
+#: includes/class-ajax.php:248
 msgid "Migration is running. Step: %s, Offset: %d"
 msgstr ""
 
-#: includes/class-ajax.php:239
+#: includes/class-ajax.php:257
 msgid "Migration completed successfully."
 msgstr ""
 
-#: includes/class-ajax.php:260
-#: includes/class-ajax.php:297
+#: includes/class-ajax.php:278
+#: includes/class-ajax.php:315
 msgid "Permission denied."
 msgstr ""
 
-#: includes/class-ajax.php:355
+#: includes/class-ajax.php:375
 msgid "Invalid request."
 msgstr ""
 
-#: includes/class-ajax.php:366
+#: includes/class-ajax.php:386
 msgid "Username and password are required."
 msgstr ""
 
-#: includes/class-ajax.php:392
+#: includes/class-ajax.php:412
 msgid "Invalid shortcode reference."
 msgstr ""
 
-#: includes/class-ajax.php:501
+#: includes/class-ajax.php:521
 msgid "You do not have permission to access this page."
 msgstr ""
 
-#: includes/class-ajax.php:520
-#: includes/class-ajax.php:645
-#: includes/class-ajax.php:668
-#: includes/class-ajax.php:777
-#: includes/class-ajax.php:806
-#: includes/class-ajax.php:839
-#: includes/class-ajax.php:860
-#: includes/class-ajax.php:910
-#: includes/class-ajax.php:973
-#: includes/class-ajax.php:989
-#: includes/class-ajax.php:1319
+#: includes/class-ajax.php:540
+#: includes/class-ajax.php:665
+#: includes/class-ajax.php:688
+#: includes/class-ajax.php:797
+#: includes/class-ajax.php:826
+#: includes/class-ajax.php:859
+#: includes/class-ajax.php:880
+#: includes/class-ajax.php:930
+#: includes/class-ajax.php:993
+#: includes/class-ajax.php:1009
+#: includes/class-ajax.php:1339
 #: includes/integrations/class-media-library.php:82
 #: includes/integrations/class-media-library.php:128
 msgid "You do not have permission to access this page"
 msgstr ""
 
-#: includes/class-ajax.php:537
-#: includes/class-ajax.php:553
+#: includes/class-ajax.php:557
+#: includes/class-ajax.php:573
 msgid "You do not have permission to perform this action."
 msgstr ""
 
-#: includes/class-ajax.php:570
-#: includes/class-ajax.php:584
-#: includes/class-ajax.php:599
-#: includes/class-ajax.php:824
-#: includes/class-ajax.php:1004
-#: includes/class-ajax.php:1159
-#: includes/class-ajax.php:1183
-#: includes/class-ajax.php:1205
-#: includes/class-ajax.php:1257
-#: includes/class-ajax.php:1279
+#: includes/class-ajax.php:590
+#: includes/class-ajax.php:604
+#: includes/class-ajax.php:619
+#: includes/class-ajax.php:844
+#: includes/class-ajax.php:1024
+#: includes/class-ajax.php:1179
+#: includes/class-ajax.php:1203
+#: includes/class-ajax.php:1225
+#: includes/class-ajax.php:1277
 #: includes/class-ajax.php:1299
-#: includes/class-ajax.php:1379
+#: includes/class-ajax.php:1319
+#: includes/class-ajax.php:1399
 #: includes/class-statistics__premium_only.php:44
 #: includes/class-statistics__premium_only.php:594
 #: includes/class-statistics__premium_only.php:608
@@ -265,37 +269,37 @@ msgid "You do not have permission to perform this action"
 msgstr ""
 
 #. translators: %s: User feedback
-#: includes/class-ajax.php:609
+#: includes/class-ajax.php:629
 msgid "Feedback: %s"
 msgstr ""
 
 #. translators: %s: Website URL
-#: includes/class-ajax.php:613
+#: includes/class-ajax.php:633
 msgid "Website URL: %s"
 msgstr ""
 
 #. translators: %s: Plugin name
-#: includes/class-ajax.php:616
+#: includes/class-ajax.php:636
 msgid "Feedback for %s"
 msgstr ""
 
-#: includes/class-ajax.php:1032
+#: includes/class-ajax.php:1052
 msgid "No active account found"
 msgstr ""
 
-#: includes/class-ajax.php:1358
+#: includes/class-ajax.php:1378
 msgid "Something went wrong! Preview is not available"
 msgstr ""
 
-#: includes/class-ajax.php:1537
+#: includes/class-ajax.php:1557
 msgid "File not found"
 msgstr ""
 
-#: includes/class-ajax.php:1622
+#: includes/class-ajax.php:1642
 msgid "Cross-site request forgery detected"
 msgstr ""
 
-#: includes/class-ajax.php:1634
+#: includes/class-ajax.php:1654
 #: includes/class-statistics__premium_only.php:590
 msgid "Invalid nonce"
 msgstr ""
@@ -674,7 +678,7 @@ msgstr ""
 
 #: includes/divi/includes/modules/Shortcodes/Shortcodes.php:55
 #: includes/elementor/class-elementor.php:525
-#: includes/integrations/class-fluentforms.php:456
+#: includes/integrations/class-fluentforms.php:458
 #: includes/integrations/class-ninjaforms.php:293
 #: includes/integrations/class-wpforms.php:363
 msgid "Select Shortcode"
@@ -718,7 +722,7 @@ msgstr ""
 #: includes/elementor/class-metform__premium_only.php:90
 #: includes/integrations/class-cf7.php:374
 #: includes/integrations/class-cf7.php:494
-#: includes/integrations/class-fluentforms.php:474
+#: includes/integrations/class-fluentforms.php:476
 #: includes/integrations/class-formidableforms.php:265
 #: includes/integrations/class-formidableforms.php:284
 #: includes/integrations/class-gravityforms.php:240
@@ -1026,7 +1030,7 @@ msgstr ""
 
 #. translators: %d: minimum file uploads
 #: includes/integrations/class-cf7.php:243
-#: includes/integrations/class-fluentforms.php:562
+#: includes/integrations/class-fluentforms.php:564
 #: includes/integrations/class-gravityforms.php:445
 #: includes/integrations/class-wpforms.php:255
 msgid "Please upload at least %d files."
@@ -1175,17 +1179,17 @@ msgstr ""
 msgid "Connect your Google Drive account with your store to use product images and download able files from your Google Drive and let customers upload files to your Google Drive on product purchase."
 msgstr ""
 
-#: includes/integrations/class-fluentforms.php:414
+#: includes/integrations/class-fluentforms.php:416
 #: includes/integrations/class-formidableforms.php:235
 #: includes/integrations/class-gravityforms.php:284
 msgid "Attach your documents"
 msgstr ""
 
-#: includes/integrations/class-fluentforms.php:423
+#: includes/integrations/class-fluentforms.php:425
 msgid "This field is required"
 msgstr ""
 
-#: includes/integrations/class-fluentforms.php:475
+#: includes/integrations/class-fluentforms.php:477
 msgid "Select an existing module or create a new module."
 msgstr ""
 
@@ -1253,6 +1257,7 @@ msgstr ""
 
 #: includes/integrations/class-media-library.php:465
 #: assets/js/media-library.js:1
+#: assets/js/settings.js:1
 msgid "Restore"
 msgstr ""
 
@@ -1650,95 +1655,95 @@ msgstr ""
 msgid "Classic shortcode migration complete."
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:162
+#: includes/updates/class-migration-1.5.1.php:163
 msgid "Classic shortcodes: Processed %d posts... (offset %d)"
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:201
+#: includes/updates/class-migration-1.5.1.php:202
 msgid "Block migration complete."
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:245
+#: includes/updates/class-migration-1.5.1.php:247
 msgid "Blocks: Processed %d posts... (offset %d)"
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:287
+#: includes/updates/class-migration-1.5.1.php:289
 msgid "Elementor widget migration complete."
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:330
+#: includes/updates/class-migration-1.5.1.php:333
 msgid "Widgets: Processed %d posts... (offset %d)"
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:466
+#: includes/updates/class-migration-1.5.1.php:469
 msgid "Divi module migration complete."
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:529
+#: includes/updates/class-migration-1.5.1.php:533
 msgid "Modules: Processed %d posts... (offset %d)"
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:587
+#: includes/updates/class-migration-1.5.1.php:591
 msgid "Fluent Forms migration complete. No forms found."
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:605
+#: includes/updates/class-migration-1.5.1.php:609
 msgid "Fluent Forms migration complete."
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:639
+#: includes/updates/class-migration-1.5.1.php:644
 msgid "Fluent Forms: Processed %d forms... (offset %d)"
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:696
+#: includes/updates/class-migration-1.5.1.php:701
 msgid "WPForms migration complete."
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:760
+#: includes/updates/class-migration-1.5.1.php:766
 msgid "WPForms: Processed %d forms... (offset %d)"
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:776
+#: includes/updates/class-migration-1.5.1.php:782
 msgid "Gravity Forms migration complete. No forms found."
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:792
+#: includes/updates/class-migration-1.5.1.php:798
 msgid "Gravity Forms migration complete."
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:855
+#: includes/updates/class-migration-1.5.1.php:862
 msgid "Gravity Forms: Processed %d forms... (offset %d)"
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:871
+#: includes/updates/class-migration-1.5.1.php:878
 msgid "Formidable Forms migration complete. No fields found."
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:889
+#: includes/updates/class-migration-1.5.1.php:896
 msgid "Formidable Forms migration complete."
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:932
+#: includes/updates/class-migration-1.5.1.php:940
 msgid "Formidable Forms: Processed %d fields... (offset %d)"
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:947
+#: includes/updates/class-migration-1.5.1.php:955
 msgid "Ninja Forms migration complete. No fields found."
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:966
+#: includes/updates/class-migration-1.5.1.php:974
 msgid "Ninja Forms migration complete."
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:1016
+#: includes/updates/class-migration-1.5.1.php:1025
 msgid "Ninja Forms: Processed %d forms... (offset %d)"
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:1044
+#: includes/updates/class-migration-1.5.1.php:1053
 msgid "Contact Form 7 migration complete."
 msgstr ""
 
-#: includes/updates/class-migration-1.5.1.php:1104
+#: includes/updates/class-migration-1.5.1.php:1114
 msgid "Contact Form 7: Processed %d forms... (offset %d)"
 msgstr ""
 
@@ -2063,7 +2068,7 @@ msgid "Download the plugin and install it via admin dashboard"
 msgstr ""
 
 #: includes/views/getting-started/get-started.php:46
-#: includes/views/getting-started/get-started.php:158
+#: includes/views/getting-started/get-started.php:166
 msgid "Activate License"
 msgstr ""
 
@@ -2071,325 +2076,357 @@ msgstr ""
 msgid "If you have purchased the premium version, activate license to unlock all features"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:58
+#: includes/views/getting-started/get-started.php:56
 msgid "Connect Google Account"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:59
+#: includes/views/getting-started/get-started.php:57
 msgid "Connect your Google account to access your Google Drive files."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:69
+#: includes/views/getting-started/get-started.php:67
 msgid "Browse & Manage Files"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:70
+#: includes/views/getting-started/get-started.php:68
 msgid "Browse and manage your Google Drive files directly from your WordPress dashboard."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:81
+#: includes/views/getting-started/get-started.php:78
+msgid "Create Modules"
+msgstr ""
+
+#: includes/views/getting-started/get-started.php:79
 msgid "Create custom modules to display & share your Google Drive files in various formats."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:91
+#: includes/views/getting-started/get-started.php:89
+msgid "Display & Share Files"
+msgstr ""
+
+#: includes/views/getting-started/get-started.php:90
+msgid "Display & share your Google Drive files using your created modules."
+msgstr ""
+
+#: includes/views/getting-started/get-started.php:99
 msgid "Explore And Enjoy Features"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:92
+#: includes/views/getting-started/get-started.php:100
 msgid "Explore the powerful features of Integrate Google Drive and enhance your site."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:110
+#: includes/views/getting-started/get-started.php:118
 msgid "%s Get Started %s"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:165
+#: includes/views/getting-started/get-started.php:173
 msgid "Connect Account"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:172
+#: includes/views/getting-started/get-started.php:180
 #: assets/js/admin.js:1
 #: assets/js/frontend.js:1
 msgid "Browse Files"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:179
+#: includes/views/getting-started/get-started.php:187
 msgid "Create First Module"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:186
+#: includes/views/getting-started/get-started.php:194
 #: assets/js/admin.js:1
 msgid "Finish"
 msgstr ""
 
 #. translators: Installing Integrate Google Drive plugin
-#: includes/views/getting-started/get-started.php:203
+#: includes/views/getting-started/get-started.php:211
 msgid "Follow these simple steps to install and activate the Integrate Google Drive plugin."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:206
+#: includes/views/getting-started/get-started.php:214
 msgid "Installing the FREE Version:"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:208
+#: includes/views/getting-started/get-started.php:216
 msgid "Log in to your WordPress admin dashboard."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:211
+#: includes/views/getting-started/get-started.php:219
 msgid "Navigates to %s."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:215
+#: includes/views/getting-started/get-started.php:223
 msgid "Search for Integrate Google Drive."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:216
+#: includes/views/getting-started/get-started.php:224
 msgid "Click Install Now next to the plugin."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:217
+#: includes/views/getting-started/get-started.php:225
 msgid "Once installed, click Activate."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:218
+#: includes/views/getting-started/get-started.php:226
 msgid "A confirmation message will appear once the plugin is successfully activated."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:221
+#: includes/views/getting-started/get-started.php:229
 msgid "Installing the PRO Version:"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:223
+#: includes/views/getting-started/get-started.php:231
 msgid "After completing your purchase, you will receive a confirmation email with Premium download link and license key."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:227
+#: includes/views/getting-started/get-started.php:235
 msgid "You can also get the PRO Download link and license key from the %s."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:232
+#: includes/views/getting-started/get-started.php:240
 msgid "Download the .zip file of the PRO plugin from the purchase confirmation email or Freemius dashboard."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:235
+#: includes/views/getting-started/get-started.php:243
 msgid "In your WordPress admin dashboard, go to %s."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:239
+#: includes/views/getting-started/get-started.php:247
 msgid "Upload the downloaded .zip file and click Install Now."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:240
+#: includes/views/getting-started/get-started.php:248
 msgid "After installation, activate the PRO plugin to enable its features."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:244
+#: includes/views/getting-started/get-started.php:252
 msgid "Once installed, you can connect your Google account and start managing your files seamlessly."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:249
+#: includes/views/getting-started/get-started.php:257
 msgid "After installing the PRO plugin, follow these steps to activate your license and unlock all premium features."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:251
+#: includes/views/getting-started/get-started.php:259
 msgid "Activating the PRO License:"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:253
+#: includes/views/getting-started/get-started.php:261
 msgid "After completing your purchase, you will receive a confirmation email with License Key & premium download link."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:257
+#: includes/views/getting-started/get-started.php:265
 msgid "You can also get the License Key from the %s."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:262
+#: includes/views/getting-started/get-started.php:270
 msgid "Copy the license key from the purchase confirmation email or Freemius dashboard."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:263
+#: includes/views/getting-started/get-started.php:271
 msgid "Now after installing the PRO version you will be promted to activate your license key."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:264
+#: includes/views/getting-started/get-started.php:272
 msgid "Enter the license key into the activation field."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:265
+#: includes/views/getting-started/get-started.php:273
 msgid "Click Agree & Activate License to enable the PRO features."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:269
+#: includes/views/getting-started/get-started.php:277
 msgid "Once activated, you can start enjoying all the advanced features and enhanced capabilities of the PRO version."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:274
+#: includes/views/getting-started/get-started.php:282
 msgid "After activating the plugin, link your Google account to start using it. You can connect multiple Google accounts if needed."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:276
+#: includes/views/getting-started/get-started.php:284
 msgid "To add a Google account, follow these steps:"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:280
+#: includes/views/getting-started/get-started.php:288
 msgid "Navigate to  %s in your WordPress admin dashboard."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:284
+#: includes/views/getting-started/get-started.php:292
 msgid "Click the Add Account button."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:285
+#: includes/views/getting-started/get-started.php:293
 msgid "A new window will open, redirecting you to the Google login page."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:286
+#: includes/views/getting-started/get-started.php:294
 msgid "Select the Google account you want to link."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:287
+#: includes/views/getting-started/get-started.php:295
 msgid "Click Allow to grant the plugin access to your Google Drive."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:288
+#: includes/views/getting-started/get-started.php:296
 msgid "Wait for the authorization to complete — then you’re all set!"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:295
+#: includes/views/getting-started/get-started.php:303
 msgid "Manage your Google Drive files directly from your WordPress dashboard with ease."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:297
+#: includes/views/getting-started/get-started.php:305
 msgid "Browsing and Managing Files:"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:301
+#: includes/views/getting-started/get-started.php:309
 msgid "Navigate to  %s in your WordPress admin dashboard to view all your Google Drive files."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:305
+#: includes/views/getting-started/get-started.php:313
 msgid "Use options to copy, rename, edit, or delete files without leaving WordPress."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:306
+#: includes/views/getting-started/get-started.php:314
 msgid "Enjoy fast, real-time syncing to keep your WordPress and Google Drive files up to date."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:307
+#: includes/views/getting-started/get-started.php:315
 msgid "Filter and search files easily to find exactly what you need."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:308
+#: includes/views/getting-started/get-started.php:316
 msgid "Manage permissions and sharing settings directly from the plugin."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:318
+#: includes/views/getting-started/get-started.php:326
 msgid "You can create unlimited shortcode modules and use them in your posts or pages with the %1$s[integrate_google_drive]%2$s shortcode."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:324
+#: includes/views/getting-started/get-started.php:332
 msgid "Available Module Types:"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:328
+#: includes/views/getting-started/get-started.php:336
 msgid "File Browser -"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:329
+#: includes/views/getting-started/get-started.php:337
 msgid "Allows users to browse your Google Drive files directly."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:332
+#: includes/views/getting-started/get-started.php:340
 msgid "Embed Document -"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:333
+#: includes/views/getting-started/get-started.php:341
 msgid "Embed any Google Drive file into your page or post."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:336
+#: includes/views/getting-started/get-started.php:344
 msgid "File Uploader -"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:337
+#: includes/views/getting-started/get-started.php:345
 msgid "Allows users to upload files directly to your Google Drive."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:340
+#: includes/views/getting-started/get-started.php:348
 msgid "Gallery -"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:341
+#: includes/views/getting-started/get-started.php:349
 msgid "Displays a lightbox grid photo & video gallery."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:344
+#: includes/views/getting-started/get-started.php:352
 msgid "Review & Approve -"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:345
+#: includes/views/getting-started/get-started.php:353
 msgid "Allow users to review and confirm their file choices."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:348
+#: includes/views/getting-started/get-started.php:356
 msgid "Audio & Video Player -"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:349
+#: includes/views/getting-started/get-started.php:357
 msgid "Plays audio and video files in a single player."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:352
+#: includes/views/getting-started/get-started.php:360
 msgid "File Search -"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:353
+#: includes/views/getting-started/get-started.php:361
 msgid "Allows users to search Google Drive files from your website."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:356
+#: includes/views/getting-started/get-started.php:364
 msgid "List Files -"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:357
+#: includes/views/getting-started/get-started.php:365
 msgid "Displays a list of Google Drive files with various options."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:360
+#: includes/views/getting-started/get-started.php:368
 msgid "Slider Carousel -"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:361
+#: includes/views/getting-started/get-started.php:369
 msgid "Displays a slider carousel of Google Drive files."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:370
-msgid "Congratulations! You have successfully set up Integrate Google Drive. Now you can explore and enjoy the powerful features it offers."
-msgstr ""
-
-#: includes/views/getting-started/get-started.php:371
-msgid "If you need any help, please visit our support page or contact us directly."
-msgstr ""
-
-#: includes/views/getting-started/get-started.php:374
-msgid "You're almost there! Please complete all the setup steps to unlock the full power of Integrate Google Drive."
-msgstr ""
-
 #: includes/views/getting-started/get-started.php:376
-msgid "If you need assistance or have any questions, visit our support page or contact us anytime — we’re here to help!"
+msgid "Once you have created your modules, you can easily display and share your Google Drive files on your website."
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:383
-msgid "Read Documentation"
+#: includes/views/getting-started/get-started.php:378
+msgid "To display or share files:"
+msgstr ""
+
+#: includes/views/getting-started/get-started.php:380
+msgid "Use the shortcode generated by the module builder within any post or page for a quick setup."
+msgstr ""
+
+#: includes/views/getting-started/get-started.php:381
+msgid "Alternatively, leverage the plugin’s support for the Classic Editor, Gutenberg blocks, Elementor widgets, or Divi modules to embed your modules anywhere on your site."
+msgstr ""
+
+#: includes/views/getting-started/get-started.php:382
+msgid "You can also share your modules directly with others using the module’s View URL."
 msgstr ""
 
 #: includes/views/getting-started/get-started.php:389
+msgid "Congratulations! You have successfully set up Integrate Google Drive. Now you can explore and enjoy the powerful features it offers."
+msgstr ""
+
+#: includes/views/getting-started/get-started.php:390
+msgid "If you need any help, please visit our support page or contact us directly."
+msgstr ""
+
+#: includes/views/getting-started/get-started.php:393
+msgid "You're almost there! Please complete all the setup steps to unlock the full power of Integrate Google Drive."
+msgstr ""
+
+#: includes/views/getting-started/get-started.php:395
+msgid "If you need assistance or have any questions, visit our support page or contact us anytime — we’re here to help!"
+msgstr ""
+
+#: includes/views/getting-started/get-started.php:402
+msgid "Read Documentation"
+msgstr ""
+
+#: includes/views/getting-started/get-started.php:408
 #: includes/views/getting-started/help.php:198
 msgid "Get Support"
 msgstr ""
 
-#: includes/views/getting-started/get-started.php:389
-#: includes/views/getting-started/what-new.php:164
+#: includes/views/getting-started/get-started.php:408
+#: includes/views/getting-started/what-new.php:174
 msgid "Watch Video"
 msgstr ""
 
@@ -2738,31 +2775,31 @@ msgstr ""
 msgid "Upload files directly to Google Drive through your website’s integration with popular form plugins. Build a powerful module for your favorite forms using the Integrate Google Drive plugin."
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:137
+#: includes/views/getting-started/what-new.php:147
 msgid "Exploring the %s Latest Updates %s"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:138
+#: includes/views/getting-started/what-new.php:148
 msgid "Dive Into the Recent Change Logs for Fresh Insights"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:160
+#: includes/views/getting-started/what-new.php:170
 msgid "Read Log Article"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:190
+#: includes/views/getting-started/what-new.php:200
 msgid "New Features"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:198
+#: includes/views/getting-started/what-new.php:208
 msgid "Bug Fixes"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:206
+#: includes/views/getting-started/what-new.php:216
 msgid "Improvements"
 msgstr ""
 
-#: includes/views/getting-started/what-new.php:214
+#: includes/views/getting-started/what-new.php:224
 msgid "Deprecations"
 msgstr ""
 
@@ -2842,31 +2879,32 @@ msgstr ""
 msgid "N/A"
 msgstr ""
 
-#: includes/views/notice/migration-1.5.1.php:13
+#: includes/views/notice/migration-1.5.1.php:14
 msgid "Database Migration in Progress"
 msgstr ""
 
-#: includes/views/notice/migration-1.5.1.php:14
+#: includes/views/notice/migration-1.5.1.php:15
 msgid "We are updating your Google Drive module configurations in the background. This may take a few moments. You can continue using the site normally."
 msgstr ""
 
-#: includes/views/notice/migration-1.5.1.php:18
+#: includes/views/notice/migration-1.5.1.php:19
 msgid "Current Step: %s"
 msgstr ""
 
-#: includes/views/notice/migration-1.5.1.php:20
+#: includes/views/notice/migration-1.5.1.php:21
 msgid "Processed Offset: %d"
 msgstr ""
 
-#: includes/views/notice/migration-1.5.1.php:27
+#: includes/views/notice/migration-1.5.1.php:28
+#: assets/js/settings.js:1
 msgid "Checking migration status..."
 msgstr ""
 
-#: includes/views/notice/migration-1.5.1.php:33
+#: includes/views/notice/migration-1.5.1.php:34
 msgid "If you having any trouble, click the button below to manually trigger the migration process. This is not recommended unless you are experiencing issues with the automatic migration."
 msgstr ""
 
-#: includes/views/notice/migration-1.5.1.php:37
+#: includes/views/notice/migration-1.5.1.php:38
 #: assets/js/admin.js:1
 msgid "Update Database"
 msgstr ""
@@ -3107,6 +3145,10 @@ msgstr ""
 
 #: assets/js/admin.js:1
 msgid "Shortcode copied to clipboard"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "View URL copied to clipboard."
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -3947,10 +3989,6 @@ msgid "Embed Module"
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "View URL copied to clipboard."
-msgstr ""
-
-#: assets/js/admin.js:1
 msgid "Copy View URL"
 msgstr ""
 
@@ -4079,7 +4117,7 @@ msgid "No shortcodes found matching your search."
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "You didn't create any shortcode yet!"
+msgid "You didn't create any module yet!"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -4853,7 +4891,7 @@ msgid "Embed Type"
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "Upgrade to Pro to change the embed type."
+msgid "The document will open in read-only mode, preventing any changes."
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -4861,7 +4899,19 @@ msgid "Read Only"
 msgstr ""
 
 #: assets/js/admin.js:1
+msgid "The document will open in editable mode, allowing users to make changes."
+msgstr ""
+
+#: assets/js/admin.js:1
 msgid "Editable"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Upgrade to Pro to change the embed type."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "The document will appear in editable mode with expanded toolbars and features."
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -4877,19 +4927,11 @@ msgid "The document will be displayed in a read-only mode."
 msgstr ""
 
 #: assets/js/admin.js:1
-msgid "The document will be displayed in an editable mode. Users will be able to edit the document."
+msgid "The document will be displayed in an editable mode."
 msgstr ""
 
 #: assets/js/admin.js:1
 msgid "The document will be displayed in an editable mode with extended edit tool-bars and features."
-msgstr ""
-
-#: assets/js/admin.js:1
-msgid "Note:"
-msgstr ""
-
-#: assets/js/admin.js:1
-msgid "The editable mode is only available for the editable Google Docs & Office Docs."
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -5294,6 +5336,10 @@ msgid "List Style"
 msgstr ""
 
 #: assets/js/admin.js:1
+msgid "Default Style"
+msgstr ""
+
+#: assets/js/admin.js:1
 msgid "Upgrade to Pro to change the list style."
 msgstr ""
 
@@ -5307,6 +5353,10 @@ msgstr ""
 
 #: assets/js/admin.js:1
 msgid "List Button Alt"
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "PRO feature"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -5407,6 +5457,10 @@ msgstr ""
 
 #: assets/js/admin.js:1
 msgid "Enable to add permission for the purchase email address to the file."
+msgstr ""
+
+#: assets/js/admin.js:1
+msgid "Note:"
 msgstr ""
 
 #: assets/js/admin.js:1
@@ -6421,6 +6475,7 @@ msgid "Processed Offset:"
 msgstr ""
 
 #: assets/js/admin.js:1
+#: assets/js/settings.js:1
 msgid "Migration complete!"
 msgstr ""
 
@@ -6433,10 +6488,12 @@ msgid "Updating..."
 msgstr ""
 
 #: assets/js/admin.js:1
+#: assets/js/settings.js:1
 msgid "Starting migration..."
 msgstr ""
 
 #: assets/js/admin.js:1
+#: assets/js/settings.js:1
 msgid "Migration failed due to a network or server error."
 msgstr ""
 
@@ -7455,6 +7512,46 @@ msgstr ""
 
 #: assets/js/settings.js:1
 msgid "Select the exported JSON file you would like to import. Please note that the import will replace the current data"
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Migrate Shortcode Modules"
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "This will restore old shortcode modules to the new format."
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Migration in Progress"
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "This process may take a while depending on the number of posts and pages. Please do not close this window until the process is complete."
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Current Step: "
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Processed Offset: "
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Migration Complete!"
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "All shortcode modules have been successfully migrated to the new format."
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "Restore Modules"
+msgstr ""
+
+#: assets/js/settings.js:1
+msgid "The module builder was updated in version 1.5.1. If you upgraded from an earlier version, your shortcode modules in pages or posts should migrate automatically to the new format. If they don’t, you can manually restore them by clicking the button below."
 msgstr ""
 
 #: assets/js/settings.js:1

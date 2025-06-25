@@ -158,6 +158,7 @@ class Migration_1_5_1 {
 
 		return [
 			'completed' => false,
+			'step'      => 'Classic Shortcodes',
 			'offset'    => $next_offset,
 			'message'   => sprintf( __( 'Classic shortcodes: Processed %d posts... (offset %d)', 'integrate-google-drive' ), $processed, $next_offset )
 		];
@@ -241,6 +242,7 @@ class Migration_1_5_1 {
 
 		return [
 			'completed' => false,
+			'step'      => 'Blocks',
 			'offset'    => $next_offset,
 			'message'   => sprintf( __( 'Blocks: Processed %d posts... (offset %d)', 'integrate-google-drive' ), $processed, $next_offset )
 		];
@@ -326,6 +328,7 @@ class Migration_1_5_1 {
 
 		return [
 			'completed' => false,
+			'step'      => 'Elementor Widgets',
 			'offset'    => $next_offset,
 			'message'   => sprintf( __( 'Widgets: Processed %d posts... (offset %d)', 'integrate-google-drive' ), $processed, $next_offset )
 		];
@@ -525,6 +528,7 @@ class Migration_1_5_1 {
 
 		return [
 			'completed' => false,
+			'step'      => 'Divi Modules',
 			'offset'    => $next_offset,
 			'message'   => sprintf( __( 'Modules: Processed %d posts... (offset %d)', 'integrate-google-drive' ), $processed, $next_offset )
 		];
@@ -635,6 +639,7 @@ class Migration_1_5_1 {
 
 		return [
 			'completed' => false,
+			'step'      => 'Fluent Forms',
 			'offset'    => $next_offset,
 			'message'   => sprintf( __( 'Fluent Forms: Processed %d forms... (offset %d)', 'integrate-google-drive' ), $processed, $next_offset )
 		];
@@ -756,6 +761,7 @@ class Migration_1_5_1 {
 
 		return [
 			'completed' => false,
+			'step'      => 'WPForms',
 			'offset'    => $next_offset,
 			'message'   => sprintf( __( 'WPForms: Processed %d forms... (offset %d)', 'integrate-google-drive' ), $processed, $next_offset )
 		];
@@ -851,6 +857,7 @@ class Migration_1_5_1 {
 
 		return [
 			'completed' => false,
+			'step'      => 'Gravity Forms',
 			'offset'    => $next_offset,
 			'message'   => sprintf( __( 'Gravity Forms: Processed %d forms... (offset %d)', 'integrate-google-drive' ), $processed, $next_offset )
 		];
@@ -928,6 +935,7 @@ class Migration_1_5_1 {
 
 		return [
 			'completed' => false,
+			'step'      => 'Formidable Forms',
 			'offset'    => $next_offset,
 			'message'   => sprintf( __( 'Formidable Forms: Processed %d fields... (offset %d)', 'integrate-google-drive' ), $processed, $next_offset )
 		];
@@ -1012,6 +1020,7 @@ class Migration_1_5_1 {
 
 		return [
 			'completed' => false,
+			'step'      => 'Ninja Forms',
 			'offset'    => $next_offset,
 			'message'   => sprintf( __( 'Ninja Forms: Processed %d forms... (offset %d)', 'integrate-google-drive' ), $processed, $next_offset )
 		];
@@ -1100,6 +1109,7 @@ class Migration_1_5_1 {
 
 		return [
 			'completed' => false,
+			'step'      => 'Contact Form 7',
 			'offset'    => $next_offset,
 			'message'   => sprintf( __( 'Contact Form 7: Processed %d forms... (offset %d)', 'integrate-google-drive' ), $processed, $next_offset )
 		];

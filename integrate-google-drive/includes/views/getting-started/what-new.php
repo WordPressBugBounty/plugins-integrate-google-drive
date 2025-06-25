@@ -4,6 +4,16 @@ defined( 'ABSPATH' ) || exit();
 
 $logs = [
 
+	'v.1.5.2' => [
+		'date' => '2025-06-25',
+		'new'  => [
+			'Added manual migration option for the old module shortcodes in the Settings > Tools.',
+		],
+		'fix'  => [
+			' Fixed PDF files Embed error.',
+		],
+	],
+
 	'v.1.5.1' => [
 		'date'        => '2025-06-24',
 		'new'         => [

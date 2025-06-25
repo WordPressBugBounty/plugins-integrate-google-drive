@@ -65,7 +65,7 @@ class Zip {
 		ignore_user_abort( false );
 
 		// Check download restrictions - get the first file to check the download limit
-		if ( $limit_message = Restrictions::instance()->has_reached_download_limit( $this->files[0]['id'], 'download_zip' ) ) {
+		if (igd_fs()->can_use_premium_code__premium_only() && $limit_message = Restrictions::instance()->has_reached_download_limit( $this->files[0]['id'], 'download_zip' ) ) {
 			Restrictions::display_error( $limit_message );
 		}
 

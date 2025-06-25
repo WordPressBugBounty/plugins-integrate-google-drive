@@ -22,7 +22,7 @@ class Download {
 	public function __construct( $id, $account_id, $mimetype = 'default', $proxy = false, $ignore_limit = false ) {
 
 		// Check download restrictions
-		if ( ! $ignore_limit && $limit_message = Restrictions::instance()->has_reached_download_limit( $id ) ) {
+		if (igd_fs()->can_use_premium_code__premium_only() && ! $ignore_limit && $limit_message = Restrictions::instance()->has_reached_download_limit( $id ) ) {
 			Restrictions::display_error( $limit_message );
 		}
 

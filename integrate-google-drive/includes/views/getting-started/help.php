@@ -177,7 +177,7 @@ HTML
 					<?php esc_html_e( 'Check out our detailed online documentation and video tutorials to find out more about what you can
                     do.', 'integrate-google-drive' ); ?>
                 </p>
-                <a class="igd-btn btn-primary" href="https://softlabbd.com/integrate-google-drive"
+                <a class="igd-btn btn-primary" href="https://softlabbd.com/docs-category/integrate-google-drive-docs/"
                    target="_blank">
                     <i class="dashicons dashicons-media-text"></i>
 					<?php esc_html_e( 'Documentation', 'integrate-google-drive' ); ?>

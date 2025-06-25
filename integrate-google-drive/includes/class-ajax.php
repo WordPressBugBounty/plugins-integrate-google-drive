@@ -126,6 +126,18 @@ class Ajax {
         // Handle migration for version 1.5.1
         add_action( 'wp_ajax_igd_run_151_migration_batch', [$this, 'run_151_migration_batch'] );
         add_action( 'wp_ajax_igd_get_migration_status', [$this, 'get_migration_status'] );
+        add_action( 'wp_ajax_igd_clear_setting_migration', [$this, 'clear_setting_migration'] );
+    }
+
+    public function clear_setting_migration() {
+        $this->check_nonce();
+        if ( !current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( __( 'Permission denied', 'integrate-google-drive' ) );
+        }
+        $settings = get_option( 'igd_settings', [] );
+        $settings['shouldMigrate'] = false;
+        update_option( 'igd_settings', $settings );
+        wp_send_json_success( __( 'Migration status cleared successfully.', 'integrate-google-drive' ) );
     }
 
     public function hide_get_started_setup() {
@@ -243,8 +255,6 @@ class Ajax {
         if ( $password != $shortcode_password ) {
             wp_send_json_error( 'Invalid password' );
         }
-        // Set module check cookie
-        Restrictions::instance()->set_module_password( $shortcode_id );
         $shortcode_content = Shortcode::instance()->render_shortcode( [], $shortcode_data );
         wp_send_json_success( $shortcode_content );
     }

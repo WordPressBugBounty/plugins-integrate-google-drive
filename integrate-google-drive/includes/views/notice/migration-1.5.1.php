@@ -9,6 +9,7 @@ $current_offset = isset( $state['offset'] ) ? intval( $state['offset'] ) : 0;
 </div>
 
 <div class="notice-main igd-migration-notice" id="igd-migrate-notice">
+
     <div class="notice-text">
         <p><strong><?php _e( 'Database Migration in Progress', 'integrate-google-drive' ); ?></strong></p>
         <p><?php _e( 'We are updating your Google Drive module configurations in the background. This may take a few moments. You can continue using the site normally.', 'integrate-google-drive' ); ?></p>
